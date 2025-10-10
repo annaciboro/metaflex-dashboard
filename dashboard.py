@@ -4,6 +4,32 @@ from oauth2client.service_account import ServiceAccountCredentials
 import pandas as pd
 import plotly.express as px
 from datetime import datetime
+import os
+
+# Point to your new Google Cloud key (safe local path)
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/Users/annaciboro/.config/gcloud/metaflex-key.json"
+
+import os
+import json
+import streamlit as st
+
+# Handle Google credentials for both local and Streamlit Cloud environments
+if "GOOGLE_KEY_JSON" in st.secrets:
+    key_dict = json.loads(st.secrets["GOOGLE_KEY_JSON"])
+    with open("/app/metaflex-key.json", "w") as f:
+        json.dump(key_dict, f)
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/app/metaflex-key.json"
+else:
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/Users/annaciboro/.config/gcloud/metaflex-key.json"
+
+
+import os
+import streamlit as st
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+import pandas as pd
+import plotly.express as px
+from datetime import datetime
 
 # ----------------------------
 # Streamlit Page Configuration
@@ -44,8 +70,10 @@ def load_data():
             'https://spreadsheets.google.com/feeds',
             'https://www.googleapis.com/auth/drive'
         ]
+
+        # Load service account credentials from environment variable
         creds = ServiceAccountCredentials.from_json_keyfile_name(
-            'credentials.json',
+            os.environ["GOOGLE_APPLICATION_CREDENTIALS"],
             scope
         )
 
@@ -118,21 +146,26 @@ st.sidebar.divider()
 if view_type == "👔 Ops Manager":
     st.sidebar.caption("**Manager Overview** – See all tasks, team performance, and unassigned items")
 
-    all_projects = ['All'] + sorted(df['Project'].dropna().unique().tolist())
+    if 'Project' in df.columns:
+        all_projects = ['All'] + sorted(df['Project'].dropna().unique().tolist())
+    else:
+        st.warning("⚠️ No 'Project' column found in your data.")
+        all_projects = ['All']
+
     selected_project = st.sidebar.selectbox("Project", all_projects)
 
-    all_status = ['All'] + sorted(df['Status'].dropna().unique().tolist())
+    all_status = ['All'] + sorted(df['Status'].dropna().unique().tolist()) if 'Status' in df.columns else ['All']
     selected_status = st.sidebar.selectbox("Status", all_status)
 
-    all_emails = ['All'] + sorted(df['Emails'].dropna().unique().tolist())
+    all_emails = ['All'] + sorted(df['Emails'].dropna().unique().tolist()) if 'Emails' in df.columns else ['All']
     selected_email = st.sidebar.selectbox("Assigned Email", all_emails)
 
     filtered_df = df.copy()
-    if selected_project != 'All':
+    if selected_project != 'All' and 'Project' in df.columns:
         filtered_df = filtered_df[filtered_df['Project'] == selected_project]
-    if selected_status != 'All':
+    if selected_status != 'All' and 'Status' in df.columns:
         filtered_df = filtered_df[filtered_df['Status'] == selected_status]
-    if selected_email != 'All':
+    if selected_email != 'All' and 'Emails' in df.columns:
         filtered_df = filtered_df[filtered_df['Emails'] == selected_email]
 
     st.sidebar.caption(f"📊 Showing {len(filtered_df)} of {len(df)} tasks")
@@ -142,10 +175,10 @@ if view_type == "👔 Ops Manager":
     with col1:
         st.metric("📋 Total Tasks", len(filtered_df))
     with col2:
-        open_tasks = len(filtered_df[filtered_df['Status'] == 'Open'])
+        open_tasks = len(filtered_df[filtered_df['Status'] == 'Open']) if 'Status' in df.columns else 0
         st.metric("🔴 Open", open_tasks)
     with col3:
-        done_tasks = len(filtered_df[filtered_df['Status'] == 'Done'])
+        done_tasks = len(filtered_df[filtered_df['Status'] == 'Done']) if 'Status' in df.columns else 0
         st.metric("✅ Done", done_tasks)
     with col4:
         percent_done = (done_tasks / len(filtered_df) * 100) if len(filtered_df) > 0 else 0
@@ -157,29 +190,31 @@ if view_type == "👔 Ops Manager":
     col1, col2 = st.columns(2)
     with col1:
         st.subheader("📊 Tasks by Status")
-        status_counts = filtered_df['Status'].value_counts()
-        fig = px.pie(
-            values=status_counts.values,
-            names=status_counts.index,
-            color=status_counts.index,
-            color_discrete_map={
-                'Open': '#d9938f',
-                'Working on it': '#f4d89d',
-                'Done': '#a8c9a1'
-            }
-        )
-        st.plotly_chart(fig, use_container_width=True)
+        if 'Status' in df.columns:
+            status_counts = filtered_df['Status'].value_counts()
+            fig = px.pie(
+                values=status_counts.values,
+                names=status_counts.index,
+                color=status_counts.index,
+                color_discrete_map={
+                    'Open': '#d9938f',
+                    'Working on it': '#f4d89d',
+                    'Done': '#a8c9a1'
+                }
+            )
+            st.plotly_chart(fig, use_container_width=True)
 
     with col2:
         st.subheader("📁 Tasks by Project")
-        project_counts = filtered_df['Project'].value_counts()
-        fig = px.bar(
-            x=project_counts.index,
-            y=project_counts.values,
-            color_discrete_sequence=['#5f87af']
-        )
-        fig.update_layout(xaxis_title="Project", yaxis_title="Tasks", showlegend=False)
-        st.plotly_chart(fig, use_container_width=True)
+        if 'Project' in df.columns:
+            project_counts = filtered_df['Project'].value_counts()
+            fig = px.bar(
+                x=project_counts.index,
+                y=project_counts.values,
+                color_discrete_sequence=['#5f87af']
+            )
+            fig.update_layout(xaxis_title="Project", yaxis_title="Tasks", showlegend=False)
+            st.plotly_chart(fig, use_container_width=True)
 
     st.divider()
     st.subheader("📋 All Tasks")
@@ -190,8 +225,13 @@ if view_type == "👔 Ops Manager":
 # ----------------------------
 elif view_type == "👤 Personal View":
     st.sidebar.header("👤 Select Team Member")
-    selected_email = st.sidebar.selectbox("View tasks for:", sorted(df['Emails'].dropna().unique().tolist()))
-    personal_df = df[df['Emails'] == selected_email]
+    if 'Emails' in df.columns:
+        selected_email = st.sidebar.selectbox("View tasks for:", sorted(df['Emails'].dropna().unique().tolist()))
+        personal_df = df[df['Emails'] == selected_email]
+    else:
+        st.warning("⚠️ No 'Emails' column found in your data.")
+        personal_df = df.copy()
+        selected_email = "Unknown"
 
     st.header(f"👋 Hi, {selected_email}")
     st.divider()
@@ -200,10 +240,10 @@ elif view_type == "👤 Personal View":
     with col1:
         st.metric("📋 My Tasks", len(personal_df))
     with col2:
-        open_tasks = len(personal_df[personal_df['Status'] == 'Open'])
+        open_tasks = len(personal_df[personal_df['Status'] == 'Open']) if 'Status' in df.columns else 0
         st.metric("🔴 Open", open_tasks)
     with col3:
-        done_tasks = len(personal_df[personal_df['Status'] == 'Done'])
+        done_tasks = len(personal_df[personal_df['Status'] == 'Done']) if 'Status' in df.columns else 0
         percent_done = (done_tasks / len(personal_df) * 100) if len(personal_df) > 0 else 0
         st.metric("✅ Done", f"{done_tasks} ({percent_done:.0f}%)")
 
@@ -216,8 +256,13 @@ elif view_type == "👤 Personal View":
 # ----------------------------
 else:
     st.sidebar.header("📁 Select Project")
-    selected_project = st.sidebar.selectbox("View tasks for:", sorted(df['Project'].dropna().unique().tolist()))
-    project_df = df[df['Project'] == selected_project]
+    if 'Project' in df.columns:
+        selected_project = st.sidebar.selectbox("View tasks for:", sorted(df['Project'].dropna().unique().tolist()))
+        project_df = df[df['Project'] == selected_project]
+    else:
+        st.warning("⚠️ No 'Project' column found in your data.")
+        project_df = df.copy()
+        selected_project = "Unknown"
 
     st.header(f"📁 {selected_project}")
     st.divider()
@@ -226,10 +271,10 @@ else:
     with col1:
         st.metric("📋 Total Tasks", len(project_df))
     with col2:
-        open_tasks = len(project_df[project_df['Status'] == 'Open'])
+        open_tasks = len(project_df[project_df['Status'] == 'Open']) if 'Status' in df.columns else 0
         st.metric("🔴 Open", open_tasks)
     with col3:
-        done_tasks = len(project_df[project_df['Status'] == 'Done'])
+        done_tasks = len(project_df[project_df['Status'] == 'Done']) if 'Status' in df.columns else 0
         percent_done = (done_tasks / len(project_df) * 100) if len(project_df) > 0 else 0
         st.metric("✅ Done", f"{done_tasks} ({percent_done:.0f}%)")
 
