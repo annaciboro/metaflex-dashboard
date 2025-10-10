@@ -1,32 +1,6 @@
 import streamlit as st
 import gspread
-from oauth2client.service_account import ServiceAccountCredentials
-import pandas as pd
-import plotly.express as px
-from datetime import datetime
-import os
-
-# Point to your new Google Cloud key (safe local path)
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/Users/annaciboro/.config/gcloud/metaflex-key.json"
-
-import os
-import json
-import streamlit as st
-
-# Handle Google credentials for both local and Streamlit Cloud environments
-if "GOOGLE_KEY_JSON" in st.secrets:
-    key_dict = json.loads(st.secrets["GOOGLE_KEY_JSON"])
-    with open("/app/metaflex-key.json", "w") as f:
-        json.dump(key_dict, f)
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/app/metaflex-key.json"
-else:
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/Users/annaciboro/.config/gcloud/metaflex-key.json"
-
-
-import os
-import streamlit as st
-import gspread
-from oauth2client.service_account import ServiceAccountCredentials
+from google.oauth2 import service_account
 import pandas as pd
 import plotly.express as px
 from datetime import datetime
@@ -46,15 +20,9 @@ st.set_page_config(
 # ----------------------------
 st.markdown("""
 <style>
-    body {
-        font-family: 'Helvetica', sans-serif;
-    }
-    .main {
-        background-color: #f7f7f7;
-    }
-    h1, h2, h3 {
-        color: #333333;
-    }
+    body { font-family: 'Helvetica', sans-serif; }
+    .main { background-color: #f7f7f7; }
+    h1, h2, h3 { color: #333333; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -65,16 +33,14 @@ st.markdown("""
 def load_data():
     """Load data from Google Sheet"""
     try:
-        # Setup credentials
-        scope = [
-            'https://spreadsheets.google.com/feeds',
-            'https://www.googleapis.com/auth/drive'
+        # Authenticate using Streamlit Secrets (secure)
+        scopes = [
+            "https://www.googleapis.com/auth/spreadsheets",
+            "https://www.googleapis.com/auth/drive"
         ]
-
-        # Load service account credentials from environment variable
-        creds = ServiceAccountCredentials.from_json_keyfile_name(
-            os.environ["GOOGLE_APPLICATION_CREDENTIALS"],
-            scope
+        creds = service_account.Credentials.from_service_account_info(
+            st.secrets["gcp_service_account"],
+            scopes=scopes
         )
 
         # Connect to Google Sheets
@@ -83,7 +49,6 @@ def load_data():
 
         # Get all data
         data = sheet.get_all_values()
-
         if len(data) < 2:
             st.error("No rows found in sheet.")
             return pd.DataFrame()
@@ -91,7 +56,6 @@ def load_data():
         # Clean headers
         headers = [h.strip() for h in data[0] if h.strip() != ""]
         rows = [r[:len(headers)] for r in data[1:] if any(cell.strip() for cell in r)]
-
         df = pd.DataFrame(rows, columns=headers)
 
         # Remove duplicate columns
@@ -100,7 +64,6 @@ def load_data():
         # Clean and format columns
         if 'Due Date' in df.columns:
             df['Due Date'] = pd.to_datetime(df['Due Date'], errors='coerce')
-
         if 'Progress %' in df.columns:
             df['Progress %'] = (
                 df['Progress %']
@@ -116,7 +79,6 @@ def load_data():
         st.error(f"❌ Error loading data: {e}")
         return pd.DataFrame()
 
-
 # ----------------------------
 # Dashboard Layout
 # ----------------------------
@@ -126,7 +88,6 @@ st.divider()
 
 # Load data
 df = load_data()
-
 if df.empty:
     st.warning("No data found. Check your Google Sheets connection.")
     st.stop()
@@ -137,7 +98,6 @@ view_type = st.sidebar.radio(
     "Select View:",
     ["👔 Ops Manager", "👤 Personal View", "📁 Project View"]
 )
-
 st.sidebar.divider()
 
 # ----------------------------
@@ -153,10 +113,8 @@ if view_type == "👔 Ops Manager":
         all_projects = ['All']
 
     selected_project = st.sidebar.selectbox("Project", all_projects)
-
     all_status = ['All'] + sorted(df['Status'].dropna().unique().tolist()) if 'Status' in df.columns else ['All']
     selected_status = st.sidebar.selectbox("Status", all_status)
-
     all_emails = ['All'] + sorted(df['Emails'].dropna().unique().tolist()) if 'Emails' in df.columns else ['All']
     selected_email = st.sidebar.selectbox("Assigned Email", all_emails)
 
@@ -196,11 +154,7 @@ if view_type == "👔 Ops Manager":
                 values=status_counts.values,
                 names=status_counts.index,
                 color=status_counts.index,
-                color_discrete_map={
-                    'Open': '#d9938f',
-                    'Working on it': '#f4d89d',
-                    'Done': '#a8c9a1'
-                }
+                color_discrete_map={'Open': '#d9938f', 'Working on it': '#f4d89d', 'Done': '#a8c9a1'}
             )
             st.plotly_chart(fig, use_container_width=True)
 
@@ -286,4 +240,4 @@ else:
 # Footer
 # ----------------------------
 st.divider()
-st.caption("🔄 Data refreshes automatically every 30 seconds • Connected to Google Sheets")
+st.caption("🔄 Data refreshes automatically every 30 seconds • Connected securely via Streamlit Secrets")
