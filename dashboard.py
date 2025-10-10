@@ -33,21 +33,37 @@ st.markdown("""
 def load_data():
     """Load data from Google Sheet"""
     try:
-        # Authenticate using Streamlit Secrets (secure)
+        # ----------------------------
+        # Authenticate using Streamlit Secrets (Cloud) or Local Key (Mac)
+        # ----------------------------
         scopes = [
             "https://www.googleapis.com/auth/spreadsheets",
             "https://www.googleapis.com/auth/drive"
         ]
-        creds = service_account.Credentials.from_service_account_info(
-            st.secrets["gcp_service_account"],
-            scopes=scopes
-        )
 
+        if "gcp_service_account" in st.secrets:
+            creds = service_account.Credentials.from_service_account_info(
+                st.secrets["gcp_service_account"],
+                scopes=scopes
+            )
+            st.success("🟢 Connected to Google Sheets via Streamlit Secrets")
+        else:
+            from google.oauth2.service_account import Credentials
+            creds = Credentials.from_service_account_file(
+                "/Users/annaciboro/.config/gcloud/metaflex-key.json",
+                scopes=scopes
+            )
+            st.info("🟡 Using local key (testing mode)")
+
+        # ----------------------------
         # Connect to Google Sheets
+        # ----------------------------
         client = gspread.authorize(creds)
         sheet = client.open("Metaflexglove Dashboard v1").worksheet("Otter_Tasks")
 
+        # ----------------------------
         # Get all data
+        # ----------------------------
         data = sheet.get_all_values()
         if len(data) < 2:
             st.error("No rows found in sheet.")
