@@ -1,17 +1,42 @@
-# Virtual environment
-venv/
+# ============================================================
+# 🧤 META FLEX GLOVE DASHBOARD — .gitignore
+# ============================================================
 
-# Google credentials and private keys
+# --- Virtual environment ---
+venv/
+.env/
+.env.local
+
+# --- Google Cloud & Streamlit credentials ---
 *.json
 *.key
 .gcloud/
 .secrets/
+.streamlit/secrets.toml
+config.yaml  # contains usernames/passwords for Streamlit Authenticator
 
-# Python cache
+# --- Python build/cache ---
 __pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
 
-# Environment variables
-.env
+# --- Logs & outputs ---
+*.log
+*.out
+*.tmp
 
-# MacOS system files
+# --- MacOS & IDE files ---
 .DS_Store
+*.swp
+.idea/
+.vscode/
+*.code-workspace
+
+# --- Temporary notebook or debug files ---
+*.ipynb_checkpoints/
+*.bak
+*.old
