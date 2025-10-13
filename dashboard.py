@@ -15,7 +15,7 @@ import streamlit_authenticator as stauth
 import traceback
 
 # ============================================================
-# 🔐 AUTHENTICATION (v0.4.2 compatible + MetaFlex styling)
+# 🔐 AUTHENTICATION (Branded + Responsive + Animated)
 # ============================================================
 
 with open("config.yaml") as file:
@@ -28,40 +28,54 @@ authenticator = stauth.Authenticate(
     cookie_expiry_days=config["cookie"]["expiry_days"],
 )
 
-# --- Centered, branded login UI ---
+# --- Branded Login UI ---
 st.markdown(
     """
     <style>
-    /* --- Center layout --- */
+    /* --- Page background and layout --- */
     .centered-login {
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
-        height: 85vh;
+        height: 88vh;
         background: linear-gradient(180deg, #0a4d4d 0%, #0d5757 100%);
+        animation: fadeIn 1.2s ease-in-out;
     }
 
-    /* --- Login form box --- */
-    .stForm {
-        width: 360px !important;
-        margin: auto;
-        border-radius: 14px;
-        padding: 2rem 1.75rem 2.25rem;
+    /* --- Login card --- */
+    .login-box {
+        width: 90%;
+        max-width: 380px;
         background-color: #ffffff;
+        border-radius: 14px;
+        padding: 2.5rem 2rem;
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
         border-top: 6px solid #d4ff00;
         text-align: center;
+        animation: slideUp 0.8s ease-out;
     }
 
-    /* --- Title inside form --- */
-    .stForm h3 {
-        color: #0a4d4d !important;
-        font-weight: 700;
-        font-size: 1.5rem;
+    /* --- Logo --- */
+    .login-logo {
+        width: 85px;
+        max-width: 25vw;
         margin-bottom: 1rem;
+        animation: fadeIn 1.6s ease-in-out;
     }
 
-    /* --- Input fields --- */
+    /* --- Title --- */
+    .login-title {
+        color: #0a4d4d;
+        font-weight: 700;
+        font-size: 1.4rem;
+        margin-bottom: 1.5rem;
+        opacity: 0;
+        animation: fadeIn 2s ease-in forwards;
+        animation-delay: 0.8s;
+    }
+
+    /* --- Inputs --- */
     .stTextInput > div > div > input {
         border-radius: 6px;
         border: 1.8px solid #0a4d4d !important;
@@ -70,7 +84,7 @@ st.markdown(
         color: #0a4d4d;
     }
 
-    /* --- Button --- */
+    /* --- Buttons --- */
     .stButton button {
         width: 100%;
         background-color: #d4ff00 !important;
@@ -87,35 +101,39 @@ st.markdown(
         transform: translateY(-2px);
     }
 
-    /* --- Logout button --- */
-    [data-testid="stSidebar"] .stButton button {
-        background-color: #d4ff00 !important;
-        color: #0a4d4d !important;
+    /* --- Animations --- */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(40px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 
+    /* --- Mobile responsiveness --- */
+    @media (max-width: 600px) {
+        .login-box {
+            width: 92%;
+            padding: 2rem 1.5rem;
+        }
+        .login-title {
+            font-size: 1.2rem;
+        }
+    }
     </style>
     """,
     unsafe_allow_html=True,
 )
 
-# --- Render login ---
+# --- Render Login Section ---
 with st.container():
     st.markdown("<div class='centered-login'>", unsafe_allow_html=True)
-    name, authentication_status, username = authenticator.login(
-        "MetaFlex Login", location="main"
-    )
-    st.markdown("</div>", unsafe_allow_html=True)
+    st.image("metaflexglove.png", use_column_width=False, width=85)
+    st.markdown("<div class='login-box'>", unsafe_allow_html=True)
+    st.markdown("<div class='login-title'>MetaFlex Internal Ops</div>", unsafe_allow_html=True)
 
-# --- Auth logic ---
-if authentication_status is False:
-    st.error("Username or password is incorrect")
-    st.stop()
-elif authentication_status is None:
-    st.info("Please enter your username and password")
-    st.stop()
-elif authentication_status:
-    authenticator.logout("Logout", location="sidebar")
-
+    name, authentication_status, username = authenticator.login("Login", loc_
 
 CACHE_TTL = 30  # seconds
 WORKSHEET_NAME = "Otter_Tasks"
