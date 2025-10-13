@@ -15,7 +15,7 @@ import streamlit_authenticator as stauth
 import traceback
 
 # ============================================================
-# 🔐 AUTHENTICATION (v0.4.2 compatible + centered UI)
+# 🔐 AUTHENTICATION (v0.4.2 compatible + MetaFlex styling)
 # ============================================================
 
 with open("config.yaml") as file:
@@ -28,44 +28,85 @@ authenticator = stauth.Authenticate(
     cookie_expiry_days=config["cookie"]["expiry_days"],
 )
 
-# --- Login box ---
+# --- Centered, branded login UI ---
+st.markdown(
+    """
+    <style>
+    /* --- Center layout --- */
+    .centered-login {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 85vh;
+        background: linear-gradient(180deg, #0a4d4d 0%, #0d5757 100%);
+    }
+
+    /* --- Login form box --- */
+    .stForm {
+        width: 360px !important;
+        margin: auto;
+        border-radius: 14px;
+        padding: 2rem 1.75rem 2.25rem;
+        background-color: #ffffff;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        border-top: 6px solid #d4ff00;
+        text-align: center;
+    }
+
+    /* --- Title inside form --- */
+    .stForm h3 {
+        color: #0a4d4d !important;
+        font-weight: 700;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    /* --- Input fields --- */
+    .stTextInput > div > div > input {
+        border-radius: 6px;
+        border: 1.8px solid #0a4d4d !important;
+        background-color: #f9f9f9;
+        font-weight: 500;
+        color: #0a4d4d;
+    }
+
+    /* --- Button --- */
+    .stButton button {
+        width: 100%;
+        background-color: #d4ff00 !important;
+        color: #0a4d4d !important;
+        border: none;
+        border-radius: 8px;
+        padding: 0.6rem 1rem;
+        font-weight: 700;
+        transition: all 0.3s ease;
+    }
+    .stButton button:hover {
+        background-color: #c4ff00 !important;
+        box-shadow: 0 4px 12px rgba(212, 255, 0, 0.3);
+        transform: translateY(-2px);
+    }
+
+    /* --- Logout button --- */
+    [data-testid="stSidebar"] .stButton button {
+        background-color: #d4ff00 !important;
+        color: #0a4d4d !important;
+    }
+
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+# --- Render login ---
 with st.container():
-    st.markdown(
-        """
-        <style>
-        /* Center login container */
-        .centered-login {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 80vh;
-        }
-        .stForm {
-            width: 350px !important;
-            margin: auto;
-            border: 2px solid #0a4d4d;
-            border-radius: 12px;
-            padding: 2rem 1.5rem;
-            background-color: #ffffff;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }
-        .stTextInput > div > div > input {
-            border-radius: 6px;
-            border: 1.5px solid #0a4d4d !important;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True,
+    st.markdown("<div class='centered-login'>", unsafe_allow_html=True)
+    name, authentication_status, username = authenticator.login(
+        "MetaFlex Login", location="main"
     )
+    st.markdown("</div>", unsafe_allow_html=True)
 
-    with st.container():
-        st.markdown("<div class='centered-login'>", unsafe_allow_html=True)
-        name, authentication_status, username = authenticator.login(
-            "MetaFlex Login", location="main"
-        )
-        st.markdown("</div>", unsafe_allow_html=True)
-
-# --- Authentication Logic ---
+# --- Auth logic ---
 if authentication_status is False:
     st.error("Username or password is incorrect")
     st.stop()
@@ -74,7 +115,6 @@ elif authentication_status is None:
     st.stop()
 elif authentication_status:
     authenticator.logout("Logout", location="sidebar")
-    st.sidebar.success(f"Welcome, {name} 👋")
 
 
 CACHE_TTL = 30  # seconds
