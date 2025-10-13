@@ -1,0 +1,15 @@
+credentials:
+  usernames:
+    team_admin:
+      email: tea@metaflexglove.com
+      name: Téa Phillips
+      password: "1234"  # temporary, will replace with hash later
+
+cookie:
+  expiry_days: 30
+  key: "metaflex_secret_key"
+  name: "metaflex_auth"
+
+preauthorized:
+  emails:
+    - tea@metaflexglove.com
