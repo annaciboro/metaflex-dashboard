@@ -15,9 +15,12 @@ import streamlit_authenticator as stauth
 import traceback
 
 # ============================================================
-# 🔐 AUTHENTICATION (Branded + Responsive + Animated)
+# 🔐 AUTHENTICATION (Branded + Responsive + Animated + Fade Out)
 # ============================================================
 
+import streamlit.components.v1 as components
+
+# --- Load Credentials ---
 with open("config.yaml") as file:
     config = yaml.safe_load(file)
 
@@ -28,11 +31,11 @@ authenticator = stauth.Authenticate(
     cookie_expiry_days=config["cookie"]["expiry_days"],
 )
 
-# --- Branded Login UI ---
+# --- Branded Login CSS ---
 st.markdown(
     """
     <style>
-    /* --- Page background and layout --- */
+    /* Page background */
     .centered-login {
         display: flex;
         flex-direction: column;
@@ -43,7 +46,7 @@ st.markdown(
         animation: fadeIn 1.2s ease-in-out;
     }
 
-    /* --- Login card --- */
+    /* Login card */
     .login-box {
         width: 90%;
         max-width: 380px;
@@ -56,7 +59,7 @@ st.markdown(
         animation: slideUp 0.8s ease-out;
     }
 
-    /* --- Logo --- */
+    /* Logo */
     .login-logo {
         width: 85px;
         max-width: 25vw;
@@ -64,7 +67,7 @@ st.markdown(
         animation: fadeIn 1.6s ease-in-out;
     }
 
-    /* --- Title --- */
+    /* Title */
     .login-title {
         color: #0a4d4d;
         font-weight: 700;
@@ -75,7 +78,7 @@ st.markdown(
         animation-delay: 0.8s;
     }
 
-    /* --- Inputs --- */
+    /* Inputs */
     .stTextInput > div > div > input {
         border-radius: 6px;
         border: 1.8px solid #0a4d4d !important;
@@ -84,7 +87,7 @@ st.markdown(
         color: #0a4d4d;
     }
 
-    /* --- Buttons --- */
+    /* Buttons */
     .stButton button {
         width: 100%;
         background-color: #d4ff00 !important;
@@ -101,7 +104,7 @@ st.markdown(
         transform: translateY(-2px);
     }
 
-    /* --- Animations --- */
+    /* Animations */
     @keyframes fadeIn {
         from { opacity: 0; transform: translateY(10px); }
         to { opacity: 1; transform: translateY(0); }
@@ -110,8 +113,12 @@ st.markdown(
         from { opacity: 0; transform: translateY(40px); }
         to { opacity: 1; transform: translateY(0); }
     }
+    @keyframes fadeOut {
+        from { opacity: 1; }
+        to { opacity: 0; }
+    }
 
-    /* --- Mobile responsiveness --- */
+    /* Mobile */
     @media (max-width: 600px) {
         .login-box {
             width: 92%;
@@ -126,14 +133,49 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# --- Render Login Section ---
-with st.container():
-    st.markdown("<div class='centered-login'>", unsafe_allow_html=True)
-    st.image("metaflexglove.png", use_column_width=False, width=85)
-    st.markdown("<div class='login-box'>", unsafe_allow_html=True)
-    st.markdown("<div class='login-title'>MetaFlex Internal Ops</div>", unsafe_allow_html=True)
+# --- Render Login ---
+st.markdown("<div class='centered-login' id='fade-container'>", unsafe_allow_html=True)
+st.image("metaflexglove.png", use_column_width=False, width=85)
+st.markdown("<div class='login-box'>", unsafe_allow_html=True)
+st.markdown("<div class='login-title'>MetaFlex Internal Ops</div>", unsafe_allow_html=True)
 
-    name, authentication_status, username = authenticator.login("Login", loc_
+name, authentication_status, username = authenticator.login("Login", location="main")
+
+st.markdown("</div></div>", unsafe_allow_html=True)
+
+# --- Auth Logic ---
+if authentication_status is False:
+    st.error("Username or password is incorrect")
+    st.stop()
+elif authentication_status is None:
+    st.info("Please enter your username and password")
+    st.stop()
+elif authentication_status:
+    authenticator.logout("Logout", location="sidebar")
+    st.sidebar.success(f"Welcome, {name} 👋")
+
+    # Fade-out transition when user logs out
+    st.markdown(
+        """
+        <script>
+        const logoutButton = window.parent.document.querySelector('button[kind="secondary"]');
+        if (logoutButton) {
+            logoutButton.addEventListener('click', () => {
+                const fadeDiv = window.parent.document.getElementById('fade-container');
+                if (fadeDiv) {
+                    fadeDiv.style.animation = 'fadeOut 0.8s forwards';
+                    setTimeout(() => {
+                        fadeDiv.innerHTML = '<h3 style="color:#ffffff; text-align:center; margin-top:30vh; animation:fadeIn 1.2s ease-in;">👋 See you soon.</h3>';
+                    }, 400);
+                }
+            });
+        }
+        </script>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
 
 CACHE_TTL = 30  # seconds
 WORKSHEET_NAME = "Otter_Tasks"
