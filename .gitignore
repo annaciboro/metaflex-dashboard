@@ -1,5 +1,17 @@
+# Virtual environment
+venv/
+
+# Google credentials and private keys
 *.json
 *.key
 .gcloud/
+.secrets/
+
+# Python cache
 __pycache__/
+
+# Environment variables
 .env
+
+# MacOS system files
+.DS_Store
