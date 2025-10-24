@@ -26,10 +26,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Load luxury CSS styling
-with open("style-luxury.css", "r") as f:
-    st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
-
 from google.oauth2 import service_account
 import gspread
 import pandas as pd
@@ -51,6 +47,24 @@ except ImportError as e:
     import charts
     st.error(f"Available in charts: {dir(charts)}")
     raise
+
+# ============================================================
+# LOAD LUXURY CSS STYLING
+# ============================================================
+try:
+    with open("style-luxury.css", "r") as f:
+        luxury_css = f.read()
+        st.markdown(f'<style>{luxury_css}</style>', unsafe_allow_html=True)
+        # Debug: Confirm CSS loaded (remove this later)
+        st.markdown("""
+            <div style='position: fixed; bottom: 10px; right: 10px; background: rgba(10, 154, 170, 0.9);
+                        color: #f6f7fb; padding: 8px 16px; border-radius: 8px; font-size: 11px;
+                        z-index: 9999; font-family: IBM Plex Mono, monospace;'>
+                ✨ Luxury CSS Loaded ({} chars)
+            </div>
+        """.format(len(luxury_css)), unsafe_allow_html=True)
+except Exception as e:
+    st.error(f"⚠️ Failed to load luxury CSS: {e}")
 
 # ============================================================
 # LOAD DATA FROM GOOGLE SHEET
@@ -977,11 +991,8 @@ else:
         st.warning("Please enter your username and password")
 
 # ============================================================
-# LOAD GLOBAL CSS (Legacy - Now using style-luxury.css)
+# OLD CSS REMOVED - Using style-luxury.css (loaded at top)
 # ============================================================
-# Old CSS disabled in favor of style-luxury.css loaded at top
-# with open("style.css") as f:
-#     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 # ============================================================
 # FOOTER
