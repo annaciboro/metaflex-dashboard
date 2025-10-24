@@ -1,25 +1,18 @@
 import plotly.graph_objects as go
 import streamlit as st
 
-# MetaFlex Luxury Chart Palette - Phase 1
-# Dark theme with restrained accents for premium SaaS experience
+# MetaFlex chart palette and typography
 MF_COLORS = {
-    'primary-dark': '#0a0e27',      # Dark charcoal canvas
-    'primary-surface': '#1a1f3a',   # Refined graphite surfaces
-    'accent-cyan': '#0a9aaa',       # Primary interactive - premium tech feel
-    'accent-lime': '#d4ff00',       # Reserved for critical metrics only (power moments)
-    'accent-gold': '#b8935f',       # Premium tier features
-    'text-primary': '#f6f7fb',      # Soft platinum - readable on dark
-    'status-success': '#2d7d70',    # Muted emerald
-    'status-warning': '#a87e3f',    # Warm amber
-    'status-error': '#8b4444',      # Subtle red
-    'muted': 'rgba(10, 154, 170, 0.1)'  # Soft cyan for grid
+    'chart1': '#137a67',  # deep green
+    'chart2': '#2aa76a',
+    'chart3': '#c8ee33',  # accent lime
+    'text': '#0f5b52',
+    'muted': 'rgba(15,91,82,0.12)'
 }
 
 def create_team_completion_donut(open_tasks, working_tasks, done_tasks):
     """
     Create a donut chart showing team task completion breakdown
-    Uses luxury color palette: cyan for open, lime for in progress, emerald for done
     """
     total_tasks = open_tasks + working_tasks + done_tasks
     
@@ -27,21 +20,17 @@ def create_team_completion_donut(open_tasks, working_tasks, done_tasks):
         st.info("No tasks to display in chart.")
         return None
     
-    # Create donut chart with luxury colors
+    # Create donut chart
     fig = go.Figure(data=[go.Pie(
         labels=['Open', 'In Progress', 'Done'],
         values=[open_tasks, working_tasks, done_tasks],
         hole=0.6,
         marker=dict(
-            colors=[
-                MF_COLORS['accent-cyan'],   # Open → cyan
-                MF_COLORS['accent-lime'],   # In Progress → lime (power moment)
-                MF_COLORS['status-success']  # Done → emerald
-            ],
-            line=dict(color=MF_COLORS['text-primary'], width=2)
+            colors=[MF_COLORS['chart1'], MF_COLORS['chart2'], MF_COLORS['chart3']],
+            line=dict(color=MF_COLORS['text'], width=2)
         ),
         textinfo='label+percent',
-        textfont=dict(size=14, color=MF_COLORS['text-primary'], family='Inter'),
+        textfont=dict(size=14, color=MF_COLORS['text'], family='Inter'),
         hovertemplate='<b>%{label}</b><br>Tasks: %{value}<br>Percentage: %{percent}<extra></extra>'
     )])
     
@@ -49,11 +38,11 @@ def create_team_completion_donut(open_tasks, working_tasks, done_tasks):
     fig.add_annotation(
         text=f'<b>{total_tasks}</b><br>Total Tasks',
         x=0.5, y=0.5,
-        font=dict(size=24, color=MF_COLORS['text-primary'], family='Inter'),
+        font=dict(size=24, color=MF_COLORS['text'], family='Inter'),
         showarrow=False
     )
     
-    # Update layout with dark theme
+    # Update layout
     fig.update_layout(
         showlegend=True,
         legend=dict(
@@ -62,17 +51,17 @@ def create_team_completion_donut(open_tasks, working_tasks, done_tasks):
             y=-0.18,
             xanchor="center",
             x=0.5,
-            font=dict(size=12, color=MF_COLORS['text-primary'])
+            font=dict(size=12, color=MF_COLORS['text'])
         ),
         height=400,
         margin=dict(t=40, b=40, l=40, r=40),
-        paper_bgcolor=MF_COLORS['primary-dark'],  # Dark background
-        plot_bgcolor=MF_COLORS['primary-surface'],  # Slightly lighter surface
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
         title=dict(
             text='<b>Team Task Completion</b>',
             x=0.5,
             xanchor='center',
-            font=dict(size=18, color=MF_COLORS['text-primary'], family='Inter')
+            font=dict(size=18, color=MF_COLORS['text'], family='Inter')
         )
     )
     
@@ -82,7 +71,6 @@ def create_team_completion_donut(open_tasks, working_tasks, done_tasks):
 def create_project_breakdown_chart(df):
     """
     Create a horizontal bar chart showing task breakdown by project
-    Uses luxury accent colors with dark theme
     """
     if df.empty or "Project" not in df.columns:
         st.info("No project data available.")
@@ -99,43 +87,43 @@ def create_project_breakdown_chart(df):
     projects = [p.title() for p in project_counts.index]
     counts = project_counts.values
     
-    # Create horizontal bar chart with luxury colors
+    # Create horizontal bar chart
     fig = go.Figure(data=[go.Bar(
         y=projects,
         x=counts,
         orientation='h',
         marker=dict(
-            color=MF_COLORS['accent-cyan'],  # Primary bars in cyan
-            line=dict(color=MF_COLORS['accent-gold'], width=2)  # Gold accent border
+            color=MF_COLORS['chart1'],
+            line=dict(color=MF_COLORS['chart3'], width=2)
         ),
         text=counts,
         textposition='outside',
-        textfont=dict(size=14, color=MF_COLORS['text-primary'], family='Inter'),
+        textfont=dict(size=14, color=MF_COLORS['text'], family='Inter'),
         hovertemplate='<b>%{y}</b><br>Tasks: %{x}<extra></extra>'
     )])
     
-    # Update layout with dark theme
+    # Update layout
     fig.update_layout(
         height=400,
         margin=dict(t=40, b=40, l=120, r=40),
-        paper_bgcolor=MF_COLORS['primary-dark'],  # Dark background
-        plot_bgcolor=MF_COLORS['primary-surface'],  # Slightly lighter surface
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
         xaxis=dict(
             showgrid=True,
             gridcolor=MF_COLORS['muted'],
             title='Number of Tasks',
-            titlefont=dict(size=12, color=MF_COLORS['text-primary']),
-            tickfont=dict(size=11, color=MF_COLORS['text-primary'])
+            titlefont=dict(size=12, color=MF_COLORS['text']),
+            tickfont=dict(size=11, color=MF_COLORS['text'])
         ),
         yaxis=dict(
             title='',
-            tickfont=dict(size=12, color=MF_COLORS['text-primary'])
+            tickfont=dict(size=12, color=MF_COLORS['text'])
         ),
         title=dict(
             text='<b>Tasks by Project</b>',
             x=0.5,
             xanchor='center',
-            font=dict(size=18, color=MF_COLORS['text-primary'], family='Inter')
+            font=dict(size=18, color=MF_COLORS['text'], family='Inter')
         )
     )
     
