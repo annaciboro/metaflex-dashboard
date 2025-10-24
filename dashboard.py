@@ -26,6 +26,10 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# Load luxury CSS styling
+with open("style-luxury.css", "r") as f:
+    st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+
 from google.oauth2 import service_account
 import gspread
 import pandas as pd
@@ -973,10 +977,11 @@ else:
         st.warning("Please enter your username and password")
 
 # ============================================================
-# LOAD GLOBAL CSS
+# LOAD GLOBAL CSS (Legacy - Now using style-luxury.css)
 # ============================================================
-with open("style.css") as f:
-    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+# Old CSS disabled in favor of style-luxury.css loaded at top
+# with open("style.css") as f:
+#     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 # ============================================================
 # FOOTER

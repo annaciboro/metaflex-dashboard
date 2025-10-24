@@ -1,13 +1,18 @@
 import plotly.graph_objects as go
 import streamlit as st
 
-# MetaFlex chart palette and typography
+# MetaFlex Luxury chart palette - Premium dark theme
 MF_COLORS = {
-    'chart1': '#137a67',  # deep green
-    'chart2': '#2aa76a',
-    'chart3': '#c8ee33',  # accent lime
-    'text': '#0f5b52',
-    'muted': 'rgba(15,91,82,0.12)'
+    'primary': '#0a9aaa',      # Deep cyan - primary interactive
+    'secondary': '#b8935f',    # Refined gold - premium accents
+    'accent': '#d4ff00',       # Lime - power moments (use sparingly)
+    'emerald': '#2d7d70',      # Muted emerald - success states
+    'warning': '#a87e3f',      # Warm warning
+    'error': '#8b4444',        # Subtle error
+    'text': '#f6f7fb',         # Platinum text
+    'text_secondary': '#b8bfd4', # Muted secondary text
+    'background': '#1a1f3a',   # Graphite background
+    'muted': 'rgba(255,255,255,0.05)'  # Subtle borders/dividers
 }
 
 def create_team_completion_donut(open_tasks, working_tasks, done_tasks):
@@ -20,14 +25,14 @@ def create_team_completion_donut(open_tasks, working_tasks, done_tasks):
         st.info("No tasks to display in chart.")
         return None
     
-    # Create donut chart
+    # Create donut chart with luxury colors
     fig = go.Figure(data=[go.Pie(
         labels=['Open', 'In Progress', 'Done'],
         values=[open_tasks, working_tasks, done_tasks],
         hole=0.6,
         marker=dict(
-            colors=[MF_COLORS['chart1'], MF_COLORS['chart2'], MF_COLORS['chart3']],
-            line=dict(color=MF_COLORS['text'], width=2)
+            colors=[MF_COLORS['error'], MF_COLORS['warning'], MF_COLORS['emerald']],
+            line=dict(color=MF_COLORS['text'], width=1)
         ),
         textinfo='label+percent',
         textfont=dict(size=14, color=MF_COLORS['text'], family='Inter'),
@@ -38,11 +43,11 @@ def create_team_completion_donut(open_tasks, working_tasks, done_tasks):
     fig.add_annotation(
         text=f'<b>{total_tasks}</b><br>Total Tasks',
         x=0.5, y=0.5,
-        font=dict(size=24, color=MF_COLORS['text'], family='Inter'),
+        font=dict(size=24, color=MF_COLORS['text'], family='Outfit'),
         showarrow=False
     )
-    
-    # Update layout
+
+    # Update layout with luxury dark theme
     fig.update_layout(
         showlegend=True,
         legend=dict(
@@ -61,7 +66,7 @@ def create_team_completion_donut(open_tasks, working_tasks, done_tasks):
             text='<b>Team Task Completion</b>',
             x=0.5,
             xanchor='center',
-            font=dict(size=18, color=MF_COLORS['text'], family='Inter')
+            font=dict(size=18, color=MF_COLORS['text'], family='Outfit')
         )
     )
     
@@ -87,22 +92,22 @@ def create_project_breakdown_chart(df):
     projects = [p.title() for p in project_counts.index]
     counts = project_counts.values
     
-    # Create horizontal bar chart
+    # Create horizontal bar chart with luxury styling
     fig = go.Figure(data=[go.Bar(
         y=projects,
         x=counts,
         orientation='h',
         marker=dict(
-            color=MF_COLORS['chart1'],
-            line=dict(color=MF_COLORS['chart3'], width=2)
+            color=MF_COLORS['primary'],
+            line=dict(color=MF_COLORS['secondary'], width=1)
         ),
         text=counts,
         textposition='outside',
-        textfont=dict(size=14, color=MF_COLORS['text'], family='Inter'),
+        textfont=dict(size=14, color=MF_COLORS['text'], family='IBM Plex Mono'),
         hovertemplate='<b>%{y}</b><br>Tasks: %{x}<extra></extra>'
     )])
     
-    # Update layout
+    # Update layout with luxury dark theme
     fig.update_layout(
         height=400,
         margin=dict(t=40, b=40, l=120, r=40),
@@ -112,7 +117,7 @@ def create_project_breakdown_chart(df):
             showgrid=True,
             gridcolor=MF_COLORS['muted'],
             title='Number of Tasks',
-            titlefont=dict(size=12, color=MF_COLORS['text']),
+            titlefont=dict(size=12, color=MF_COLORS['text_secondary']),
             tickfont=dict(size=11, color=MF_COLORS['text'])
         ),
         yaxis=dict(
@@ -123,7 +128,7 @@ def create_project_breakdown_chart(df):
             text='<b>Tasks by Project</b>',
             x=0.5,
             xanchor='center',
-            font=dict(size=18, color=MF_COLORS['text'], family='Inter')
+            font=dict(size=18, color=MF_COLORS['text'], family='Outfit')
         )
     )
     
