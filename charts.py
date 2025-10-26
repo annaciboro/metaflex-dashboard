@@ -36,8 +36,7 @@ def has_column(df, col_name):
 
 def create_team_completion_donut(open_tasks, working_tasks, done_tasks):
     """
-    Create a donut chart showing team task completion breakdown
-    Uses red, yellow, green color scheme to match progress dots
+    Premium donut chart with sophisticated styling and percentages on each slice
     """
     total_tasks = open_tasks + working_tasks + done_tasks
 
@@ -45,52 +44,56 @@ def create_team_completion_donut(open_tasks, working_tasks, done_tasks):
         st.info("No tasks to display in chart.")
         return None
 
-    # Red, Yellow, Green color scheme to match progress dots
-    colors = ['#ef4444', '#fbbf24', '#22c55e']  # Red, Yellow/Orange, Green
+    # Premium sophisticated colors
+    colors = ['#e08585', '#b9c97d', '#8ca68c']  # Coral (open), Lime (in progress), Sage (done)
 
-    # Create donut chart
+    # Create donut chart with percentages on slices
     fig = go.Figure(data=[go.Pie(
-        labels=['Open', 'In Progress', 'Done'],
+        labels=['Not Started', 'In Progress', 'Completed'],
         values=[open_tasks, working_tasks, done_tasks],
-        hole=0.6,
+        hole=0.7,  # Larger hole for modern look
         marker=dict(
             colors=colors,
-            line=dict(color='#ffffff', width=3)
+            line=dict(color='#ffffff', width=5)  # Thicker white lines for separation
         ),
-        textinfo='label+percent',
-        textfont=dict(size=15, color='#1f2937', family='Inter', weight='bold'),
-        hovertemplate='<b>%{label}</b><br>Tasks: %{value}<br>Percentage: %{percent}<extra></extra>'
+        textinfo='percent',  # Show percentages on each slice
+        textfont=dict(size=15, color='#1f2937', family='Inter', weight=600),
+        textposition='inside',
+        insidetextorientation='horizontal',
+        hovertemplate='<b>%{label}</b><br>Tasks: %{value}<br>Percentage: %{percent}<extra></extra>',
+        direction='clockwise',
+        sort=False
     )])
 
-    # Add center text showing total tasks with better contrast
+    # Calculate overall progress
+    overall_progress = int((working_tasks + done_tasks) / total_tasks * 100) if total_tasks > 0 else 0
+
+    # Add center text showing overall progress
     fig.add_annotation(
-        text=f'<b style="font-size: 32px;">{total_tasks}</b><br><span style="font-size: 14px;">Total Tasks</span>',
+        text=f'<b style="font-size: 54px; color: #1f2937;">{overall_progress}%</b><br><span style="font-size: 16px; color: #6b778c; font-weight: 600;">OVERALL PROGRESS</span>',
         x=0.5, y=0.5,
-        font=dict(size=18, color='#1f2937', family='Inter'),
-        showarrow=False
+        font=dict(size=20, color='#1f2937', family='Inter'),
+        showarrow=False,
+        align='center'
     )
 
-    # Update layout
+    # Premium white background layout
     fig.update_layout(
         showlegend=True,
         legend=dict(
             orientation="h",
             yanchor="bottom",
-            y=-0.18,
+            y=-0.15,
             xanchor="center",
             x=0.5,
-            font=dict(size=13, color='#1f2937', weight='bold')
+            font=dict(size=14, color='#6b778c', family='Inter', weight=600),
+            itemsizing='constant'
         ),
-        height=400,
-        margin=dict(t=40, b=40, l=40, r=40),
-        paper_bgcolor='rgba(0,0,0,0)',
+        height=450,
+        margin=dict(t=40, b=60, l=40, r=40),
+        paper_bgcolor='rgba(0,0,0,0)',  # Transparent background
         plot_bgcolor='rgba(0,0,0,0)',
-        title=dict(
-            text='<b>Team Task Completion</b>',
-            x=0.5,
-            xanchor='center',
-            font=dict(size=18, color='#1f2937', family='Inter')
-        )
+        font=dict(family='Inter, -apple-system, sans-serif')
     )
 
     return fig
@@ -98,7 +101,7 @@ def create_team_completion_donut(open_tasks, working_tasks, done_tasks):
 
 def create_project_breakdown_chart(df):
     """
-    Create a horizontal bar chart showing task breakdown by project
+    Premium horizontal bar chart with rounded corners and sophisticated styling
     """
     if df.empty or not has_column(df, "Project"):
         st.info("No project data available.")
@@ -109,55 +112,62 @@ def create_project_breakdown_chart(df):
 
     # Count tasks by project
     project_counts = df[project_col].str.lower().str.strip().value_counts()
-    
+
     if project_counts.empty:
         st.info("No project data to display.")
         return None
-    
+
     # Title case for display
     projects = [p.title() for p in project_counts.index]
     counts = project_counts.values
-    
-    # Create horizontal bar chart
+
+    # Create gradient colors based on value intensity
+    max_count = max(counts)
+    bar_colors = []
+    for count in counts:
+        intensity = count / max_count
+        # Interpolate opacity for sophisticated gradient effect
+        bar_colors.append(f'rgba(95, 140, 140, {0.3 + intensity * 0.5})')
+
+    # Create horizontal bar chart with rounded corners
     fig = go.Figure(data=[go.Bar(
         y=projects,
         x=counts,
         orientation='h',
         marker=dict(
-            color=MF_COLORS['chart1'],
-            line=dict(color=MF_COLORS['chart3'], width=2)
+            color=bar_colors,  # Gradient based on value
+            line=dict(color='#5f8c8c', width=2),  # Primary teal border
+            cornerradius=8  # Rounded corners for modern look
         ),
-        text=counts,
+        text=[f'<b>{count}</b>' for count in counts],
         textposition='outside',
-        textfont=dict(size=14, color=MF_COLORS['text'], family='Inter'),
-        hovertemplate='<b>%{y}</b><br>Tasks: %{x}<extra></extra>'
+        textfont=dict(size=16, color='#1f2937', family='Inter', weight=700),
+        hovertemplate='<b>%{y}</b><br>Tasks: %{x}<extra></extra>',
+        width=0.6  # Slimmer bars for premium look
     )])
-    
-    # Update layout
+
+    # Premium white background layout
     fig.update_layout(
         height=400,
-        margin=dict(t=40, b=40, l=120, r=40),
-        paper_bgcolor='rgba(0,0,0,0)',
+        margin=dict(t=20, b=20, l=20, r=80),
+        paper_bgcolor='rgba(0,0,0,0)',  # Transparent background
         plot_bgcolor='rgba(0,0,0,0)',
         xaxis=dict(
             showgrid=True,
-            gridcolor=MF_COLORS['muted'],
-            title=dict(
-                text='Number of Tasks',
-                font=dict(size=12, color=MF_COLORS['text'])
-            ),
-            tickfont=dict(size=11, color=MF_COLORS['text'])
+            gridcolor='rgba(235, 238, 242, 0.6)',  # Subtle grid
+            gridwidth=1,
+            zeroline=False,
+            title='',
+            tickfont=dict(size=13, color='#6b778c', family='Inter'),
+            range=[0, max(counts) * 1.15]  # Extra space for text labels
         ),
         yaxis=dict(
             title='',
-            tickfont=dict(size=12, color=MF_COLORS['text'])
+            tickfont=dict(size=15, color='#1f2937', family='Inter', weight=600),
+            showgrid=False
         ),
-        title=dict(
-            text='<b>Tasks by Project</b>',
-            x=0.5,
-            xanchor='center',
-            font=dict(size=18, color=MF_COLORS['text'], family='Inter')
-        )
+        font=dict(family='Inter, -apple-system, sans-serif'),
+        bargap=0.3
     )
-    
+
     return fig

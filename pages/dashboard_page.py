@@ -329,10 +329,17 @@ def calculate_kpis(df, user_name, is_personal=False):
         project_col = get_column(df_copy, "Project")
         active_projects = df_copy[project_col].nunique()
 
-    # Task breakdown by status
-    open_tasks = len(df_copy[df_copy[status_col] == "open"])
-    working_tasks = len(df_copy[df_copy[status_col].isin(["working", "in progress", "in-progress"])])
-    done_tasks = len(df_copy[df_copy[status_col] == "done"])
+    # Task breakdown by status - handle both emoji and text formats
+    status_lower = df_copy[status_col].str.lower().str.strip()
+
+    # Open tasks: contains "not started" or "open" or red circle emoji
+    open_tasks = len(df_copy[status_lower.str.contains("not started|open|🔴", case=False, na=False)])
+
+    # Working tasks: contains "in progress" or "working" or yellow circle emoji
+    working_tasks = len(df_copy[status_lower.str.contains("in progress|working|🟡", case=False, na=False)])
+
+    # Done tasks: contains "done" or "complete" or green circle emoji
+    done_tasks = len(df_copy[status_lower.str.contains("done|complete|🟢", case=False, na=False)])
 
     return {
         "my_open_tasks": my_open_tasks,
@@ -347,36 +354,173 @@ def render_kpi_section(kpis, section_label=""):
     """
     Render KPI metrics in a 3-column layout
     """
+    # Add clean peaceful styling exactly like the mockup
+    st.markdown("""
+        <style>
+        /* Override Streamlit's default h1, h2, h3 styling - LIGHTER */
+        h1 {
+            font-size: 24px !important;
+            font-weight: 500 !important;
+            letter-spacing: -0.01em !important;
+            line-height: 1.3 !important;
+            color: #2a3a3a !important;
+        }
+
+        h2 {
+            font-size: 20px !important;
+            font-weight: 500 !important;
+            letter-spacing: -0.005em !important;
+            line-height: 1.4 !important;
+            color: #1a2424 !important;
+        }
+
+        h3 {
+            font-size: 18px !important;
+            font-weight: 400 !important;
+            letter-spacing: 0 !important;
+            line-height: 1.4 !important;
+            color: #2a3a3a !important;
+        }
+
+        /* Remove ALL teal backgrounds and boxes */
+        .main .block-container {
+            padding: 3rem 4rem !important;
+            background: #ffffff !important;
+        }
+
+        /* Premium metric cards WITH containers */
+        [data-testid="metric-container"] {
+            background: #ffffff !important;
+            border: 1px solid #e1e5e5 !important;
+            border-radius: 12px !important;
+            padding: 24px !important;
+            box-shadow: 0 1px 3px rgba(26, 36, 36, 0.04) !important;
+            transition: all 0.2s ease !important;
+        }
+
+        [data-testid="metric-container"]:hover {
+            box-shadow: 0 4px 8px rgba(26, 36, 36, 0.08) !important;
+            border-color: #5f8c8c !important;
+        }
+
+        /* Metric labels - clean and minimal */
+        [data-testid="stMetricLabel"] {
+            color: #7a8888 !important;
+            font-size: 10px !important;
+            font-weight: 500 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.8px !important;
+            margin-bottom: 0.5rem !important;
+        }
+
+        /* Metric values - lighter and smaller */
+        [data-testid="stMetricValue"] {
+            color: #1a2424 !important;
+            font-size: 32px !important;
+            font-weight: 600 !important;
+            letter-spacing: -0.01em !important;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
     col1, col2, col3 = st.columns(3)
 
     with col1:
         st.metric(
-            label="My Open Tasks",
+            label="MY OPEN TASKS",
             value=kpis["my_open_tasks"],
             delta=None
         )
 
     with col2:
         st.metric(
-            label="Team Open Tasks",
+            label="TEAM OPEN TASKS",
             value=kpis["team_open_tasks"],
             delta=None
         )
 
     with col3:
         st.metric(
-            label="Active Projects",
+            label="ACTIVE PROJECTS",
             value=kpis["active_projects"],
             delta=None
         )
 
 def render_charts_section(kpis, filtered_df):
     """
-    Render chart visualizations in a 2-column layout
+    Render chart visualizations in premium containers with generous spacing
     """
-    chart_col1, chart_col2 = st.columns(2)
+    # Add CSS for clean peaceful chart containers - NO TEAL
+    st.markdown("""
+        <style>
+        /* Clean peaceful chart containers - pure white */
+        .chart-container {
+            background: #ffffff;
+            border-radius: 0;
+            padding: 0;
+            box-shadow: none;
+            border: none;
+            margin-bottom: 3rem;
+        }
+
+        .chart-title {
+            font-size: 13px;
+            font-weight: 500;
+            color: #2a3a3a;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0;
+        }
+
+        /* Section headers - lighter weight */
+        .section-header {
+            font-size: 24px !important;
+            font-weight: 500 !important;
+            color: #2a3a3a !important;
+            margin-bottom: 0.5rem !important;
+            letter-spacing: -0.01em !important;
+            line-height: 1.3 !important;
+        }
+
+        .section-subtitle {
+            font-size: 12px;
+            color: #7a8888;
+            margin-bottom: 2rem;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        /* Add spacing between metric card columns */
+        [data-testid="column"] {
+            padding: 0 12px !important;
+        }
+
+        [data-testid="column"]:first-child {
+            padding-left: 0 !important;
+        }
+
+        [data-testid="column"]:last-child {
+            padding-right: 0 !important;
+        }
+
+        /* Add breathing room between sections */
+        .section-spacer {
+            margin-bottom: 48px;
+        }
+
+        /* Hide any teal backgrounds from Streamlit */
+        div[data-testid="stVerticalBlock"] > div {
+            background: transparent !important;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+    # Add generous horizontal space between charts
+    chart_col1, spacer, chart_col2 = st.columns([10, 1, 10])
 
     with chart_col1:
+        st.markdown('<div class="chart-container">', unsafe_allow_html=True)
+        st.markdown('<h3 class="chart-title">Task Completion Status</h3>', unsafe_allow_html=True)
+
         # Team completion donut chart
         donut_fig = create_team_completion_donut(
             kpis["open_tasks"],
@@ -384,13 +528,20 @@ def render_charts_section(kpis, filtered_df):
             kpis["done_tasks"]
         )
         if donut_fig:
-            st.plotly_chart(donut_fig, use_container_width=True)
+            st.plotly_chart(donut_fig, use_container_width=True, config={'displayModeBar': False})
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    # spacer column stays empty for breathing room
 
     with chart_col2:
+        st.markdown('<div class="chart-container">', unsafe_allow_html=True)
+        st.markdown('<h3 class="chart-title">Tasks by Project</h3>', unsafe_allow_html=True)
+
         # Project breakdown chart
         project_fig = create_project_breakdown_chart(filtered_df)
         if project_fig:
-            st.plotly_chart(project_fig, use_container_width=True)
+            st.plotly_chart(project_fig, use_container_width=True, config={'displayModeBar': False})
+        st.markdown('</div>', unsafe_allow_html=True)
 
 def render_tasks_table(filtered_df, limit=10):
     """
@@ -828,14 +979,17 @@ def show_dashboard():
     # Calculate team-wide KPIs (all data)
     team_kpis = calculate_kpis(df, user_name, is_personal=False)
 
-    # === TEAM OVERVIEW SECTION ===
-    st.markdown("### Team Overview")
-    st.caption("Full MetaFlex team metrics and project breakdown")
-    st.markdown("<br>", unsafe_allow_html=True)
+    # === CLEAN HEADER SECTION LIKE MOCKUP ===
+    st.markdown('<h1 class="section-header">Analytics Dashboard</h1>', unsafe_allow_html=True)
+    st.markdown('<p class="section-subtitle">Real-time insights into team performance and project progress</p>', unsafe_allow_html=True)
 
     render_kpi_section(team_kpis)
 
     st.markdown("<br>", unsafe_allow_html=True)
+
+    # Performance Overview Section
+    st.markdown('<h2 class="section-header">Performance Overview</h2>', unsafe_allow_html=True)
+    st.markdown('<p class="section-subtitle">Track completion rates and project distribution</p>', unsafe_allow_html=True)
 
     # Team charts
     render_charts_section(team_kpis, df)
