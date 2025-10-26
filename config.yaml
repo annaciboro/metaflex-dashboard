@@ -2,18 +2,28 @@ credentials:
   usernames:
     tea@metaflexglove.com:
       email: tea@metaflexglove.com
-      name: Tea Phillips
+      name: Téa Phillips
       password: "$2b$12$/e117bp3xq3bi80h/4Y4w.X.pCmfBOaVMeQpxmonw08GaMF4yOwp6"  # met1
+      admin: true
 
     megan@metaflexglove.com:
       email: megan@metaflexglove.com
       name: Megan Cole
       password: "$2b$12$cKFv8wez5.mWMo9H92ZRu.Tf1wb4.qm3lRykIvaDiFiLboSY0plbi"  # met2
+      admin: false
 
     justin@metaflexglove.com:
       email: justin@metaflexglove.com
       name: Justin Stehr
       password: "$2b$12$MfsFsZHvaQdtGq4IsJLc2.sx8HjUbrhHRN8Ubu.6pmv.oWkC.g2Pm"  # met3
+      admin: false
+
+    jess@metaflexglove.com:
+      email: jess@metaflexglove.com
+      name: Jess Lewis
+      password: "$2b$12$lmK9pQvR7xN2jT8wB5hZ3u6F9sD4kL1mP7cQ8rT2nY0xW3vU6aJ5K"  # met4
+      admin: false
+      view_all_tasks: true
 
 cookie:
   expiry_days: 30
@@ -25,3 +35,4 @@ preauthorized:
     - tea@metaflexglove.com
     - megan@metaflexglove.com
     - justin@metaflexglove.com
+    - jess@metaflexglove.com
