@@ -1,1180 +1,883 @@
-/* Using native system fonts for clean, lightweight appearance */
+/* ============================================
+   FONTS - Must be at the top of the stylesheet
+   ============================================ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Marcellus&display=swap');
 
-/* ===================================================================
-   METAFLEX DASHBOARD - MODERN DESIGN SYSTEM
-   Inspired by Monday.com/Figma/Notion with heavily desaturated palette
-   =================================================================== */
-
-/* === ROOT VARIABLES === */
-:root {
-    /* Very Pale, Desaturated Brand Colors */
-    --mf-teal: #9eb8b8;              /* Very pale, desaturated teal */
-    --mf-teal-hover: #adc4c4;        /* Lighter on hover */
-    --mf-teal-active: #8fa9a9;       /* Slightly darker when active */
-    --mf-teal-subtle: rgba(158, 184, 184, 0.08);
-    --mf-deep-teal: #8fa9a9;
-    --mf-dark-teal: #6a8a8a;
-
-    --mf-lime: #b5c4a1;              /* Heavily desaturated lime */
-    --mf-lime-hover: #c2d0ae;        /* Lighter on hover */
-    --mf-lime-subtle: rgba(181, 196, 161, 0.12);
-    --mf-lime-muted: #cad7b8;
-
-    /* Sophisticated Muted Status Colors - Match Chart Colors */
-    --mf-status-red: #e08585;        /* Coral - Not Started */
-    --mf-status-red-bg: rgba(224, 133, 133, 0.08);
-    --mf-status-yellow: #b9c97d;     /* Lime - In Progress */
-    --mf-status-yellow-bg: rgba(185, 201, 125, 0.08);
-    --mf-status-green: #8ca68c;      /* Sage - Complete */
-    --mf-status-green-bg: rgba(140, 166, 140, 0.08);
-
-    /* Premium Neutrals */
-    --mf-white: #ffffff;
-    --mf-pearl: #fdfefe;
-    --mf-platinum: #f9fafa;
-    --mf-silver: #f4f6f6;
-    --mf-smoke: #eaeded;
-    --mf-divider: #e1e5e5;
-    --mf-border: #d8dcdc;
-    --mf-border-strong: #c5caca;
-
-    /* Typography Scale */
-    --mf-text-primary: #1a2424;
-    --mf-text-secondary: #516060;
-    --mf-text-tertiary: #7a8888;
-    --mf-text-muted: #99a5a5;
-    --mf-text-disabled: #b8c0c0;
-
-    /* Softer Shadows - Lower opacity */
-    --mf-shadow-xs: 0 1px 2px rgba(26, 36, 36, 0.02);
-    --mf-shadow-sm: 0 2px 4px rgba(26, 36, 36, 0.03), 0 1px 2px rgba(26, 36, 36, 0.02);
-    --mf-shadow-md: 0 4px 8px rgba(26, 36, 36, 0.04), 0 2px 4px rgba(26, 36, 36, 0.03);
-    --mf-shadow-lg: 0 10px 20px rgba(26, 36, 36, 0.05), 0 4px 8px rgba(26, 36, 36, 0.03);
-    --mf-shadow-xl: 0 20px 30px rgba(26, 36, 36, 0.06), 0 10px 15px rgba(26, 36, 36, 0.03);
-    --mf-shadow-hover: 0 12px 24px rgba(26, 36, 36, 0.06), 0 4px 8px rgba(26, 36, 36, 0.04);
-
-    /* Refined Gradients with desaturated colors */
-    --mf-gradient-primary: linear-gradient(135deg, #7a9999 0%, #6a8989 100%);
-    --mf-gradient-accent: linear-gradient(135deg, #b5c4a1 0%, #a5b491 100%);
-    --mf-gradient-surface: linear-gradient(180deg, #ffffff 0%, #fdfefe 100%);
-    --mf-gradient-subtle: linear-gradient(180deg, #f9fafa 0%, #ffffff 100%);
-
-    /* Smooth Transitions */
-    --mf-transition-instant: 100ms cubic-bezier(0.4, 0, 0.2, 1);
-    --mf-transition-fast: 200ms cubic-bezier(0.4, 0, 0.2, 1);
-    --mf-transition-smooth: 300ms cubic-bezier(0.4, 0, 0.2, 1);
-    --mf-transition-slow: 400ms cubic-bezier(0.4, 0, 0.1, 1);
-
-    /* Generous Spacing Scale */
-    --mf-space-xs: 0.25rem;   /* 4px */
-    --mf-space-sm: 0.5rem;    /* 8px */
-    --mf-space-md: 1rem;      /* 16px */
-    --mf-space-lg: 1.5rem;    /* 24px */
-    --mf-space-xl: 2rem;      /* 32px */
-    --mf-space-2xl: 3rem;     /* 48px */
-    --mf-space-3xl: 4rem;     /* 64px */
-
-    /* Larger Border Radius */
-    --mf-radius-sm: 8px;
-    --mf-radius-md: 12px;
-    --mf-radius-lg: 16px;
-    --mf-radius-xl: 20px;
-    --mf-radius-full: 9999px;
+/* Premium Navigation Bar - Exact match to HTML design */
+.nav-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+    border-bottom: 1px solid rgba(95, 140, 140, 0.12);
+    padding: 0 48px;
+    height: 68px;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
 }
 
-/* === GLOBAL FOUNDATION === */
+.nav-container:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    margin-right: 40px;
+    padding-right: 40px;
+    border-right: 1px solid rgba(95, 140, 140, 0.1);
+}
+
+.logo {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #7a9999, #6a8989);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 18px;
+    transition: transform 0.3s ease;
+    filter: drop-shadow(0 2px 4px rgba(95, 140, 140, 0.15));
+}
+
+.logo:hover {
+    transform: scale(1.08) rotate(3deg);
+    cursor: pointer;
+}
+
+.nav-items {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    flex: 1;
+}
+
+.nav-button {
+    background: transparent;
+    border: none;
+    border-radius: 24px;
+    color: #516060;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 20px;
+    margin: 0 3px;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    letter-spacing: 0.01em;
+}
+
+.nav-button:hover {
+    color: #5f8c8c;
+    background: linear-gradient(135deg, rgba(95, 140, 140, 0.08), rgba(95, 140, 140, 0.12));
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(95, 140, 140, 0.15);
+}
+
+.nav-button.active {
+    background: linear-gradient(135deg, #7a9999, #6a8989);
+    color: #ffffff;
+    font-weight: 600;
+    transform: translateY(0px);
+    box-shadow: 0 2px 8px rgba(95, 140, 140, 0.25), inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.user-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: auto;
+    padding-left: 40px;
+    border-left: 1px solid rgba(95, 140, 140, 0.1);
+}
+
+.user-badge {
+    background: linear-gradient(135deg, #f4f6f6, #eaeded);
+    border-radius: 20px;
+    padding: 8px 18px;
+    border: 1px solid rgba(95, 140, 140, 0.15);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+    transition: all 0.25s ease;
+    font-size: 13px;
+    font-weight: 600;
+    color: #2a3a3a;
+}
+
+.user-badge:hover {
+    background: linear-gradient(135deg, #eaeded, #e1e5e5);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+}
+
+.logout-button {
+    background: transparent;
+    border: none;
+    border-radius: 24px;
+    color: #e08585;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 20px;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.logout-button:hover {
+    background: rgba(224, 133, 133, 0.1);
+    color: #d66b6b;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(224, 133, 133, 0.15);
+}
+
+/* CSS VERSION: 4.0 - NOTION-INSPIRED ELEGANT NAVIGATION - CALM & SOPHISTICATED */
+
+/* ============================================
+   GLOBAL RESETS & BASE STYLES
+   ============================================ */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-html {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
+html, body, [data-testid="stAppViewContainer"], .main {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+    background-color: #f0f2f5 !important;
+    background: #f0f2f5 !important;
 }
 
-body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', sans-serif;
-    font-size: 13px;
-    line-height: 1.6;
-    font-weight: 400;
-    color: var(--mf-text-primary);
-    background: #ffffff;  /* Pure white background like mockup */
-    overflow-x: hidden;
+/* PREMIUM NAVIGATION - Force darker gray background on main container for contrast */
+[data-testid="stAppViewContainer"] > section:first-child {
+    background: #f0f2f5 !important;
+    background-color: #f0f2f5 !important;
 }
 
-/* Typography Hierarchy - Light and Minimal */
-h1, h2, h3, h4, h5, h6, p, span, div, a, button, input, select, textarea, label {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', sans-serif !important;
+section.main {
+    background: #f0f2f5 !important;
+    background-color: #f0f2f5 !important;
 }
 
-h1 {
-    font-size: 18px;
-    font-weight: 300;
-    letter-spacing: 0;
-    line-height: 1.3;
+/* Force darker gray background on content area for contrast */
+.stApp {
+    background: #f0f2f5 !important;
+    background-color: #f0f2f5 !important;
 }
 
-h2 {
-    font-size: 16px;
-    font-weight: 300;
-    letter-spacing: 0;
-    line-height: 1.4;
-}
-
-h3 {
-    font-size: 14px;
-    font-weight: 500;
-    letter-spacing: 0;
-    line-height: 1.4;
-}
-
-p {
-    font-size: 13px;
-    font-weight: 400;
-    line-height: 1.6;
-}
-
-::selection {
-    background: var(--mf-lime-subtle);
-    color: var(--mf-text-primary);
-}
-
-/* === STREAMLIT OVERRIDES === */
 [data-testid="stAppViewContainer"] {
-    background: #ffffff !important;  /* Pure white like mockup */
-    margin-top: 80px !important;
+    background: #f0f2f5 !important;
+    background-color: #f0f2f5 !important;
 }
 
-section[data-testid="stMain"] {
-    background: #ffffff !important;  /* Pure white like mockup */
+/* ============================================
+   HIDE STREAMLIT DEFAULT ELEMENTS
+   ============================================ */
+header[data-testid="stHeader"],
+[data-testid="stSidebar"],
+[data-testid="stSidebarNav"],
+footer,
+#MainMenu,
+.stDeployButton {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* ============================================
+   MAIN LAYOUT - PUSH CONTENT DOWN
+   ============================================ */
+.stApp {
     padding-top: 0 !important;
 }
 
+/* CRITICAL: Push all content below fixed nav - adjusted for 56px height */
+section.main > div,
+section.main > div:first-child {
+    padding-top: 72px !important;
+}
+
 .main .block-container {
-    padding: var(--mf-space-2xl) var(--mf-space-xl) !important;
-    max-width: 1600px !important;
+    padding: 40px 60px !important;
+    max-width: 1440px !important;
     margin: 0 auto !important;
-    background: #ffffff !important;
-}
-
-/* Remove ALL background colors from Streamlit containers */
-div[data-testid="stVerticalBlock"],
-div[data-testid="stHorizontalBlock"],
-div[data-testid="column"],
-.element-container {
-    background: transparent !important;
-}
-
-/* Hide Streamlit Chrome */
-[data-testid="stSidebar"],
-[data-testid="stSidebarNav"],
-[data-testid="collapsedControl"],
-header[data-testid="stHeader"] {
-    display: none !important;
+    background: #f0f2f5 !important;
+    background-color: #f0f2f5 !important;
 }
 
 /* ===================================================================
-   FLOATING NAVIGATION BAR WITH BLUR
+   NOTION-INSPIRED ELEGANT NAVIGATION
    =================================================================== */
 
-.mf-topbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 80px;
-    background: #ffffff;
-    border-bottom: 2px solid #5f8c8c;
-    padding: 0 var(--mf-space-2xl);
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+/* Fixed navigation container - ENHANCED FROSTED GLASS with extra pop */
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 9999 !important;
+    /* Brighter white with stronger contrast */
+    background: rgba(255, 255, 255, 0.98) !important;
+    background-color: rgba(255, 255, 255, 0.98) !important;
+    /* Stronger backdrop blur for premium feel */
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    /* Enhanced shadow for more depth */
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.08),
+        0 4px 16px rgba(0, 0, 0, 0.05),
+        0 1px 0 rgba(255, 255, 255, 0.8) inset !important;
+    /* Subtle teal border for brand accent */
+    border-bottom: 1.5px solid rgba(95, 140, 140, 0.2) !important;
+    padding: 0 48px 0 48px !important;
+    padding-right: 250px !important;
+    height: 140px !important;
+    min-height: 140px !important;
+    max-height: 140px !important;
+    display: flex !important;
+    align-items: center !important;
+    flex-wrap: nowrap !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
-.mf-topbar-inner {
-    width: 100%;
-    max-width: 1800px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--mf-space-2xl);
+/* Enhanced shadow on hover - MORE dramatic */
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child:hover {
+    box-shadow:
+        0 4px 16px rgba(0, 0, 0, 0.12),
+        0 8px 32px rgba(95, 140, 140, 0.08),
+        0 1px 0 rgba(255, 255, 255, 0.9) inset !important;
+    border-bottom-color: rgba(95, 140, 140, 0.3) !important;
 }
 
-/* Brand Section */
-.mf-brand-left {
-    display: flex;
-    align-items: center;
-    gap: var(--mf-space-lg);
-    flex-shrink: 0;
+/* Navigation columns - force transparent and proper alignment */
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child > div[data-testid="column"] {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 4px !important;
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+    min-width: 0 !important;
+    background: transparent !important;
+    background-color: transparent !important;
 }
 
-.mf-logo-inline {
-    height: 1.4em;
-    width: auto;
-    vertical-align: -0.2em;
-    margin: 0 0.1em;
+/* Force all elements inside nav columns to be transparent */
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child > div[data-testid="column"] > * {
+    background: transparent !important;
+    background-color: transparent !important;
 }
 
-.mf-brand-title {
+/* Logo column - centered on left side */
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child > div[data-testid="column"]:first-child {
+    justify-content: center !important;
+    margin-right: 24px !important;
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+    border-right: none !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+/* User section - minimal spacing, subtle divider */
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child > div[data-testid="column"]:last-child {
+    margin-left: auto !important;
+    padding-left: 24px !important;
+    border-left: 1px solid rgba(0, 0, 0, 0.06) !important;
+    justify-content: flex-end !important;
+    gap: 8px !important;
+}
+
+/* Logo - 100px and centered */
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child img {
+    width: 100px !important;
+    height: 100px !important;
+    border-radius: 16px !important;
+    background: white !important;
+    padding: 10px !important;
+    transition: opacity 0.15s ease !important;
+    display: block !important;
+    margin: auto !important;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1)) !important;
+    opacity: 1 !important;
+}
+
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child img:hover {
+    opacity: 0.9 !important;
+    transform: none !important;
+    cursor: pointer !important;
+}
+
+/* ===================================================================
+   NOTION-STYLE NAVIGATION BUTTONS - Minimal & Elegant
+   =================================================================== */
+
+/* ALL NAVIGATION BUTTONS - White background with teal text */
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button,
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="secondary"],
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[data-testid="baseButton-secondary"] {
+    background: #ffffff !important;
+    color: #0f6a6a !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    padding: 8px 16px !important;
+    margin: 0 4px !important;
+    transition: all 0.2s ease !important;
+    white-space: nowrap !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+    height: auto !important;
+    letter-spacing: 0.01em !important;
+    position: relative !important;
+    flex-shrink: 0 !important;
+    min-height: 0 !important;
+}
+
+/* Remove Streamlit's nested element styling issues */
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button *,
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="secondary"] * {
+    color: inherit !important;
+    background: transparent !important;
+}
+
+/* Hover state - slightly darker white with lifted shadow */
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button:hover,
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="secondary"]:hover {
+    background: #ffffff !important;
+    color: #0d5858 !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(15, 106, 106, 0.15) !important;
+    border: none !important;
+}
+
+/* ACTIVE STATE - MetaFlex teal background with white text */
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"],
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child [data-testid="column"] button[kind="primary"],
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[data-testid="baseButton-primary"] {
+    background: #0f6a6a !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    transform: none !important;
+    box-shadow: 0 2px 8px rgba(15, 106, 106, 0.25) !important;
+    border: none !important;
+    border-radius: 8px !important;
+}
+
+/* Force white text in active buttons - all nested elements */
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"] *,
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"] p,
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"] div,
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"] span {
+    color: #ffffff !important;
+    background: transparent !important;
+}
+
+/* Focus state - accessible outline */
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button:focus-visible {
+    outline: 2px solid #7a9999 !important;
+    outline-offset: 2px !important;
+}
+
+/* Remove default focus outline */
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button:focus:not(:focus-visible) {
+    outline: none !important;
+}
+
+/* ===================================================================
+   USER SECTION - Notion-style Minimal & Clean
+   =================================================================== */
+
+/* User badge styling - simple, clean */
+.user-badge-nav {
+    display: inline-block !important;
+    background: rgba(55, 53, 47, 0.06) !important;
+    border-radius: 6px !important;
+    padding: 6px 12px !important;
+    border: none !important;
+    box-shadow: none !important;
+    transition: background 0.12s ease !important;
+}
+
+.user-badge-nav:hover {
+    background: rgba(55, 53, 47, 0.08) !important;
+    transform: none !important;
+    box-shadow: none !important;
+    cursor: pointer !important;
+}
+
+.user-badge-nav span {
+    color: rgba(55, 53, 47, 0.85) !important;
+    font-weight: 500 !important;
+    font-size: 14px !important;
+}
+
+/* Logout button - subtle, minimal */
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child > div[data-testid="column"]:last-child button,
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[key*="logout"] {
+    background: transparent !important;
+    color: rgba(55, 53, 47, 0.65) !important;
+    border: none !important;
+    border-radius: 6px !important;
+    font-weight: 500 !important;
+}
+
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child > div[data-testid="column"]:last-child button:hover,
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[key*="logout"]:hover {
+    background: rgba(55, 53, 47, 0.08) !important;
+    color: rgba(55, 53, 47, 0.85) !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* Navigation container smooth scroll transition (v3.1) */
+div.stContainer:first-of-type {
+    transition: box-shadow 0.4s ease, backdrop-filter 0.3s ease !important;
+}
+
+/* Subtle gradient line at nav bottom for depth (v3.1) */
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child::after {
+    content: "" !important;
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 1px !important;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.6), rgba(255,255,255,0)) !important;
+    pointer-events: none !important;
+}
+
+/* ============================================
+   TYPOGRAPHY HIERARCHY - REDESIGNED
+   ============================================ */
+
+/* Main Page Heading (Welcome back) - Large & Personal */
+h1 {
+    font-family: 'Marcellus', serif !important;
+    font-size: 48px !important;
+    font-weight: 400 !important;
+    color: #1a2424 !important;
+    letter-spacing: -0.02em !important;
+    line-height: 1.2 !important;
+    margin-bottom: 12px !important;
+    margin-top: 0 !important;
+}
+
+/* Section Headers (Analytics Dashboard, Performance Overview) - Medium & Clear */
+h2 {
+    font-family: 'Marcellus', serif !important;
+    font-size: 32px !important;
+    font-weight: 400 !important;
+    color: #2a3a3a !important;
+    letter-spacing: -0.01em !important;
+    line-height: 1.3 !important;
+    margin-top: 0 !important;
+    margin-bottom: 8px !important;
+}
+
+/* Subsection Headers (Project Names) - Smaller */
+h3 {
+    font-family: 'Inter', sans-serif !important;
     font-size: 20px !important;
     font-weight: 600 !important;
+    color: #2a3a3a !important;
     letter-spacing: -0.01em !important;
-    color: #5f8c8c !important;
-    margin: 0 !important;
-    line-height: 1 !important;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    line-height: 1.4 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
 }
 
-.mf-brand-sub {
-    font-size: 10px !important;
-    color: var(--mf-text-tertiary) !important;
-    font-weight: 700 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 2px !important;
-    margin: 0 !important;
-}
-
-/* Navigation Pills - Modern Rounded */
-.mf-nav-center {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--mf-space-sm);
-}
-
-.mf-nav-link {
-    position: relative;
-    padding: 12px 24px;
-    border-radius: var(--mf-radius-full);
-    font-size: 14px !important;
-    font-weight: 500 !important;
-    color: #516060 !important;
-    text-decoration: none !important;
-    transition: all var(--mf-transition-fast);
-    background: transparent;
-    border: 2px solid transparent;
-}
-
-.mf-nav-link:hover {
-    color: #5f8c8c !important;
-    background: rgba(95, 140, 140, 0.08);
-    transform: translateY(-2px);
-}
-
-.mf-nav-link.active {
-    background: rgba(95, 140, 140, 0.12);
-    color: #5f8c8c !important;
-    font-weight: 600 !important;
-    border-color: rgba(95, 140, 140, 0.3);
-    box-shadow: var(--mf-shadow-sm);
-}
-
-/* User Badge */
-.mf-nav-right {
-    display: flex;
-    align-items: center;
-    gap: var(--mf-space-md);
-    flex-shrink: 0;
-}
-
-.mf-user-badge {
-    padding: 8px 20px;
-    background: var(--mf-silver);
-    border-radius: var(--mf-radius-full);
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    border: 1px solid transparent;
-    transition: all var(--mf-transition-fast);
-}
-
-.mf-user-badge:hover {
-    background: var(--mf-smoke);
-    border-color: var(--mf-divider);
-    transform: translateY(-2px);
-    box-shadow: var(--mf-shadow-sm);
-}
-
-.mf-user-avatar {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: var(--mf-gradient-primary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px !important;
-    font-weight: 700 !important;
-    color: white !important;
-    text-transform: uppercase !important;
-    box-shadow: var(--mf-shadow-sm);
-}
-
-.mf-user-name {
-    font-size: 14px !important;
-    font-weight: 600 !important;
-    color: var(--mf-text-primary) !important;
-    letter-spacing: -0.01em;
-}
-
-.mf-logout-btn {
-    padding: 10px 20px;
-    background: transparent;
-    border: 1px solid var(--mf-border);
-    border-radius: var(--mf-radius-full);
-    font-size: 14px !important;
-    font-weight: 600 !important;
-    color: var(--mf-text-secondary) !important;
-    text-transform: none !important;
-    cursor: pointer;
-    transition: all var(--mf-transition-fast);
-    letter-spacing: -0.01em;
-    text-decoration: none !important;
-}
-
-.mf-logout-btn:hover {
-    background: var(--mf-status-red-bg);
-    border-color: var(--mf-status-red);
-    color: var(--mf-status-red) !important;
-    transform: translateY(-2px);
-    box-shadow: var(--mf-shadow-sm);
-}
-
-/* ===================================================================
-   METRIC CARDS - ELEVATED DESIGN
-   =================================================================== */
-
-.mf-stats-row {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: var(--mf-space-lg);
-    margin: var(--mf-space-2xl) 0;
-}
-
-.mf-metric-card {
-    background: var(--mf-white);
-    border-radius: var(--mf-radius-lg);
-    padding: var(--mf-space-xl);
-    border: 1px solid var(--mf-divider);
-    box-shadow: var(--mf-shadow-sm);
-    transition: all var(--mf-transition-smooth);
-    position: relative;
-    overflow: hidden;
-}
-
-.mf-metric-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: var(--mf-gradient-primary);
-    opacity: 0;
-    transition: opacity var(--mf-transition-fast);
-}
-
-.mf-metric-card:hover {
-    border-color: var(--mf-teal);
-    box-shadow: var(--mf-shadow-hover);
-    transform: translateY(-4px);
-}
-
-.mf-metric-card:hover::before {
-    opacity: 1;
-}
-
-.mf-mc-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: var(--mf-radius-md);
-    background: var(--mf-teal-subtle);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    color: var(--mf-teal);
-    margin-bottom: var(--mf-space-lg);
-    transition: all var(--mf-transition-fast);
-}
-
-.mf-metric-card:hover .mf-mc-icon {
-    transform: scale(1.1);
-    background: var(--mf-teal);
-    color: white;
-    box-shadow: var(--mf-shadow-md);
-}
-
-.mf-mc-label {
-    font-size: 11px !important;
-    text-transform: uppercase !important;
-    letter-spacing: 1.5px !important;
-    color: var(--mf-text-tertiary) !important;
-    font-weight: 700 !important;
-    margin: 0 0 var(--mf-space-sm) 0 !important;
-}
-
-.mf-mc-value {
-    font-size: 40px !important;
-    font-weight: 700 !important;
-    color: var(--mf-text-primary) !important;
-    line-height: 1 !important;
-    margin: 0 !important;
-    letter-spacing: -0.01em;
-}
-
-/* Status-specific metric cards with desaturated colors */
-.mf-metric-card.mf-mc-overdue {
-    border-color: var(--mf-status-red);
-    background: var(--mf-status-red-bg);
-}
-
-.mf-metric-card.mf-mc-overdue::before {
-    background: var(--mf-status-red);
-    opacity: 1;
-}
-
-.mf-metric-card.mf-mc-overdue .mf-mc-label {
-    color: var(--mf-status-red);
-}
-
-.mf-metric-card.mf-mc-overdue .mf-mc-value {
-    color: var(--mf-status-red);
-}
-
-.mf-metric-card.mf-mc-overdue .mf-mc-icon {
-    background: var(--mf-status-red-bg);
-    color: var(--mf-status-red);
-}
-
-/* ===================================================================
-   DATA TABLES - CLEAN & SCANNABLE
-   =================================================================== */
-
-.table-container {
-    background: var(--mf-white);
-    border: 1px solid var(--mf-divider);
-    border-radius: var(--mf-radius-lg);
-    overflow: hidden;
-    box-shadow: var(--mf-shadow-md);
-    margin: var(--mf-space-2xl) 0;
-}
-
-.table-container table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-}
-
-.table-container thead {
-    background: var(--mf-gradient-subtle);
-    border-bottom: 2px solid var(--mf-divider);
-}
-
-.table-container th {
-    padding: var(--mf-space-lg) var(--mf-space-lg) !important;
-    text-align: left;
-    font-size: 12px !important;
-    font-weight: 700 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 1.3px !important;
-    color: var(--mf-text-secondary) !important;
-    background: transparent;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-}
-
-.table-container tbody tr {
-    border-bottom: 1px solid var(--mf-smoke);
-    transition: all var(--mf-transition-fast);
-}
-
-.table-container tbody tr:last-child {
-    border-bottom: none;
-}
-
-.table-container tbody tr:hover {
-    background: var(--mf-teal-subtle);
-    transform: scale(1.002);
-}
-
-.table-container td {
-    padding: var(--mf-space-lg) !important;
+/* Body text, subtitles, descriptions */
+p, div, span, label {
+    font-family: 'Inter', sans-serif !important;
+    color: #5a6a6a !important;
     font-size: 15px !important;
-    color: var(--mf-text-primary) !important;
-    font-weight: 500 !important;
-    vertical-align: middle;
+    line-height: 1.6 !important;
 }
 
-/* ===================================================================
-   STREAMLIT SPECIFIC COMPONENTS
-   =================================================================== */
-
-/* Metric containers - NO backgrounds, clean like mockup */
-[data-testid="metric-container"] {
-    background: transparent !important;
-    border: none !important;
-    border-radius: 0 !important;
-    padding: 1.5rem 0 !important;
-    box-shadow: none !important;
-    transition: none !important;
-}
-
-[data-testid="metric-container"]:hover {
-    border: none !important;
-    box-shadow: none !important;
-    transform: none !important;
-}
-
-[data-testid="stMetricLabel"] {
-    font-size: 10px !important;
-    font-weight: 500 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.8px !important;
+/* Subtitle/description text - muted */
+.subtitle {
+    font-size: 16px !important;
     color: #7a8888 !important;
+    font-weight: 400 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    line-height: 1.5 !important;
 }
 
-[data-testid="stMetricValue"] {
-    font-size: 32px !important;
-    font-weight: 600 !important;
-    color: #1a2424 !important;
-    letter-spacing: -0.01em !important;
-}
-
-/* DataFrames */
-[data-testid="stDataFrame"] {
-    border-radius: var(--mf-radius-lg);
-    overflow: hidden;
-    box-shadow: var(--mf-shadow-md);
-    border: 1px solid var(--mf-divider);
-}
-
-[data-testid="stDataFrame"] thead {
-    background: var(--mf-gradient-subtle);
-}
-
-[data-testid="stDataFrame"] th {
-    font-weight: 700 !important;
-    font-size: 12px !important;
-    color: var(--mf-teal) !important;
-    text-transform: uppercase !important;
-    letter-spacing: 1.3px !important;
-    padding: var(--mf-space-lg) !important;
-    border-bottom: 2px solid var(--mf-divider);
-}
-
-[data-testid="stDataFrame"] td {
-    padding: var(--mf-space-lg) !important;
-    font-size: 15px !important;
-    color: var(--mf-text-primary) !important;
-    border-bottom: 1px solid var(--mf-smoke);
-}
-
-[data-testid="stDataFrame"] tbody tr:hover {
-    background: var(--mf-teal-subtle);
-}
-
-/* ===================================================================
-   PRIORITY BADGES
-   =================================================================== */
-
-.mf-priority {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 14px;
-    border-radius: var(--mf-radius-full);
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.3px;
-}
-
-.mf-priority-high {
-    background: var(--mf-status-red-bg);
-    color: var(--mf-status-red);
-    border: 1px solid var(--mf-status-red);
-}
-
-.mf-priority-medium {
-    background: var(--mf-status-yellow-bg);
-    color: var(--mf-status-yellow);
-    border: 1px solid var(--mf-status-yellow);
-}
-
-.mf-priority-low {
-    background: var(--mf-status-green-bg);
-    color: var(--mf-status-green);
-    border: 1px solid var(--mf-status-green);
-}
-
-/* Status Dots with desaturated colors */
-.mf-dot {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    margin-right: 8px;
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.8);
-}
-
-.mf-dot.mf-red {
-    background: var(--mf-status-red);
-}
-
-.mf-dot.mf-yellow {
-    background: var(--mf-status-yellow);
-}
-
-.mf-dot.mf-green {
-    background: var(--mf-status-green);
-}
-
-/* ===================================================================
-   BUTTONS - PILL SHAPED & SMOOTH
-   =================================================================== */
-
-button[kind="primary"],
-.stButton > button,
-.mf-primary-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 12px 28px !important;
-    background: var(--mf-gradient-primary) !important;
+/* ============================================
+   STREAMLIT WIDGETS (excluding navigation buttons)
+   ============================================ */
+/* Only style buttons NOT in the navigation bar */
+section.main [data-testid="stButton"] button {
+    background: #0f6a6a !important;
     color: white !important;
     border: none !important;
-    border-radius: var(--mf-radius-full) !important;
-    font-size: 15px !important;
+    border-radius: 8px !important;
+    padding: 10px 24px !important;
+    font-weight: 500 !important;
+    transition: all 0.2s ease !important;
+}
+
+section.main [data-testid="stButton"] button:hover {
+    background: #0d5858 !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(15, 106, 106, 0.2) !important;
+}
+
+/* Input fields */
+input, textarea, select {
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    padding: 10px 14px !important;
+    font-family: 'Inter', sans-serif !important;
+    transition: border-color 0.2s ease !important;
+}
+
+input:focus, textarea:focus, select:focus {
+    border-color: #0f6a6a !important;
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(15, 106, 106, 0.1) !important;
+}
+
+/* Checkboxes - elegant styling */
+[data-testid="stCheckbox"] {
+    padding: 8px 0 !important;
+}
+
+[data-testid="stCheckbox"] label {
+    font-size: 14px !important;
+    color: rgba(55, 53, 47, 0.85) !important;
+    font-weight: 500 !important;
+}
+
+/* ============================================
+   METRIC CARDS - REDESIGNED FOR VISUAL HIERARCHY
+   ============================================ */
+
+/* Metric card containers - add visual separation and center text */
+[data-testid="metric-container"] {
+    background: #ffffff !important;
+    border: 1.5px solid #e8eced !important;
+    border-radius: 16px !important;
+    padding: 32px 24px !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    position: relative !important;
+    overflow: hidden !important;
+    text-align: center !important;
+}
+
+/* Hover effect for metric cards */
+[data-testid="metric-container"]:hover {
+    border-color: #7a9999 !important;
+    box-shadow: 0 8px 24px rgba(122, 153, 153, 0.12) !important;
+    transform: translateY(-2px) !important;
+}
+
+/* Metric labels - uppercase, small, muted, centered */
+[data-testid="stMetricLabel"] {
+    font-size: 11px !important;
     font-weight: 600 !important;
-    letter-spacing: -0.01em !important;
-    cursor: pointer;
-    transition: all var(--mf-transition-fast) !important;
-    box-shadow: var(--mf-shadow-md) !important;
-    text-decoration: none !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1.2px !important;
+    color: #7a8888 !important;
+    margin-bottom: 16px !important;
+    text-align: center !important;
+    display: block !important;
 }
 
-button[kind="primary"]:hover,
-.stButton > button:hover,
-.mf-primary-btn:hover {
-    background: var(--mf-teal-hover) !important;
-    transform: translateY(-2px);
-    box-shadow: var(--mf-shadow-lg) !important;
+/* Metric values - BIG and BOLD, centered */
+[data-testid="stMetricValue"] {
+    font-size: 56px !important;
+    font-weight: 700 !important;
+    color: #1a2424 !important;
+    letter-spacing: -0.02em !important;
+    line-height: 1 !important;
+    text-align: center !important;
+    display: block !important;
 }
 
-button[kind="primary"]:active,
-.stButton > button:active,
-.mf-primary-btn:active {
-    transform: translateY(0);
-    box-shadow: var(--mf-shadow-sm) !important;
+/* Add subtle accent bar to metric cards */
+[data-testid="metric-container"]::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 4px !important;
+    background: linear-gradient(90deg, #7a9999, #5f8c8c) !important;
+    opacity: 0 !important;
+    transition: opacity 0.3s ease !important;
 }
 
-button[kind="secondary"],
-.mf-secondary-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 12px 28px !important;
-    background: transparent !important;
-    color: var(--mf-text-primary) !important;
-    border: 2px solid var(--mf-border) !important;
-    border-radius: var(--mf-radius-full) !important;
-    font-size: 15px !important;
-    font-weight: 600 !important;
-    cursor: pointer;
-    transition: all var(--mf-transition-fast) !important;
+[data-testid="metric-container"]:hover::before {
+    opacity: 1 !important;
 }
 
-button[kind="secondary"]:hover,
-.mf-secondary-btn:hover {
-    background: var(--mf-silver) !important;
-    border-color: var(--mf-border-strong) !important;
-    transform: translateY(-2px);
-    box-shadow: var(--mf-shadow-sm) !important;
+/* ============================================
+   SPACING & LAYOUT IMPROVEMENTS
+   ============================================ */
+
+/* Add breathing room between sections */
+.main .block-container {
+    padding: 48px 64px 80px 64px !important;
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+    background: #f0f2f5 !important;
 }
 
-/* ===================================================================
-   INPUT FIELDS
-   =================================================================== */
-
-[data-testid="stTextInput"] input,
-[data-baseweb="input"] {
-    border-radius: var(--mf-radius-md);
-    border: 2px solid var(--mf-border);
-    padding: var(--mf-space-md) var(--mf-space-lg);
-    font-size: 15px;
-    color: var(--mf-text-primary);
-    background: white;
-    transition: all var(--mf-transition-fast);
+/* Section spacing */
+section[data-testid="stVerticalBlock"] {
+    margin-bottom: 64px !important;
 }
 
-[data-testid="stTextInput"] input:focus,
-[data-baseweb="input"]:focus {
-    border-color: var(--mf-teal);
-    box-shadow: 0 0 0 3px var(--mf-teal-subtle);
-    outline: none;
+/* Column spacing for metric cards - more generous and even */
+[data-testid="column"] {
+    padding: 0 16px !important;
 }
 
-/* Select Dropdowns */
-[data-baseweb="select"] {
-    border-radius: var(--mf-radius-md);
-    border: 2px solid var(--mf-border);
-    transition: all var(--mf-transition-fast);
+[data-testid="column"]:first-child {
+    padding-left: 0 !important;
 }
 
-[data-baseweb="select"]:hover {
-    border-color: var(--mf-teal);
+[data-testid="column"]:last-child {
+    padding-right: 0 !important;
 }
 
-[data-baseweb="select"] > div {
-    background: white;
-    padding: var(--mf-space-sm) var(--mf-space-md);
-    font-size: 15px;
-}
-
-/* Dropdown menu */
-[data-baseweb="popover"] {
-    border-radius: var(--mf-radius-lg);
-    box-shadow: var(--mf-shadow-xl);
-    border: 1px solid var(--mf-divider);
-    overflow: hidden;
-}
-
-[role="option"] {
-    padding: var(--mf-space-md) var(--mf-space-lg);
-    transition: all var(--mf-transition-fast);
-    cursor: pointer;
-}
-
-[role="option"]:hover {
-    background: var(--mf-teal-subtle);
-    color: var(--mf-teal);
-}
-
-/* ===================================================================
-   PROJECT CARDS
-   =================================================================== */
-
-.mf-project-card {
-    background: var(--mf-white);
-    border: 1px solid var(--mf-divider);
-    border-radius: var(--mf-radius-lg);
-    padding: var(--mf-space-xl);
-    box-shadow: var(--mf-shadow-sm);
-    transition: all var(--mf-transition-smooth);
-    position: relative;
-}
-
-.mf-project-card::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 4px;
-    background: var(--mf-teal);
-    opacity: 0;
-    transition: opacity var(--mf-transition-fast);
-    border-radius: var(--mf-radius-lg) 0 0 var(--mf-radius-lg);
-}
-
-.mf-project-card:hover {
-    border-color: var(--mf-teal);
-    box-shadow: var(--mf-shadow-hover);
-    transform: translateY(-4px);
-}
-
-.mf-project-card:hover::before {
-    opacity: 1;
-}
-
-.mf-project-card h4 {
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--mf-text-primary);
-    margin: 0 0 var(--mf-space-md) 0;
-    letter-spacing: -0.01em;
-}
-
-.mf-project-card-content p {
-    font-size: 15px;
-    color: var(--mf-text-secondary);
-    margin: var(--mf-space-sm) 0;
-    line-height: 1.6;
-}
-
-.mf-project-divider {
-    border: 0;
-    height: 1px;
-    background: var(--mf-divider);
-    margin: var(--mf-space-md) 0;
-}
-
-/* ===================================================================
-   PROGRESS INDICATORS
-   =================================================================== */
-
-.progress-wrapper {
-    width: 100%;
-    height: 8px;
-    background: var(--mf-smoke);
-    border-radius: var(--mf-radius-full);
-    overflow: hidden;
-    position: relative;
-}
-
-.progress-fill {
-    height: 100%;
-    background: var(--mf-gradient-primary);
-    border-radius: var(--mf-radius-full);
-    transition: width var(--mf-transition-smooth);
-    position: relative;
-}
-
-.progress-fill::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-    animation: shimmer 2s infinite;
-}
-
-@keyframes shimmer {
-    0% {
-        transform: translateX(-100%);
-    }
-    100% {
-        transform: translateX(100%);
-    }
-}
-
-/* ===================================================================
-   FILTER SECTION
-   =================================================================== */
-
-.mf-filter-card-wrapper {
-    background: var(--mf-white);
-    border: 1px solid var(--mf-divider);
-    border-radius: var(--mf-radius-lg);
-    padding: var(--mf-space-xl);
-    margin-bottom: var(--mf-space-2xl);
-    box-shadow: var(--mf-shadow-sm);
-}
-
-/* ===================================================================
-   CHARTS & PLOTLY
-   =================================================================== */
-
-.js-plotly-plot {
-    border-radius: var(--mf-radius-lg);
-    overflow: hidden;
-    background: white;
-    padding: var(--mf-space-lg);
-    box-shadow: var(--mf-shadow-md);
-    border: 1px solid var(--mf-divider);
-}
-
-/* ===================================================================
-   ALERTS & NOTIFICATIONS
-   =================================================================== */
-
-.stAlert {
-    border-radius: var(--mf-radius-lg);
-    padding: var(--mf-space-lg);
-    border-left: 4px solid;
-    box-shadow: var(--mf-shadow-sm);
-}
-
-[data-baseweb="notification"][kind="info"] {
-    background: var(--mf-teal-subtle);
-    border-left-color: var(--mf-teal);
-    color: var(--mf-teal);
-}
-
-[data-baseweb="notification"][kind="positive"] {
-    background: var(--mf-status-green-bg);
-    border-left-color: var(--mf-status-green);
-    color: var(--mf-status-green);
-}
-
-[data-baseweb="notification"][kind="warning"] {
-    background: var(--mf-status-yellow-bg);
-    border-left-color: var(--mf-status-yellow);
-    color: var(--mf-status-yellow);
-}
-
-[data-baseweb="notification"][kind="negative"] {
-    background: var(--mf-status-red-bg);
-    border-left-color: var(--mf-status-red);
-    color: var(--mf-status-red);
-}
-
-/* ===================================================================
-   EXPANDERS
-   =================================================================== */
-
+/* ============================================
+   CARDS & CONTAINERS
+   ============================================ */
 [data-testid="stExpander"] {
-    background: white;
-    border-radius: var(--mf-radius-lg);
-    border: 1px solid var(--mf-divider);
-    box-shadow: var(--mf-shadow-sm);
-    margin-bottom: var(--mf-space-md);
-    overflow: hidden;
+    background: white !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 12px !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+    margin-bottom: 16px !important;
 }
 
-[data-testid="stExpander"] summary {
-    padding: var(--mf-space-lg);
-    font-weight: 600;
-    font-size: 16px;
-    color: var(--mf-teal);
-    cursor: pointer;
-    transition: all var(--mf-transition-fast);
+/* ============================================
+   AGGRID TABLES - ELEGANT STYLING
+   ============================================ */
+.ag-theme-streamlit {
+    border: 1px solid #e8eced !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
 }
 
-[data-testid="stExpander"] summary:hover {
-    background: var(--mf-teal-subtle);
+.ag-header {
+    background: #f0f2f5 !important;
+    border-bottom: 1.5px solid #e8eced !important;
 }
 
-[data-testid="stExpander"] > div {
-    padding: var(--mf-space-lg);
-    border-top: 1px solid var(--mf-divider);
+.ag-header-cell {
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    color: rgba(55, 53, 47, 0.85) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
 }
 
-/* ===================================================================
-   TABS
-   =================================================================== */
-
-[data-baseweb="tab-list"] {
-    gap: var(--mf-space-sm);
-    border-bottom: 2px solid var(--mf-divider);
+.ag-row {
+    border-bottom: 1px solid #f0f2f2 !important;
 }
 
-[data-baseweb="tab"] {
-    background: transparent;
-    border: none;
-    border-radius: var(--mf-radius-md) var(--mf-radius-md) 0 0;
-    padding: var(--mf-space-md) var(--mf-space-xl);
-    font-weight: 500;
-    font-size: 15px;
-    color: var(--mf-text-secondary);
-    transition: all var(--mf-transition-fast);
+.ag-row:hover {
+    background: rgba(122, 153, 153, 0.04) !important;
 }
 
-[data-baseweb="tab"]:hover {
-    background: var(--mf-smoke);
-    color: var(--mf-teal);
+/* ============================================
+   NAVIGATION BUTTON COLOR OVERRIDES - CRITICAL
+   ============================================ */
+/* Force remove default Streamlit button colors in navigation - ULTRA SPECIFIC */
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="secondary"][data-testid="baseButton-secondary"],
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"][data-testid="baseButton-primary"],
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button.st-emotion-cache-ue6h4q,
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button.st-emotion-cache-19rxjzo,
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[data-baseweb="button"],
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="secondary"],
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child div[data-testid="column"] button,
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child div[data-testid="column"] button[kind="secondary"],
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child div[data-testid="stButton"] button {
+    background-color: #ffffff !important;
+    background-image: none !important;
+    background: #ffffff !important;
+    border-color: transparent !important;
+    border: none !important;
+    color: #0f6a6a !important;
+    border-radius: 8px !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
 }
 
-[data-baseweb="tab"][aria-selected="true"] {
-    background: white;
-    color: var(--mf-teal);
-    font-weight: 600;
-    border-bottom: 3px solid var(--mf-teal);
+/* Hover on secondary buttons in nav */
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="secondary"]:hover,
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[data-baseweb="button"]:hover,
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child div[data-testid="column"] button:hover,
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child div[data-testid="column"] button[kind="secondary"]:hover {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    background-image: none !important;
+    color: #0d5858 !important;
+    border: none !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(15, 106, 106, 0.15) !important;
 }
 
-/* ===================================================================
-   SCROLLBAR STYLING
-   =================================================================== */
-
-::-webkit-scrollbar {
-    width: 12px;
-    height: 12px;
+/* Active/Primary state in nav */
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"]:not([key*="logout"]),
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child div[data-testid="column"] button[kind="primary"] {
+    background: #0f6a6a !important;
+    background-color: #0f6a6a !important;
+    background-image: none !important;
+    color: #ffffff !important;
+    border: none !important;
+    font-weight: 600 !important;
+    box-shadow: 0 2px 8px rgba(15, 106, 106, 0.25) !important;
 }
 
-::-webkit-scrollbar-track {
-    background: var(--mf-smoke);
-    border-radius: var(--mf-radius-md);
-}
-
-::-webkit-scrollbar-thumb {
-    background: var(--mf-border-strong);
-    border-radius: var(--mf-radius-md);
-    transition: background var(--mf-transition-fast);
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: var(--mf-teal);
-}
-
-/* ===================================================================
-   ANIMATIONS
-   =================================================================== */
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(12px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.fade-in {
-    animation: fadeIn var(--mf-transition-slow) ease-out;
-}
-
-/* Apply fade-in to main content */
-.main > div {
-    animation: fadeIn var(--mf-transition-slow) ease-out;
-}
-
-/* ===================================================================
-   RESPONSIVE DESIGN
-   =================================================================== */
-
-@media (max-width: 1200px) {
-    .main .block-container {
-        padding: var(--mf-space-xl) var(--mf-space-lg) !important;
-    }
-}
-
-@media (max-width: 1024px) {
-    .mf-topbar {
-        padding: 0 var(--mf-space-xl);
-        height: 72px;
-    }
-
-    [data-testid="stAppViewContainer"] {
-        margin-top: 72px !important;
-    }
-
-    .mf-brand-title {
-        font-size: 22px !important;
-    }
-
-    .mf-nav-center {
-        gap: var(--mf-space-xs);
-    }
-
-    .mf-nav-link {
-        padding: 10px 20px;
-        font-size: 14px !important;
-    }
-}
-
-@media (max-width: 768px) {
-    .mf-topbar {
-        padding: 0 var(--mf-space-md);
-        height: 64px;
-    }
-
-    [data-testid="stAppViewContainer"] {
-        margin-top: 64px !important;
-    }
-
-    .main .block-container {
-        padding: var(--mf-space-lg) var(--mf-space-md) !important;
-    }
-
-    .mf-brand-title {
-        font-size: 18px !important;
-    }
-
-    .mf-brand-sub {
-        display: none;
-    }
-
-    .mf-nav-center {
-        display: none;
-    }
-
-    .mf-user-name {
-        display: none;
-    }
-
-    .mf-stats-row {
-        grid-template-columns: 1fr;
-        gap: var(--mf-space-md);
-        margin: var(--mf-space-lg) 0;
-    }
-
-    .table-container {
-        border-radius: var(--mf-radius-md);
-        overflow-x: auto;
-    }
-
-    .table-container table {
-        min-width: 600px;
-    }
-
-    .table-container th,
-    .table-container td {
-        padding: var(--mf-space-md) !important;
-        font-size: 14px !important;
-    }
-
-    .mf-metric-card {
-        padding: var(--mf-space-lg);
-    }
-
-    .mf-mc-value {
-        font-size: 32px !important;
-    }
-}
-
-/* ===================================================================
+/* ============================================
    UTILITY CLASSES
-   =================================================================== */
-
-.mf-sep {
-    height: 1px;
-    background: var(--mf-divider);
-    margin: var(--mf-space-lg) 0;
+   ============================================ */
+.premium-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    border: 1px solid #e2e8f0;
 }
 
-.mf-card-sentinel-qt,
-.mf-card-sentinel-add,
-.quick-update-sentinel {
-    display: none;
+.text-teal {
+    color: #0f6a6a !important;
 }
 
-.mf-text-muted {
-    color: var(--mf-text-muted) !important;
+.text-lime {
+    color: #d4ff00 !important;
 }
 
-.mf-text-secondary {
-    color: var(--mf-text-secondary) !important;
+.bg-teal {
+    background-color: #0f6a6a !important;
 }
 
-.mf-text-primary {
-    color: var(--mf-text-primary) !important;
+.bg-lime {
+    background-color: #d4ff00 !important;
 }
 
-/* Hover lift effect */
-.lift {
-    transition: transform var(--mf-transition-fast), box-shadow var(--mf-transition-fast);
+/* ============================================
+   FINAL CATCH-ALL FOR NAVIGATION BUTTONS
+   Must be at end to override everything
+   ============================================ */
+/* Target all buttons in first horizontal block regardless of class */
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button:not([kind="primary"]) {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    background-image: none !important;
+    border: none !important;
+    border-radius: 8px !important;
+    color: #0f6a6a !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
 }
 
-.lift:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--mf-shadow-xl);
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button:not([kind="primary"]):hover {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    background-image: none !important;
+    color: #0d5858 !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(15, 106, 106, 0.15) !important;
 }
 
-/* ===================================================================
-   FOOTER
-   =================================================================== */
-
-.mf-footer {
-    text-align: center;
-    padding: var(--mf-space-2xl) 0;
-    color: var(--mf-text-muted);
-    font-size: 13px;
-    border-top: 1px solid var(--mf-divider);
-    margin-top: var(--mf-space-3xl);
-    letter-spacing: 0.3px;
+/* Primary button (active page) - MetaFlex teal with white text */
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"] {
+    background: #0f6a6a !important;
+    background-color: #0f6a6a !important;
+    background-image: none !important;
+    border: none !important;
+    border-radius: 8px !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    box-shadow: 0 2px 8px rgba(15, 106, 106, 0.25) !important;
 }
+
+/* ============================================
+   FINAL NUCLEAR OVERRIDE - DO NOT MODIFY
+   These rules must be at the end of the file
+   ============================================ */
+
+/* WHITE FROSTED GLASS NAV - EVERY POSSIBLE SELECTOR */
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child,
+div[data-testid="stVerticalBlock"] > div[data-testid="stHorizontalBlock"]:first-child,
+html [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child,
+body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child,
+html body [data-testid="stAppViewContainer"] [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child {
+    background: rgba(255, 255, 255, 0.95) !important;
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    background-image: none !important;
+}
+
+/* Force transparent on all columns */
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child [data-testid="column"],
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child div[data-testid="column"] {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+}
+
+/* RED LOGOUT BUTTON - EVERY POSSIBLE SELECTOR */
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child > div:last-child button,
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child [data-testid="column"]:last-child button,
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child > div:last-child button,
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[key="nav_logout"] {
+    color: #e08585 !important;
+}
+
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child > div:last-child button *,
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child [data-testid="column"]:last-child button *,
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child > div:last-child button *,
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[key="nav_logout"] *,
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[key="nav_logout"] p,
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[key="nav_logout"] div {
+    color: #e08585 !important;
+}
+
+/* ABSOLUTE FINAL OVERRIDE - ADDED AT RUNTIME */
+div[data-testid='stHorizontalBlock']:first-child,
+div[data-testid='stHorizontalBlock']:first-of-type,
+section:first-child > div:first-child > div:first-child > div:first-child {
+    background: rgba(255, 255, 255, 0.95) !important;
+    background-color: rgba(255, 255, 255, 0.95) !important;
+}
+
+/* CENTER ALL CHART TITLES - ULTRA AGGRESSIVE */
+[data-testid="column"] h3,
+[data-testid="column"] > div > h3,
+[data-testid="column"] div[data-testid="stMarkdownContainer"] h3,
+[data-testid="column"] [data-testid="stMarkdownContainer"] h3,
+[data-testid="stMarkdownContainer"] h3,
+.main h3,
+div[data-testid="column"] > div > div > h3 {
+    text-align: center !important;
+    width: 100% !important;
+    display: block !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+/* Force center on the markdown container itself */
+[data-testid="column"] [data-testid="stMarkdownContainer"],
+[data-testid="column"] div[data-testid="stMarkdownContainer"] {
+    text-align: center !important;
+    width: 100% !important;
+}
+

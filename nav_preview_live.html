@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MetaFlex Navigation - Live Preview</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #fafbfc;
+            padding-top: 88px;
+        }
+
+        /* Premium Navigation Bar - EXACT MATCH */
+        .nav-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 9999;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+            border-bottom: 1px solid rgba(95, 140, 140, 0.12);
+            padding: 0 48px;
+            height: 68px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container:hover {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
+        }
+
+        /* Logo section */
+        .logo-section {
+            display: flex;
+            align-items: center;
+            margin-right: 24px;
+        }
+
+        .logo {
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #7a9999, #6a8989);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+            transition: transform 0.3s ease;
+            filter: drop-shadow(0 2px 4px rgba(95, 140, 140, 0.15));
+        }
+
+        .logo:hover {
+            transform: scale(1.08) rotate(3deg);
+            cursor: pointer;
+        }
+
+        /* Navigation items - TIGHTLY GROUPED */
+        .nav-items {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            flex: 0;
+        }
+
+        /* Navigation buttons - EXACT STYLING */
+        .nav-button {
+            background: transparent;
+            border: none;
+            border-radius: 24px;
+            color: #516060;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 10px 20px;
+            margin: 0 3px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            white-space: nowrap;
+            cursor: pointer;
+            position: relative;
+            letter-spacing: 0.01em;
+        }
+
+        .nav-button:hover {
+            color: #5f8c8c;
+            background: linear-gradient(135deg, rgba(95, 140, 140, 0.08), rgba(95, 140, 140, 0.12));
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(95, 140, 140, 0.15);
+        }
+
+        .nav-button.active {
+            background: linear-gradient(135deg, #7a9999, #6a8989);
+            color: #ffffff;
+            font-weight: 600;
+            transform: translateY(0px);
+            box-shadow: 0 2px 8px rgba(95, 140, 140, 0.25), inset 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        /* User section - FAR RIGHT */
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-left: auto;
+            padding-left: 40px;
+            border-left: 1px solid rgba(95, 140, 140, 0.1);
+        }
+
+        .user-badge {
+            background: linear-gradient(135deg, #f4f6f6, #eaeded);
+            border-radius: 20px;
+            padding: 8px 18px;
+            border: 1px solid rgba(95, 140, 140, 0.15);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+            transition: all 0.25s ease;
+            font-size: 13px;
+            font-weight: 600;
+            color: #2a3a3a;
+        }
+
+        .user-badge:hover {
+            background: linear-gradient(135deg, #eaeded, #e1e5e5);
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+        }
+
+        .logout-button {
+            background: transparent;
+            border: none;
+            border-radius: 24px;
+            color: #e08585;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 10px 20px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .logout-button:hover {
+            background: rgba(224, 133, 133, 0.1);
+            color: #d66b6b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(224, 133, 133, 0.15);
+        }
+
+        /* Content area */
+        .content {
+            padding: 40px 60px;
+            max-width: 1440px;
+            margin: 0 auto;
+        }
+
+        .demo-card {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid #e2e8f0;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-family: 'Marcellus', serif;
+            font-size: 48px;
+            color: #1a2424;
+            margin-bottom: 16px;
+        }
+
+        h2 {
+            font-family: 'Marcellus', serif;
+            font-size: 32px;
+            color: #2a3a3a;
+            margin-bottom: 12px;
+        }
+
+        p {
+            color: #4a5568;
+            line-height: 1.6;
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+
+        .feature-box {
+            background: linear-gradient(135deg, rgba(122, 153, 153, 0.05), rgba(95, 140, 140, 0.08));
+            border-left: 4px solid #7a9999;
+            padding: 24px;
+            border-radius: 8px;
+            margin-top: 24px;
+        }
+
+        .feature-box h3 {
+            color: #5f8c8c;
+            font-size: 18px;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .feature-list li {
+            padding: 10px 0;
+            color: #516060;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+
+        .feature-list li::before {
+            content: "✓";
+            color: #7a9999;
+            font-weight: bold;
+            margin-right: 12px;
+            font-size: 16px;
+        }
+
+        .highlight {
+            background: rgba(122, 153, 153, 0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Monaco', monospace;
+            font-size: 13px;
+        }
+
+        .instructions {
+            background: #f8fafa;
+            border: 2px solid #7a9999;
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 32px;
+        }
+
+        .instructions h3 {
+            color: #2a3a3a;
+            font-size: 20px;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .instructions ol {
+            margin-left: 20px;
+            color: #516060;
+        }
+
+        .instructions li {
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        .instructions code {
+            background: #fff;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Monaco', monospace;
+            font-size: 13px;
+            color: #7a9999;
+        }
+    </style>
+</head>
+<body>
+    <!-- EXACT Navigation Bar -->
+    <nav class="nav-container">
+        <!-- Logo -->
+        <div class="logo-section">
+            <div class="logo">M</div>
+        </div>
+
+        <!-- Navigation Items - TIGHTLY GROUPED -->
+        <div class="nav-items">
+            <button class="nav-button active">Home</button>
+            <button class="nav-button">My Tasks</button>
+            <button class="nav-button">Team Tasks</button>
+            <button class="nav-button">Archive</button>
+            <button class="nav-button">Sales Portal</button>
+            <button class="nav-button">Investor Portal</button>
+        </div>
+
+        <!-- User Section - FAR RIGHT -->
+        <div class="user-section">
+            <div class="user-badge">Téa</div>
+            <button class="logout-button">Logout</button>
+        </div>
+    </nav>
+
+    <!-- Content Area -->
+    <div class="content">
+        <div class="demo-card">
+            <h1>Welcome back, Téa</h1>
+            <p style="font-size: 16px; color: #7a8888;">This is the EXACT navigation design for your Streamlit dashboard</p>
+
+            <div class="feature-box">
+                <h3>🎯 Key Features Implemented</h3>
+                <ul class="feature-list">
+                    <li><strong>Frosted glass navigation bar</strong> with 95% white opacity and 12px backdrop blur</li>
+                    <li><strong>Buttons tightly grouped on left</strong> - Home through Investor Portal close together</li>
+                    <li><strong>3px gap between buttons</strong> - clean spacing without dividers</li>
+                    <li><strong>Active button</strong> shows filled teal gradient pill with white text</li>
+                    <li><strong>Inactive buttons</strong> are transparent with gray text</li>
+                    <li><strong>Smooth hover effects</strong> with cubic-bezier transitions</li>
+                    <li><strong>Logout button far right</strong> with vertical separator line</li>
+                    <li><strong>68px navigation height</strong> with enhanced shadow on hover</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="demo-card">
+            <h2>Interactive Demo</h2>
+            <p><strong>Try hovering and clicking:</strong></p>
+            <ul style="margin-left: 20px; margin-top: 16px;">
+                <li style="margin-bottom: 10px;">✨ Hover over the <span class="highlight">logo</span> to see it rotate and scale</li>
+                <li style="margin-bottom: 10px;">🎨 Hover over <span class="highlight">navigation buttons</span> to see gradient lift effect</li>
+                <li style="margin-bottom: 10px;">🖱️ Click any button to see the <span class="highlight">active filled state</span></li>
+                <li style="margin-bottom: 10px;">👤 Hover over the <span class="highlight">user badge</span> to see subtle elevation</li>
+                <li style="margin-bottom: 10px;">🚪 Hover over <span class="highlight">Logout</span> to see coral color animation</li>
+                <li style="margin-bottom: 10px;">📦 Hover over the <span class="highlight">entire nav bar</span> for enhanced shadow</li>
+            </ul>
+        </div>
+
+        <div class="demo-card">
+            <h2>Button Styling Details</h2>
+            <div class="instructions">
+                <h3>Exact CSS Applied via JavaScript:</h3>
+                <ol>
+                    <li><strong>Active Button (current page):</strong>
+                        <ul style="margin-top: 8px; margin-left: 20px;">
+                            <li><code>background: linear-gradient(135deg, #7a9999, #6a8989)</code></li>
+                            <li><code>color: #ffffff</code></li>
+                            <li><code>font-weight: 600</code></li>
+                            <li><code>border-radius: 24px</code> (pill shape)</li>
+                            <li><code>padding: 10px 20px</code></li>
+                            <li><code>margin: 0 3px</code> (spacing between buttons)</li>
+                            <li><code>box-shadow: 0 2px 8px rgba(95, 140, 140, 0.25)</code></li>
+                        </ul>
+                    </li>
+                    <li style="margin-top: 16px;"><strong>Inactive Buttons:</strong>
+                        <ul style="margin-top: 8px; margin-left: 20px;">
+                            <li><code>background: transparent</code></li>
+                            <li><code>color: #516060</code> (gray)</li>
+                            <li><code>font-weight: 500</code></li>
+                            <li><code>border-radius: 24px</code> (pill shape)</li>
+                            <li><code>padding: 10px 20px</code></li>
+                            <li><code>margin: 0 3px</code></li>
+                            <li><code>border: none</code> (no dividers!)</li>
+                        </ul>
+                    </li>
+                    <li style="margin-top: 16px;"><strong>All Buttons:</strong>
+                        <ul style="margin-top: 8px; margin-left: 20px;">
+                            <li><code>white-space: nowrap</code> (text on one line)</li>
+                            <li><code>transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1)</code></li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="demo-card">
+            <h2>Layout Structure</h2>
+            <p><strong>Column proportions:</strong></p>
+            <ul style="margin-left: 20px; margin-top: 16px; line-height: 1.8;">
+                <li><span class="highlight">Logo: 0.4</span> - Compact logo column</li>
+                <li><span class="highlight">Each Nav Button: 0.8</span> - 6 buttons × 0.8 = 4.8 total width</li>
+                <li><span class="highlight">Spacer: 3</span> - Large empty space to push logout right</li>
+                <li><span class="highlight">Separator: 0.05</span> - Thin vertical divider line</li>
+                <li><span class="highlight">Logout: 0.7</span> - Logout button on far right</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Add active state toggle for demo
+        document.querySelectorAll('.nav-button').forEach(button => {
+            button.addEventListener('click', function() {
+                document.querySelectorAll('.nav-button').forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Log to console for verification
+        console.log('✨ MetaFlex Navigation Preview Loaded');
+        console.log('Navigation styling: Frosted glass with pill buttons');
+        console.log('Button spacing: 3px margin between buttons');
+        console.log('Active button: Teal gradient fill');
+        console.log('Inactive buttons: Transparent background');
+    </script>
+</body>
+</html>

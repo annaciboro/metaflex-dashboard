@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Navigation Bar Preview</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #fafbfc;
+            padding-top: 88px;
+        }
+
+        /* Premium Navigation Bar */
+        .nav-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 9999;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+            border-bottom: 1px solid rgba(95, 140, 140, 0.12);
+            padding: 0 48px;
+            height: 68px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container:hover {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
+        }
+
+        /* Logo section */
+        .logo-section {
+            display: flex;
+            align-items: center;
+            margin-right: 40px;
+            padding-right: 40px;
+            border-right: 1px solid rgba(95, 140, 140, 0.1);
+        }
+
+        .logo {
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #7a9999, #6a8989);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+            transition: transform 0.3s ease;
+            filter: drop-shadow(0 2px 4px rgba(95, 140, 140, 0.15));
+        }
+
+        .logo:hover {
+            transform: scale(1.08) rotate(3deg);
+            cursor: pointer;
+        }
+
+        /* Navigation items */
+        .nav-items {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            flex: 1;
+        }
+
+        .nav-button {
+            background: transparent;
+            border: none;
+            border-radius: 24px;
+            color: #516060;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 10px 20px;
+            margin: 0 3px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            white-space: nowrap;
+            cursor: pointer;
+            position: relative;
+            letter-spacing: 0.01em;
+        }
+
+        .nav-button:hover {
+            color: #5f8c8c;
+            background: linear-gradient(135deg, rgba(95, 140, 140, 0.08), rgba(95, 140, 140, 0.12));
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(95, 140, 140, 0.15);
+        }
+
+        .nav-button:active,
+        .nav-button.active {
+            background: linear-gradient(135deg, #7a9999, #6a8989);
+            color: #ffffff;
+            font-weight: 600;
+            transform: translateY(0px);
+            box-shadow: 0 2px 8px rgba(95, 140, 140, 0.25), inset 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        /* User section */
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-left: auto;
+            padding-left: 40px;
+            border-left: 1px solid rgba(95, 140, 140, 0.1);
+        }
+
+        .user-badge {
+            background: linear-gradient(135deg, #f4f6f6, #eaeded);
+            border-radius: 20px;
+            padding: 8px 18px;
+            border: 1px solid rgba(95, 140, 140, 0.15);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+            transition: all 0.25s ease;
+            font-size: 13px;
+            font-weight: 600;
+            color: #2a3a3a;
+        }
+
+        .user-badge:hover {
+            background: linear-gradient(135deg, #eaeded, #e1e5e5);
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+        }
+
+        .logout-button {
+            background: transparent;
+            border: none;
+            border-radius: 24px;
+            color: #e08585;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 10px 20px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .logout-button:hover {
+            background: rgba(224, 133, 133, 0.1);
+            color: #d66b6b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(224, 133, 133, 0.15);
+        }
+
+        /* Content area */
+        .content {
+            padding: 40px 60px;
+            max-width: 1440px;
+            margin: 0 auto;
+        }
+
+        .demo-card {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid #e2e8f0;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-family: 'Marcellus', serif;
+            font-size: 32px;
+            color: #1a2332;
+            margin-bottom: 16px;
+        }
+
+        p {
+            color: #4a5568;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .feature-list {
+            background: #f8fafa;
+            border-left: 4px solid #7a9999;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 24px;
+        }
+
+        .feature-list h3 {
+            color: #5f8c8c;
+            font-size: 16px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .feature-list ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .feature-list li {
+            padding: 8px 0;
+            color: #516060;
+            font-size: 14px;
+        }
+
+        .feature-list li::before {
+            content: "✓ ";
+            color: #7a9999;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 32px;
+        }
+
+        .comparison-card {
+            padding: 24px;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .comparison-card.before {
+            border-color: #e08585;
+            background: rgba(224, 133, 133, 0.02);
+        }
+
+        .comparison-card.after {
+            border-color: #7a9999;
+            background: rgba(122, 153, 153, 0.02);
+        }
+
+        .comparison-card h4 {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .comparison-card.before h4 {
+            color: #e08585;
+        }
+
+        .comparison-card.after h4 {
+            color: #7a9999;
+        }
+    </style>
+</head>
+<body>
+    <!-- Premium Navigation Bar -->
+    <nav class="nav-container">
+        <div class="logo-section">
+            <div class="logo">M</div>
+        </div>
+
+        <div class="nav-items">
+            <button class="nav-button active">Home</button>
+            <button class="nav-button">Téa's Tasks</button>
+            <button class="nav-button">All Tasks</button>
+            <button class="nav-button">Archive</button>
+            <button class="nav-button">Sales Portal</button>
+            <button class="nav-button">Investor Portal</button>
+        </div>
+
+        <div class="user-section">
+            <div class="user-badge">Téa</div>
+            <button class="logout-button">Logout</button>
+        </div>
+    </nav>
+
+    <!-- Content Area -->
+    <div class="content">
+        <div class="demo-card">
+            <h1>Premium Navigation Bar Preview</h1>
+            <p>This is a live preview of the enhanced navigation design with all the premium features and interactions.</p>
+
+            <div class="feature-list">
+                <h3>✨ Key Features</h3>
+                <ul>
+                    <li>Frosted glass effect with backdrop blur (95% opacity white background)</li>
+                    <li>Smooth hover animations on entire navigation bar</li>
+                    <li>Pill-shaped buttons with gradient hover states</li>
+                    <li>Active state shows filled gradient pill</li>
+                    <li>Logo with playful rotate animation on hover</li>
+                    <li>Vertical dividers separating logo, nav items, and user section</li>
+                    <li>Premium user badge with gradient background</li>
+                    <li>Logout button with subtle danger color (coral)</li>
+                    <li>Soft shadows and smooth cubic-bezier transitions</li>
+                    <li>Height: 68px with 88px content padding</li>
+                </ul>
+            </div>
+
+            <div class="comparison">
+                <div class="comparison-card before">
+                    <h4>Current Design</h4>
+                    <p>• Solid white background</p>
+                    <p>• Simple border-bottom nav buttons</p>
+                    <p>• Basic hover effects</p>
+                    <p>• No dividers between sections</p>
+                    <p>• Minimal animations</p>
+                </div>
+
+                <div class="comparison-card after">
+                    <h4>Enhanced Design</h4>
+                    <p>• Frosted glass with blur effect</p>
+                    <p>• Rounded pill buttons with gradients</p>
+                    <p>• Premium lift animations</p>
+                    <p>• Visual section separators</p>
+                    <p>• Playful micro-interactions</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-card">
+            <h1>Interactive Demo</h1>
+            <p><strong>Try hovering over the navigation elements above:</strong></p>
+            <p>• Hover over the logo to see it rotate and scale</p>
+            <p>• Hover over navigation buttons to see the gradient lift effect</p>
+            <p>• Click a button to see the active filled state</p>
+            <p>• Hover over the user badge to see the subtle elevation</p>
+            <p>• Hover over Logout to see the danger color animation</p>
+            <p>• Hover over the entire nav bar to see enhanced shadow depth</p>
+        </div>
+    </div>
+
+    <script>
+        // Add active state toggle for demo
+        document.querySelectorAll('.nav-button').forEach(button => {
+            button.addEventListener('click', function() {
+                document.querySelectorAll('.nav-button').forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

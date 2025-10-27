@@ -38,15 +38,69 @@ def show_tasks():
     else:
         personal_df = pd.DataFrame()
 
+    # Filter to show only OPEN tasks (exclude Done/Complete/Closed)
+    if has_column(personal_df, "Status"):
+        status_col = get_column(personal_df, "Status")
+        personal_df = personal_df[~personal_df[status_col].str.lower().isin(['done', 'complete', 'completed', 'closed'])]
+
     if personal_df.empty:
-        st.info("No tasks assigned to Téa.")
+        st.info("No open tasks assigned to Téa.")
         return
 
-    # Calculate personal KPIs
+    # Calculate personal KPIs from filtered data (only open tasks)
+    my_open_tasks = len(personal_df)
+
+    # Count active projects
+    active_projects = 0
+    if has_column(personal_df, "Project"):
+        project_col = get_column(personal_df, "Project")
+        active_projects = personal_df[project_col].nunique()
+
+    # Calculate KPIs for charts (using calculate_kpis function)
     personal_kpis = calculate_kpis(personal_df, user_name, is_personal=True)
 
-    # Display KPI Metrics
-    render_kpi_section(personal_kpis)
+    # Display KPI Metrics (only showing MY data, not team data)
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.metric(
+            label="MY OPEN TASKS",
+            value=my_open_tasks,
+            delta=None
+        )
+
+    with col2:
+        st.metric(
+            label="ACTIVE PROJECTS",
+            value=active_projects,
+            delta=None
+        )
+
+    with col3:
+        # Calculate completion rate
+        if has_column(personal_df, "Progress %"):
+            try:
+                progress_col = get_column(personal_df, "Progress %")
+                # Convert to numeric, coerce errors to NaN
+                progress_numeric = pd.to_numeric(personal_df[progress_col], errors='coerce')
+                avg_progress = int(progress_numeric.fillna(0).mean())
+                st.metric(
+                    label="AVG PROGRESS",
+                    value=f"{avg_progress}%",
+                    delta=None
+                )
+            except Exception as e:
+                st.metric(
+                    label="AVG PROGRESS",
+                    value="N/A",
+                    delta=None
+                )
+        else:
+            st.metric(
+                label="AVG PROGRESS",
+                value="N/A",
+                delta=None
+            )
 
     st.markdown("<br>", unsafe_allow_html=True)
 
@@ -55,8 +109,8 @@ def show_tasks():
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # Display all personal tasks - with no limit
-    st.markdown(f"### All My Tasks ({len(personal_df)} total)")
+    # Display all personal OPEN tasks - with no limit
+    st.markdown(f"### My Open Tasks ({len(personal_df)} total)")
     st.markdown("<br>", unsafe_allow_html=True)
 
     # Add search box
@@ -96,7 +150,7 @@ def show_tasks():
 
             st.caption(f"Showing {len(clean_table_df)} of {len(personal_df)} tasks")
 
-        # Add progress status with colors
+        # Add progress status with colors matching pie chart
         if "Progress %" in clean_table_df.columns:
             def create_progress_display(value):
                 try:
@@ -108,24 +162,29 @@ def show_tasks():
                 except:
                     val = 0
 
+                # Use colored circles matching the pie chart colors
                 if val == 0:
-                    color = "🔴"
+                    indicator = "🔴"  # Red for Not Started (coral in chart)
                     status = "Not Started"
                 elif val < 100:
-                    color = "🟡"
+                    indicator = "🟡"  # Yellow for In Progress (lime in chart)
                     status = "In Progress"
                 else:
-                    color = "🟢"
+                    indicator = "🟢"  # Green for Completed (sage in chart)
                     status = "Complete"
 
-                filled_blocks = int(val / 10)
-                empty_blocks = 10 - filled_blocks
-                bar = "█" * filled_blocks + "░" * empty_blocks
+                return f"{indicator} {status}"
 
-                return f"{color} {bar} {int(val)}%"
-
-            clean_table_df["Progress"] = clean_table_df["Progress %"].apply(create_progress_display)
+            clean_table_df["Progress Status"] = clean_table_df["Progress %"].apply(create_progress_display)
             clean_table_df = clean_table_df.drop(columns=["Progress %"])
+
+            # Reorder columns to put Progress Status after Status
+            cols = clean_table_df.columns.tolist()
+            if "Progress Status" in cols and "Status" in cols:
+                cols.remove("Progress Status")
+                status_idx = cols.index("Status")
+                cols.insert(status_idx + 1, "Progress Status")
+                clean_table_df = clean_table_df[cols]
 
         # Configure column settings
         column_config = {
@@ -146,37 +205,18 @@ def show_tasks():
                 "Due Date",
                 width="small"
             ),
-            "Progress": st.column_config.TextColumn(
-                "Progress",
-                help="Task completion progress",
+            "Progress Status": st.column_config.TextColumn(
+                "Progress Status",
+                help="Task completion status",
                 width="medium"
             )
         }
 
-        # Add responsive CSS for table height
+        # Compact table height - fits on page without scrolling
         st.markdown("""
             <style>
-            /* Make table taller on larger screens, responsive on smaller */
             [data-testid="stDataFrame"] {
-                height: calc(100vh - 500px) !important;
-                min-height: 400px !important;
-                max-height: 900px !important;
-            }
-
-            /* Adjust for mobile/tablet */
-            @media (max-width: 768px) {
-                [data-testid="stDataFrame"] {
-                    height: calc(100vh - 600px) !important;
-                    min-height: 300px !important;
-                }
-            }
-
-            /* Adjust for small mobile */
-            @media (max-width: 480px) {
-                [data-testid="stDataFrame"] {
-                    height: calc(100vh - 650px) !important;
-                    min-height: 250px !important;
-                }
+                max-height: 500px !important;
             }
             </style>
         """, unsafe_allow_html=True)
@@ -186,8 +226,7 @@ def show_tasks():
             clean_table_df,
             use_container_width=True,
             hide_index=True,
-            column_config=column_config,
-            height=None  # Let CSS handle the height
+            column_config=column_config
         )
     else:
         st.info("No task details available to display.")

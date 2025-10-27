@@ -1,5 +1,5 @@
 import streamlit as st
 
-def show_settings():
-    st.title("⚙️ Settings")
-    st.write("Manage your user preferences, integrations, and system settings here.")
+def show_investor_portal():
+    st.title("Investor Portal")
+    st.write("Coming soon...")

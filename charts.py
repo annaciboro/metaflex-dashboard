@@ -44,8 +44,8 @@ def create_team_completion_donut(open_tasks, working_tasks, done_tasks):
         st.info("No tasks to display in chart.")
         return None
 
-    # Premium sophisticated colors
-    colors = ['#e08585', '#b9c97d', '#8ca68c']  # Coral (open), Lime (in progress), Sage (done)
+    # Muted sophisticated colors - matching progress indicators
+    colors = ['#c97a6f', '#a5a872', '#7a9183']  # Muted coral (not started), Muted lime (in progress), Muted sage (completed)
 
     # Create donut chart with percentages on slices
     fig = go.Figure(data=[go.Pie(
@@ -77,20 +77,20 @@ def create_team_completion_donut(open_tasks, working_tasks, done_tasks):
         align='center'
     )
 
-    # Premium white background layout
+    # Premium white background layout - aligned with bar chart
     fig.update_layout(
         showlegend=True,
         legend=dict(
             orientation="h",
             yanchor="bottom",
-            y=-0.15,
+            y=-0.18,
             xanchor="center",
             x=0.5,
             font=dict(size=14, color='#6b778c', family='Inter', weight=600),
             itemsizing='constant'
         ),
-        height=450,
-        margin=dict(t=40, b=60, l=40, r=40),
+        height=550,
+        margin=dict(t=20, b=100, l=40, r=40),
         paper_bgcolor='rgba(0,0,0,0)',  # Transparent background
         plot_bgcolor='rgba(0,0,0,0)',
         font=dict(family='Inter, -apple-system, sans-serif')
@@ -146,10 +146,10 @@ def create_project_breakdown_chart(df):
         width=0.6  # Slimmer bars for premium look
     )])
 
-    # Premium white background layout
+    # Premium white background layout - matched height and margins with donut chart
     fig.update_layout(
-        height=400,
-        margin=dict(t=20, b=20, l=20, r=80),
+        height=550,
+        margin=dict(t=20, b=100, l=20, r=80),
         paper_bgcolor='rgba(0,0,0,0)',  # Transparent background
         plot_bgcolor='rgba(0,0,0,0)',
         xaxis=dict(

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Navigation</title>
+    <style>
+        body { margin: 0; font-family: Inter, sans-serif; }
+        .nav-bar {
+            background: linear-gradient(135deg, #d4e8e8 0%, #c8dede 100%);
+            padding: 0 32px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        button {
+            background: transparent;
+            border: none;
+            color: #2a4a4a;
+            font-size: 14px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        button:hover {
+            background: linear-gradient(135deg, #d8e8d4 0%, #cce0c8 100%);
+            color: #1a3a1a;
+        }
+        button.active {
+            background: rgba(15, 106, 106, 0.15);
+            color: #0f6a6a;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-bar">
+        <button class="active">Home</button>
+        <button>My Tasks</button>
+        <button>Team Tasks</button>
+        <button>Archive</button>
+        <button>Sales Portal</button>
+        <button>Investor Portal</button>
+        <div style="flex: 1"></div>
+        <button>Logout</button>
+    </div>
+    <div style="padding: 80px 40px;">
+        <h1>This shows what the navigation should look like</h1>
+        <p>Compare this to your Streamlit app to see the difference.</p>
+    </div>
+</body>
+</html>

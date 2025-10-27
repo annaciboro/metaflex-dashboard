@@ -352,77 +352,9 @@ def calculate_kpis(df, user_name, is_personal=False):
 
 def render_kpi_section(kpis, section_label=""):
     """
-    Render KPI metrics in a 3-column layout
+    Render KPI metrics in a 3-column layout with visual cards
+    (All styling now in style.css - no duplicate CSS here)
     """
-    # Add clean peaceful styling exactly like the mockup
-    st.markdown("""
-        <style>
-        /* Override Streamlit's default h1, h2, h3 styling - LIGHTER */
-        h1 {
-            font-size: 24px !important;
-            font-weight: 500 !important;
-            letter-spacing: -0.01em !important;
-            line-height: 1.3 !important;
-            color: #2a3a3a !important;
-        }
-
-        h2 {
-            font-size: 20px !important;
-            font-weight: 500 !important;
-            letter-spacing: -0.005em !important;
-            line-height: 1.4 !important;
-            color: #1a2424 !important;
-        }
-
-        h3 {
-            font-size: 18px !important;
-            font-weight: 400 !important;
-            letter-spacing: 0 !important;
-            line-height: 1.4 !important;
-            color: #2a3a3a !important;
-        }
-
-        /* Remove ALL teal backgrounds and boxes */
-        .main .block-container {
-            padding: 3rem 4rem !important;
-            background: #ffffff !important;
-        }
-
-        /* Premium metric cards WITH containers */
-        [data-testid="metric-container"] {
-            background: #ffffff !important;
-            border: 1px solid #e1e5e5 !important;
-            border-radius: 12px !important;
-            padding: 24px !important;
-            box-shadow: 0 1px 3px rgba(26, 36, 36, 0.04) !important;
-            transition: all 0.2s ease !important;
-        }
-
-        [data-testid="metric-container"]:hover {
-            box-shadow: 0 4px 8px rgba(26, 36, 36, 0.08) !important;
-            border-color: #5f8c8c !important;
-        }
-
-        /* Metric labels - clean and minimal */
-        [data-testid="stMetricLabel"] {
-            color: #7a8888 !important;
-            font-size: 10px !important;
-            font-weight: 500 !important;
-            text-transform: uppercase !important;
-            letter-spacing: 0.8px !important;
-            margin-bottom: 0.5rem !important;
-        }
-
-        /* Metric values - lighter and smaller */
-        [data-testid="stMetricValue"] {
-            color: #1a2424 !important;
-            font-size: 32px !important;
-            font-weight: 600 !important;
-            letter-spacing: -0.01em !important;
-        }
-        </style>
-    """, unsafe_allow_html=True)
-
     col1, col2, col3 = st.columns(3)
 
     with col1:
@@ -448,78 +380,14 @@ def render_kpi_section(kpis, section_label=""):
 
 def render_charts_section(kpis, filtered_df):
     """
-    Render chart visualizations in premium containers with generous spacing
+    Render chart visualizations with generous spacing
+    (All styling now in style.css)
     """
-    # Add CSS for clean peaceful chart containers - NO TEAL
-    st.markdown("""
-        <style>
-        /* Clean peaceful chart containers - pure white */
-        .chart-container {
-            background: #ffffff;
-            border-radius: 0;
-            padding: 0;
-            box-shadow: none;
-            border: none;
-            margin-bottom: 3rem;
-        }
-
-        .chart-title {
-            font-size: 13px;
-            font-weight: 500;
-            color: #2a3a3a;
-            margin-bottom: 1.5rem;
-            letter-spacing: 0;
-        }
-
-        /* Section headers - lighter weight */
-        .section-header {
-            font-size: 24px !important;
-            font-weight: 500 !important;
-            color: #2a3a3a !important;
-            margin-bottom: 0.5rem !important;
-            letter-spacing: -0.01em !important;
-            line-height: 1.3 !important;
-        }
-
-        .section-subtitle {
-            font-size: 12px;
-            color: #7a8888;
-            margin-bottom: 2rem;
-            font-weight: 400;
-            line-height: 1.5;
-        }
-
-        /* Add spacing between metric card columns */
-        [data-testid="column"] {
-            padding: 0 12px !important;
-        }
-
-        [data-testid="column"]:first-child {
-            padding-left: 0 !important;
-        }
-
-        [data-testid="column"]:last-child {
-            padding-right: 0 !important;
-        }
-
-        /* Add breathing room between sections */
-        .section-spacer {
-            margin-bottom: 48px;
-        }
-
-        /* Hide any teal backgrounds from Streamlit */
-        div[data-testid="stVerticalBlock"] > div {
-            background: transparent !important;
-        }
-        </style>
-    """, unsafe_allow_html=True)
-
-    # Add generous horizontal space between charts
-    chart_col1, spacer, chart_col2 = st.columns([10, 1, 10])
+    # Single row with two columns - each contains title and chart together
+    chart_col1, chart_col2 = st.columns([1, 1])
 
     with chart_col1:
-        st.markdown('<div class="chart-container">', unsafe_allow_html=True)
-        st.markdown('<h3 class="chart-title">Task Completion Status</h3>', unsafe_allow_html=True)
+        st.markdown("<h3 style='text-align: center; margin-bottom: 24px;'>Task Completion Status</h3>", unsafe_allow_html=True)
 
         # Team completion donut chart
         donut_fig = create_team_completion_donut(
@@ -528,20 +396,35 @@ def render_charts_section(kpis, filtered_df):
             kpis["done_tasks"]
         )
         if donut_fig:
-            st.plotly_chart(donut_fig, use_container_width=True, config={'displayModeBar': False})
-        st.markdown('</div>', unsafe_allow_html=True)
-
-    # spacer column stays empty for breathing room
+            st.plotly_chart(donut_fig, use_container_width=True, config={
+                'displayModeBar': True,
+                'modeBarButtonsToAdd': ['toImage'],
+                'toImageButtonOptions': {
+                    'format': 'png',
+                    'filename': 'task_completion_chart',
+                    'height': 500,
+                    'width': 700,
+                    'scale': 2
+                }
+            })
 
     with chart_col2:
-        st.markdown('<div class="chart-container">', unsafe_allow_html=True)
-        st.markdown('<h3 class="chart-title">Tasks by Project</h3>', unsafe_allow_html=True)
+        st.markdown("<h3 style='text-align: center; margin-bottom: 24px;'>Tasks by Project</h3>", unsafe_allow_html=True)
 
         # Project breakdown chart
         project_fig = create_project_breakdown_chart(filtered_df)
         if project_fig:
-            st.plotly_chart(project_fig, use_container_width=True, config={'displayModeBar': False})
-        st.markdown('</div>', unsafe_allow_html=True)
+            st.plotly_chart(project_fig, use_container_width=True, config={
+                'displayModeBar': True,
+                'modeBarButtonsToAdd': ['toImage'],
+                'toImageButtonOptions': {
+                    'format': 'png',
+                    'filename': 'project_breakdown_chart',
+                    'height': 500,
+                    'width': 700,
+                    'scale': 2
+                }
+            })
 
 def render_tasks_table(filtered_df, limit=10):
     """
@@ -646,7 +529,7 @@ def render_tasks_table(filtered_df, limit=10):
     else:
         st.info("No tasks to display.")
 
-def render_editable_task_grid(df, current_user, is_tea=False):
+def render_editable_task_grid(df, current_user, is_tea=False, key_prefix="", show_title=True):
     """
     Render editable AgGrid for task management
 
@@ -654,12 +537,14 @@ def render_editable_task_grid(df, current_user, is_tea=False):
         df: Full dataframe
         current_user: Current logged-in user's name
         is_tea: Whether the current user is Téa Phillips
+        key_prefix: Unique prefix for widget keys to avoid duplicates
+        show_title: Whether to display the section title and caption
     """
     # Filter based on user permissions
     if is_tea:
         visible_df = df.copy()  # Téa sees all tasks
-        section_title = "## All Tasks Management"
-        section_caption = "Edit any field directly. Changes sync automatically to the Google Sheet."
+        section_title = "## All Task Management"
+        section_caption = "Edit any field directly. Then commit to Google Sheets by pressing the button 'Send to Google Sheets'."
     else:
         # Other users see only their own tasks
         first_name = current_user.split()[0] if current_user else ""
@@ -669,18 +554,23 @@ def render_editable_task_grid(df, current_user, is_tea=False):
         else:
             visible_df = pd.DataFrame()
         section_title = "## My Tasks Management"
-        section_caption = "Edit your tasks directly. Changes sync automatically to the Google Sheet."
+        section_caption = "Edit any field directly. Then commit to Google Sheets by pressing the button 'Send to Google Sheets'."
 
     if visible_df.empty:
         st.info("No tasks available to edit.")
         return df
 
-    # Display section header
-    st.markdown(section_title)
-    st.caption(section_caption)
+    # Display section header only if show_title is True
+    if show_title:
+        st.markdown(section_title)
+        if section_caption:
+            st.caption(section_caption)
 
-    # Add helpful instruction for progress editing
-    st.info("💡 **Tip:** Click on any cell in the **Progress Status** column to select 🔴 Not Started, 🟡 In Progress, or 🟢 Complete")
+    if visible_df.empty:
+        st.info("No tasks to display.")
+        return df
+
+    st.markdown("<br>", unsafe_allow_html=True)
 
     # Add CSS to highlight Progress Status column
     st.markdown("""
@@ -702,59 +592,63 @@ def render_editable_task_grid(df, current_user, is_tea=False):
         </style>
     """, unsafe_allow_html=True)
 
-    st.markdown("<br>", unsafe_allow_html=True)
-
-    # Add filter dropdowns and search box in 3-column layout
-    col1, col2, col3 = st.columns(3)
-
-    # Get unique values for dropdowns
-    project_options = ["All Projects"]
-    # Standardized person names for filter
-    person_options = ["All People", "Téa", "Jess", "Justin", "Megan"]
-
-    if has_column(visible_df, "Project"):
-        project_col = get_column(visible_df, "Project")
-        unique_projects = sorted(visible_df[project_col].dropna().unique().tolist())
-        project_options.extend(unique_projects)
-
-    with col1:
-        project_filter = st.selectbox("🔍 Filter by Project", options=project_options, key="project_filter")
-
-    with col2:
-        # Search box in the middle
-        search_term = st.text_input("🔎 Search Tasks", placeholder="Search by keywords...", key="search_all_tasks")
-
-    with col3:
-        person_filter = st.selectbox("🔍 Filter by Person", options=person_options, key="person_filter")
-
-    # Apply filters if provided
+    # Only show filters for "All Task Management" (when key_prefix is empty)
     filtered_df = visible_df.copy()
-    if project_filter != "All Projects" and has_column(filtered_df, "Project"):
-        project_col = get_column(filtered_df, "Project")
-        filtered_df = filtered_df[filtered_df[project_col] == project_filter]
 
-    if person_filter != "All People" and has_column(filtered_df, "Person"):
-        person_col = get_column(filtered_df, "Person")
-        # Use contains to match first names (case-insensitive)
-        filtered_df = filtered_df[filtered_df[person_col].str.contains(person_filter, case=False, na=False)]
+    if key_prefix == "":
+        # Add archive filter checkbox
+        show_archived = st.checkbox("Show archived tasks (Status: Done)", value=False, key=f"{key_prefix}_show_archived")
 
-    # Apply keyword search across all text columns
-    if search_term:
-        # Search across all columns
-        search_mask = filtered_df.astype(str).apply(
-            lambda row: row.str.contains(search_term, case=False, na=False).any(),
-            axis=1
-        )
-        filtered_df = filtered_df[search_mask]
+        # Apply archive filter
+        if not show_archived and has_column(filtered_df, "Status"):
+            status_col = get_column(filtered_df, "Status")
+            filtered_df = filtered_df[~filtered_df[status_col].str.strip().str.lower().isin(['done', 'complete', 'completed'])]
+
+        st.markdown("<br>", unsafe_allow_html=True)
+
+        # Add filter dropdowns and search box in 3-column layout
+        col1, col2, col3 = st.columns(3)
+
+        # Build project and person filter options
+        project_options = ["All Projects"]
+        person_options = ["All People", "Téa", "Jess", "Justin", "Megan"]
+
+        if has_column(filtered_df, "Project"):
+            project_col = get_column(filtered_df, "Project")
+            unique_projects = sorted(filtered_df[project_col].dropna().unique().tolist())
+            project_options.extend(unique_projects)
+
+        with col1:
+            project_filter = st.selectbox("🔍 Filter by Project", options=project_options, key=f"{key_prefix}_project_filter")
+
+        with col2:
+            search_term = st.text_input("🔎 Search Tasks", placeholder="Search by keywords...", key=f"{key_prefix}_search_tasks")
+
+        with col3:
+            person_filter = st.selectbox("🔍 Filter by Person", options=person_options, key=f"{key_prefix}_person_filter")
+
+        # Apply filters
+        if project_filter != "All Projects" and has_column(filtered_df, "Project"):
+            project_col = get_column(filtered_df, "Project")
+            filtered_df = filtered_df[filtered_df[project_col] == project_filter]
+
+        if person_filter != "All People" and has_column(filtered_df, "Person"):
+            person_col = get_column(filtered_df, "Person")
+            filtered_df = filtered_df[filtered_df[person_col].str.contains(person_filter, case=False, na=False)]
+
+        # Apply keyword search
+        if search_term:
+            search_mask = filtered_df.astype(str).apply(
+                lambda row: row.str.contains(search_term, case=False, na=False).any(),
+                axis=1
+            )
+            filtered_df = filtered_df[search_mask]
+
+        st.markdown("<br>", unsafe_allow_html=True)
 
     if filtered_df.empty:
-        if search_term:
-            st.warning(f"No tasks match the search term '{search_term}' with current filters.")
-        else:
-            st.info("No tasks match the current filters.")
+        st.info("No tasks to display with current filters.")
         return df
-
-    st.markdown("<br>", unsafe_allow_html=True)
 
     # Create a display copy with clean column names (remove ___N suffix)
     # Build a completely new DataFrame with clean column names
@@ -784,7 +678,7 @@ def render_editable_task_grid(df, current_user, is_tea=False):
 
             # Determine status based on progress
             if val == 0:
-                return "🔴 Not Started"
+                return "🟠 Not Started"
             elif val < 100:
                 return "🟡 In Progress"
             else:
@@ -810,11 +704,11 @@ def render_editable_task_grid(df, current_user, is_tea=False):
 
     # Configure specific columns using clean names
     if "Status" in display_df.columns:
-        gb.configure_column("Status", editable=True)
+        gb.configure_column("Status", hide=True)  # Hidden in home view
     if "Due Date" in display_df.columns:
         gb.configure_column("Due Date", editable=True)
     if "Project" in display_df.columns:
-        gb.configure_column("Project", editable=True)
+        gb.configure_column("Project", hide=True)  # Hide since project name is in heading
     if "Task" in display_df.columns:
         gb.configure_column("Task", editable=True)
 
@@ -829,15 +723,15 @@ def render_editable_task_grid(df, current_user, is_tea=False):
             editable=True,
             cellEditor='agSelectCellEditor',
             cellEditorParams={
-                'values': ['🔴 Not Started', '🟡 In Progress', '🟢 Complete']
+                'values': ['🟠 Not Started', '🟡 In Progress', '🟢 Complete']
             },
             width=180,
             headerClass='progress-status-header'
         )
 
-    # Progress % - keep it editable as a number field
+    # Progress % - hide in home view (still used for data syncing)
     if "Progress %" in display_df.columns:
-        gb.configure_column("Progress %", editable=True, type=["numericColumn"])
+        gb.configure_column("Progress %", hide=True)
 
     grid_options = gb.build()
 
@@ -897,17 +791,45 @@ def render_editable_task_grid(df, current_user, is_tea=False):
             box-shadow: none !important;
             opacity: 0.6;
         }
+
+        /* Archive button styling - secondary button to match primary */
+        button[kind="secondary"],
+        .stButton > button[kind="secondary"],
+        button[data-testid="baseButton-secondary"] {
+            background: linear-gradient(135deg, #e08585 0%, #d66b6b 80%) !important;
+            color: #ffffff !important;
+            border: none !important;
+            border-radius: 8px !important;
+            padding: 14px 28px !important;
+            font-weight: 600 !important;
+            font-size: 14px !important;
+            letter-spacing: 0.5px !important;
+            transition: all 0.25s ease-in-out !important;
+            box-shadow: 0 2px 6px rgba(224, 133, 133, 0.15) !important;
+        }
+        button[kind="secondary"]:hover,
+        .stButton > button[kind="secondary"]:hover,
+        button[data-testid="baseButton-secondary"]:hover {
+            background: linear-gradient(135deg, #d66b6b 0%, #c95555 80%) !important;
+            box-shadow: 0 4px 12px rgba(224, 133, 133, 0.25) !important;
+            transform: translateY(-1px) !important;
+        }
         </style>
     """, unsafe_allow_html=True)
 
-    # Create button - always show it, but disable if no changes
-    if st.button("Send to Google Sheets", type="primary", disabled=not has_changes, use_container_width=True):
+    # Create single "Send to Google Sheets" button
+    if st.button("Send to Google Sheets", type="primary", disabled=not has_changes, use_container_width=True, key=f"{key_prefix}_save_button"):
+        # Check for completed tasks that will be auto-archived
+        completed_tasks_count = 0
+        if "Progress Status" in edited_df.columns:
+            completed_mask = edited_df["Progress Status"].str.contains("🟢|Complete", case=False, na=False)
+            completed_tasks_count = completed_mask.sum()
         with st.spinner("Saving changes to Google Sheets..."):
             # Convert Progress Status back to Progress %
             edited_df_to_save = edited_df.copy()
             if "Progress Status" in edited_df_to_save.columns:
                 def status_to_percentage(status):
-                    if "🔴" in str(status) or "Not Started" in str(status):
+                    if "🟠" in str(status) or "🔴" in str(status) or "Not Started" in str(status):
                         return "0%"
                     elif "🟡" in str(status) or "In Progress" in str(status):
                         return "50%"  # Default to 50% for in progress
@@ -918,6 +840,11 @@ def render_editable_task_grid(df, current_user, is_tea=False):
                 # Update Progress % based on Progress Status
                 if "Progress %" in edited_df_to_save.columns:
                     edited_df_to_save["Progress %"] = edited_df_to_save["Progress Status"].apply(status_to_percentage)
+
+                # AUTO-ARCHIVE: Set Status to "Done" for all completed tasks
+                if "Status" in edited_df_to_save.columns:
+                    completed_mask = edited_df_to_save["Progress Status"].str.contains("🟢|Complete", case=False, na=False)
+                    edited_df_to_save.loc[completed_mask, "Status"] = "Done"
 
                 # Remove Progress Status column (it's not in the original sheet)
                 edited_df_to_save = edited_df_to_save.drop(columns=["Progress Status"])
@@ -943,7 +870,10 @@ def render_editable_task_grid(df, current_user, is_tea=False):
                 success = update_google_sheet(edited_df_with_suffix)
 
             if success:
-                st.success("Changes saved successfully to Google Sheets!")
+                if completed_tasks_count > 0:
+                    st.success(f"✅ Changes saved! {completed_tasks_count} completed task(s) automatically archived.")
+                else:
+                    st.success("✅ Changes saved successfully to Google Sheets!")
                 st.cache_data.clear()  # Clear cache to show fresh data
                 st.balloons()
                 st.rerun()
@@ -962,11 +892,8 @@ def show_dashboard():
     # Get first name for greeting
     first_name = user_name.split()[0] if user_name else "User"
 
-    # Display friendly header
-    st.markdown(f"### Welcome back, {first_name}")
-    st.caption("Team & Project Overview")
-
-    st.markdown("<br>", unsafe_allow_html=True)
+    # Main page heading - Large and personal (removed redundant subtitle)
+    st.markdown(f"# Welcome back, {first_name}")
 
     # Load data from Google Sheet
     with st.spinner("Loading dashboard data..."):
@@ -979,53 +906,81 @@ def show_dashboard():
     # Calculate team-wide KPIs (all data)
     team_kpis = calculate_kpis(df, user_name, is_personal=False)
 
-    # === CLEAN HEADER SECTION LIKE MOCKUP ===
-    st.markdown('<h1 class="section-header">Analytics Dashboard</h1>', unsafe_allow_html=True)
-    st.markdown('<p class="section-subtitle">Real-time insights into team performance and project progress</p>', unsafe_allow_html=True)
+    # Section: Analytics Dashboard - Clear hierarchy with elegant spacing
+    st.markdown("<div style='margin-top: 48px;'></div>", unsafe_allow_html=True)
+    st.markdown("## Analytics Dashboard")
+    st.markdown('<p class="subtitle">Real-time insights into team performance and project progress</p>', unsafe_allow_html=True)
+    st.markdown("<div style='margin-bottom: 32px;'></div>", unsafe_allow_html=True)
 
     render_kpi_section(team_kpis)
 
-    st.markdown("<br>", unsafe_allow_html=True)
-
-    # Performance Overview Section
-    st.markdown('<h2 class="section-header">Performance Overview</h2>', unsafe_allow_html=True)
-    st.markdown('<p class="section-subtitle">Track completion rates and project distribution</p>', unsafe_allow_html=True)
+    # Section: Performance Overview - More breathing room
+    st.markdown("<div style='margin-top: 64px;'></div>", unsafe_allow_html=True)
+    st.markdown("## Performance Overview")
+    st.markdown('<p class="subtitle">Track completion rates and project distribution</p>', unsafe_allow_html=True)
+    st.markdown("<div style='margin-bottom: 32px;'></div>", unsafe_allow_html=True)
 
     # Team charts
     render_charts_section(team_kpis, df)
 
-    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("<div style='margin-top: 64px;'></div>", unsafe_allow_html=True)
 
-    # === PROJECT BREAKDOWN - DYNAMIC ===
-    st.markdown("### All Team Tasks by Project")
-    st.markdown("<br>", unsafe_allow_html=True)
+    # === PROJECT BREAKDOWN - ELEGANT HIGH-END STYLE ===
+    st.markdown("## Projects")
+    st.markdown('<p class="subtitle">Edit tasks inline and sync changes automatically</p>', unsafe_allow_html=True)
+    st.markdown("<div style='margin-bottom: 24px;'></div>", unsafe_allow_html=True)
 
-    # Dynamically show all projects from Google Sheets
-    if has_column(df, "Project"):
-        project_col = get_column(df, "Project")
+    # Add archive filter with elegant styling
+    show_archived_projects = st.checkbox("Include archived", value=False, key="show_archived_projects")
+    st.markdown("<div style='margin-bottom: 32px;'></div>", unsafe_allow_html=True)
+
+    # Apply archive filter to dataframe
+    filtered_df = df.copy()
+    if not show_archived_projects and has_column(filtered_df, "Status"):
+        status_col = get_column(filtered_df, "Status")
+        filtered_df = filtered_df[~filtered_df[status_col].str.strip().str.lower().isin(['done', 'complete', 'completed'])]
+
+    # Dynamically show all projects from Google Sheets with editable grids
+    if has_column(filtered_df, "Project"):
+        project_col = get_column(filtered_df, "Project")
 
         # Get unique projects (case-insensitive, trimmed)
-        unique_projects = df[project_col].str.strip().str.title().dropna().unique()
+        unique_projects = filtered_df[project_col].str.strip().str.title().dropna().unique()
         unique_projects = sorted([p for p in unique_projects if p])  # Sort alphabetically
 
         if len(unique_projects) == 0:
             st.info("No projects found in the data.")
         else:
-            # Display each project's tasks
-            for project_name in unique_projects:
+            # Display each project's tasks with editable grids
+            for idx, project_name in enumerate(unique_projects):
                 # Filter tasks for this project (case-insensitive)
-                project_df = df[df[project_col].str.strip().str.lower() == project_name.lower()]
+                project_df = filtered_df[filtered_df[project_col].str.strip().str.lower() == project_name.lower()].copy()
 
-                # Show task count in header
-                task_count = len(project_df)
-                st.markdown(f"#### {project_name} ({task_count} tasks)")
+                # Show just the project name as heading - clean and elegant
+                st.markdown(f"### {project_name}")
+                st.markdown("<div style='margin-bottom: 16px;'></div>", unsafe_allow_html=True)
 
                 if not project_df.empty:
-                    # Show ALL tasks for this project (no limit)
-                    render_tasks_table(project_df, limit=1000)
+                    # Render EDITABLE grid for this project
+                    is_tea = user_name == "Téa Phillips"
+                    updated_df = render_editable_task_grid(
+                        project_df,
+                        user_name,
+                        is_tea=is_tea,
+                        key_prefix=f"project_{idx}",
+                        show_title=False
+                    )
+
+                    # Update the main dataframe with changes from this project
+                    if updated_df is not None and not updated_df.empty:
+                        # Match indices and update
+                        for update_idx in updated_df.index:
+                            if update_idx in df.index:
+                                df.loc[update_idx] = updated_df.loc[update_idx]
                 else:
                     st.caption(f"No {project_name} tasks found.")
 
-                st.markdown("<br>", unsafe_allow_html=True)
+                # Elegant spacing between project sections
+                st.markdown("<div style='margin-bottom: 48px;'></div>", unsafe_allow_html=True)
     else:
         st.info("Project column not found in data.")
