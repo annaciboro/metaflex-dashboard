@@ -3,6 +3,14 @@ import streamlit as st
 import streamlit.components.v1 as components
 import pages as pg
 import time
+import base64
+
+def get_base64_image(image_path):
+    """Convert image to base64 for embedding in HTML"""
+    if os.path.exists(image_path):
+        with open(image_path, "rb") as f:
+            return base64.b64encode(f.read()).decode()
+    return ""
 
 st.set_page_config(
     page_title="MetaFlex Ops",
@@ -11,297 +19,229 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Load custom CSS
+# Get current directory
 current_dir = os.path.dirname(os.path.abspath(__file__))
+
+# ============================================
+# LOAD METAFLEX CSS
+# ============================================
 css_path = os.path.join(current_dir, "style.css")
 
-print(f"Current directory: {current_dir}")  # DEBUG
-print(f"CSS path: {css_path}")  # DEBUG
-print(f"CSS exists: {os.path.exists(css_path)}")  # DEBUG
-
 if os.path.exists(css_path):
-    with open(css_path) as f:
+    with open(css_path, 'r') as f:
         css_content = f.read()
         # Add timestamp to force browser cache refresh
         css_timestamp = str(int(time.time()))
-        st.markdown(f"<style>/* CSS TIMESTAMP: {css_timestamp} - PREMIUM NAVIGATION v4.0 */\n{css_content}</style>", unsafe_allow_html=True)
-        print(f"CSS loaded with timestamp: {css_timestamp}")  # DEBUG
+        st.markdown(
+            f"<style>/* CSS TIMESTAMP: {css_timestamp} - METAFLEX */\n{css_content}</style>",
+            unsafe_allow_html=True
+        )
+        print(f"✅ MetaFlex CSS loaded with timestamp: {css_timestamp}")
 else:
-    st.error(f"⚠️ CSS FILE NOT FOUND at: {css_path}")  # VISIBLE ERROR
+    st.error(f"⚠️ CSS FILE NOT FOUND at: {css_path}")
 
-# Match the HTML preview exactly - frosted glass nav with pill buttons
-components.html("""
-<script>
-(function() {
-  console.log('✨ MATCHING HTML PREVIEW DESIGN...');
+# ============================================
+# LOAD METAFLEX JAVASCRIPT - AFTER CSS TO OVERRIDE
+# ============================================
+js_path = os.path.join(current_dir, "static", "metaflex_interactions.js")
+if os.path.exists(js_path):
+    with open(js_path, 'r') as f:
+        js_code = f.read()
 
-  const doc = window.parent.document;
-  let buttonsFound = false;
+    # BASE64 encode the JavaScript to avoid ALL escaping issues
+    js_b64 = base64.b64encode(js_code.encode('utf-8')).decode('utf-8')
 
-  function forceButtonStyles() {
-    // Find all navigation buttons
-    let buttons = doc.querySelectorAll('[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button');
+    # DIRECT INJECTION using base64 - NO ESCAPING NEEDED
+    st.components.v1.html(
+        f"""
+        <script>
+        (function() {{
+            try {{
+                const parent = window.parent;
+                const doc = parent.document;
 
-    if (buttons.length === 0) {
-      buttons = doc.querySelectorAll('button[kind="primary"], button[kind="secondary"]');
-    }
+                if (parent.metaflexInjected) {{
+                    console.log('[IFRAME] ✅ MetaFlex already injected');
+                    return;
+                }}
 
-    if (buttons.length === 0) {
-      return false;
-    }
+                parent.metaflexInjected = true;
+                console.log('[IFRAME] 💥 Injecting MetaFlex into PARENT window...');
 
-    if (!buttonsFound) {
-      console.log(`🎉 FOUND ${buttons.length} BUTTONS! Applying HTML preview styles...`);
-      buttonsFound = true;
-    }
+                // Decode base64 JavaScript
+                const jsCode = atob('{js_b64}');
 
-    buttons.forEach((button, index) => {
-      const isPrimary = button.getAttribute('kind') === 'primary';
+                // Create script in parent
+                const script = doc.createElement('script');
+                script.id = 'metaflex-system';
+                script.textContent = jsCode;
 
-      // MATCH nav_preview.html EXACTLY with perfect vertical alignment
-      if (isPrimary) {
-        // Active button - filled gradient pill (exactly like nav_preview.html)
-        button.style.cssText = `
-          background: linear-gradient(135deg, #7a9999, #6a8989) !important;
-          color: #ffffff !important;
-          font-weight: 600 !important;
-          border-radius: 24px !important;
-          padding: 10px 20px !important;
-          margin: 0 3px !important;
-          border: none !important;
-          box-shadow: 0 2px 8px rgba(95, 140, 140, 0.25), inset 0 1px 2px rgba(0, 0, 0, 0.1) !important;
-          font-size: 14px !important;
-          letter-spacing: 0.01em !important;
-          white-space: nowrap !important;
-          overflow: visible !important;
-          text-overflow: clip !important;
-          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
-          display: flex !important;
-          align-items: center !important;
-          justify-content: center !important;
-          line-height: 1 !important;
-          vertical-align: middle !important;
-        `;
-      } else {
-        // Inactive button - transparent pill (exactly like nav_preview.html)
-        button.style.cssText = `
-          background: transparent !important;
-          color: #516060 !important;
-          font-weight: 500 !important;
-          border-radius: 24px !important;
-          padding: 10px 20px !important;
-          margin: 0 3px !important;
-          border: none !important;
-          box-shadow: none !important;
-          font-size: 14px !important;
-          letter-spacing: 0.01em !important;
-          white-space: nowrap !important;
-          overflow: visible !important;
-          text-overflow: clip !important;
-          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
-          display: flex !important;
-          align-items: center !important;
-          justify-content: center !important;
-          line-height: 1 !important;
-          vertical-align: middle !important;
-        `;
-      }
+                doc.head.appendChild(script);
+                console.log('[IFRAME] ✅ MetaFlex injected into <head>');
 
-      // Also style the inner elements of the button for perfect centering
-      const buttonChildren = button.querySelectorAll('*');
-      buttonChildren.forEach(child => {
-        child.style.display = 'flex';
-        child.style.alignItems = 'center';
-        child.style.justifyContent = 'center';
-        child.style.lineHeight = '1';
-      });
-    });
+            }} catch (error) {{
+                console.error('[IFRAME] ❌ Injection failed:', error);
+                console.log('[IFRAME] ⚠️ Running in iframe (limited functionality)...');
 
-    return true;
-  }
+                // Fallback: decode and run in iframe
+                const jsCode = atob('{js_b64}');
+                const script = document.createElement('script');
+                script.textContent = jsCode;
+                document.head.appendChild(script);
+            }}
+        }})();
+        </script>
+        """,
+        height=0
+    )
+    print(f"✅ MetaFlex JavaScript NUCLEAR INJECTED from: {js_path}")
+else:
+    print(f"⚠️ MetaFlex JavaScript not found at: {js_path}")
+    st.warning("MetaFlex interactions could not be loaded.")
 
-  // Continuously apply styles
-  setInterval(forceButtonStyles, 50);
+# ============================================
+# LOAD NAV OVERRIDE JAVASCRIPT - DISABLED (using custom HTML nav now)
+# ============================================
+# nav_js_path = os.path.join(current_dir, "static", "nav_override.js")
+# Nav override is disabled because we're using pure HTML navigation with query params
 
-  // Watch for DOM changes
-  const observer = new MutationObserver(forceButtonStyles);
-  observer.observe(doc.body, { childList: true, subtree: true });
-
-  // Style the logout button separately (coral/red color) - NUCLEAR OPTION
-  function styleLogoutButton() {
-    const doc = window.parent.document;
-
-    // Find ALL buttons in navigation
-    const allButtons = doc.querySelectorAll('[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button');
-
-    allButtons.forEach(btn => {
-      const btnText = btn.textContent.trim();
-
-      // If this is the Logout button, force red color
-      if (btnText === 'Logout') {
-        // Completely replace style attribute
-        btn.setAttribute('style', `
-          background: transparent !important;
-          background-color: transparent !important;
-          background-image: none !important;
-          color: #e08585 !important;
-          font-weight: 500 !important;
-          border-radius: 24px !important;
-          padding: 10px 20px !important;
-          margin: 0 !important;
-          border: none !important;
-          box-shadow: none !important;
-          font-size: 14px !important;
-          letter-spacing: 0.01em !important;
-          white-space: nowrap !important;
-          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
-          display: flex !important;
-          align-items: center !important;
-          justify-content: center !important;
-          line-height: 1 !important;
-        `);
-
-        // Force all child elements to be red too
-        const logoutChildren = btn.querySelectorAll('*');
-        logoutChildren.forEach(child => {
-          child.style.color = '#e08585';
-          child.style.setProperty('color', '#e08585', 'important');
-        });
-      }
-    });
-  }
-
-  setInterval(styleLogoutButton, 50);
-
-  // EXTREME NUCLEAR OPTION - requestAnimationFrame (60 times per second)
-  let frameCount = 0;
-  function extremeForceStyling() {
-    const doc = window.parent.document;
-
-    // 1. FORCE NAV BACKGROUND TO WHITE - ENHANCED with more pop
-    const navContainer = doc.querySelector('[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child');
-    if (navContainer) {
-      // Brighter white background with stronger blur
-      navContainer.style.backgroundImage = 'none';
-      navContainer.style.background = 'rgba(255, 255, 255, 0.98)';
-      navContainer.style.backgroundColor = 'rgba(255, 255, 255, 0.98)';
-      navContainer.style.backdropFilter = 'blur(20px) saturate(180%)';
-      navContainer.style.webkitBackdropFilter = 'blur(20px) saturate(180%)';
-
-      // Enhanced shadow for depth
-      navContainer.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.05), 0 1px 0 rgba(255, 255, 255, 0.8) inset';
-      navContainer.style.borderBottom = '1.5px solid rgba(95, 140, 140, 0.2)';
-
-      // Log once every 60 frames (1 second)
-      if (frameCount % 60 === 0) {
-        console.log('✨ Enhanced nav - bg:', window.getComputedStyle(navContainer).backgroundColor);
-      }
-
-      // Force ALL child elements to be transparent
-      const allChildren = navContainer.querySelectorAll('*');
-      allChildren.forEach(child => {
-        if (child.tagName !== 'BUTTON' && child.tagName !== 'IMG') {
-          child.style.backgroundImage = 'none';
-          child.style.background = 'transparent';
-          child.style.backgroundColor = 'transparent';
-        }
-      });
-    }
-
-    // 2. FORCE LOGOUT BUTTON TO BE CORAL/RED - ULTRA AGGRESSIVE
-    const allNavButtons = doc.querySelectorAll('[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button');
-    allNavButtons.forEach(btn => {
-      const btnText = btn.textContent.trim();
-      if (btnText === 'Logout') {
-        // Force color with priority
-        btn.style.setProperty('color', '#e08585', 'important');
-        btn.style.cssText += 'color: #e08585 !important;';
-
-        if (frameCount % 60 === 0) {
-          console.log('Logout button color:', window.getComputedStyle(btn).color);
-        }
-
-        // Force ALL nested elements with maximum priority
-        const allNestedElements = btn.querySelectorAll('*');
-        allNestedElements.forEach(el => {
-          el.style.setProperty('color', '#e08585', 'important');
-          el.style.cssText += 'color: #e08585 !important;';
-        });
-      }
-    });
-
-    frameCount++;
-    requestAnimationFrame(extremeForceStyling);
-  }
-
-  // Start the animation frame loop
-  extremeForceStyling();
-
-  console.log('✅ EXTREME FORCE active - running on every frame (60fps)');
-})();
-</script>
-""", height=0)
-
-# Initialize session state for navigation (KEEP THIS)
+# ============================================
+# INITIALIZE SESSION STATE
+# ============================================
 if 'current_page' not in st.session_state:
     st.session_state.current_page = "Home"
 
-# Logo path
+# ============================================
+# NAVIGATION BAR
+# ============================================
 logo_path = os.path.join(current_dir, "metaflexglove.png")
-
 pages_list = ["Home", "My Tasks", "Team Tasks", "Archive", "Sales Portal", "Investor Portal", "Logout"]
 
-# WRAP NAVIGATION IN A CONTAINER
 nav_container = st.container()
 
 with nav_container:
     nav_items_without_logout = [p for p in pages_list if p != "Logout"]
 
-    # One-line navigation layout: compact buttons on left, spacer, then logout on right
-    # Logo + 6 nav buttons with custom spacing: Home, My Tasks, Team Tasks, Archive, Sales Portal, Investor Portal
-    col_logo, *nav_item_cols, col_spacer, col_separator, col_user = st.columns([0.8, 1.6, 1.6, 1.4, 1.3, 1.6, 1.6, 1.5, 0.05, 0.8])
+    # Create columns for navigation
+    cols = st.columns([0.3] + [1]*len(nav_items_without_logout) + [0.5, 0.1, 0.8])
 
     # Logo
-    with col_logo:
+    with cols[0]:
         if os.path.exists(logo_path):
             st.image(logo_path, width=38)
 
-    # Navigation items (excluding Logout)
-    for idx, (col, page_name) in enumerate(zip(nav_item_cols, nav_items_without_logout)):
-        with col:
-            # Check if this is the current page
-            is_current = st.session_state.current_page == page_name
+    # Navigation buttons
+    for idx, page_name in enumerate(nav_items_without_logout):
+        with cols[idx + 1]:
+            is_active = st.session_state.current_page == page_name
 
-            # Use type="primary" for current page to style it differently
-            button_type = "primary" if is_current else "secondary"
+            # Custom CSS for this specific button
+            st.markdown(f"""
+                <style>
+                div[data-testid="column"]:nth-child({idx + 2}) button {{
+                    background: transparent !important;
+                    color: #0d4d3d !important;
+                    border: none !important;
+                    box-shadow: none !important;
+                    padding: 10px 20px !important;
+                    font-size: 13px !important;
+                    font-weight: {'700' if is_active else '600'} !important;
+                    text-transform: uppercase !important;
+                    letter-spacing: 0.8px !important;
+                    font-family: 'Inter', sans-serif !important;
+                    width: 100% !important;
+                    text-shadow: {'0 0 10px #d4ff00, 0 0 20px #d4ff00, 0 0 30px #d4ff00' if is_active else 'none'} !important;
+                    transition: all 0.3s ease !important;
+                    border-radius: 0 !important;
+                }}
+                div[data-testid="column"]:nth-child({idx + 2}) button:hover {{
+                    text-shadow: 0 0 8px #d4ff00, 0 0 15px #d4ff00 !important;
+                    border: none !important;
+                }}
+                </style>
+            """, unsafe_allow_html=True)
 
-            if st.button(page_name, key=f"nav_{idx}", type=button_type):
+            if st.button(page_name, key=f"nav_{page_name}", use_container_width=True):
                 st.session_state.current_page = page_name
                 st.rerun()
 
-    # Spacer column (empty to push user section to right)
-    with col_spacer:
+    # Spacer
+    with cols[len(nav_items_without_logout) + 1]:
         st.write("")
 
-    # Separator line before logout
-    with col_separator:
+    # Separator before logout
+    with cols[len(nav_items_without_logout) + 2]:
         st.markdown("""
             <div style="height: 56px; display: flex; align-items: center; justify-content: center;">
-                <div style="width: 1px; height: 28px; background: rgba(42, 74, 74, 0.25);"></div>
+                <div style="
+                    width: 1px;
+                    height: 40px;
+                    background: linear-gradient(180deg,
+                        rgba(212, 255, 0, 0.4) 0%,
+                        rgba(10, 75, 75, 0.4) 100%);
+                "></div>
             </div>
         """, unsafe_allow_html=True)
 
-    # Logout button on right
-    with col_user:
-        if st.button("Logout", key="nav_logout"):
+    # Logout button
+    with cols[len(nav_items_without_logout) + 3]:
+        st.markdown(f"""
+            <style>
+            div[data-testid="column"]:last-child button {{
+                background: transparent !important;
+                color: #0d4d3d !important;
+                border: none !important;
+                box-shadow: none !important;
+                padding: 10px 20px !important;
+                font-size: 13px !important;
+                font-weight: 600 !important;
+                text-transform: uppercase !important;
+                letter-spacing: 0.8px !important;
+                font-family: 'Inter', sans-serif !important;
+                width: 100% !important;
+                transition: all 0.3s ease !important;
+                border-radius: 0 !important;
+            }}
+            div[data-testid="column"]:last-child button:hover {{
+                text-shadow: 0 0 8px #d4ff00, 0 0 15px #d4ff00 !important;
+                border: none !important;
+            }}
+            </style>
+        """, unsafe_allow_html=True)
+
+        if st.button("Logout", key="nav_logout", use_container_width=True):
             for key in list(st.session_state.keys()):
                 del st.session_state[key]
             st.rerun()
 
-# Add spacing div to push content down
+# Neon green gradient line under navigation - full width in container
+st.markdown("""
+    <div style='
+        width: 100%;
+        max-width: 100vw;
+        margin: 10px 0 20px 0;
+        padding: 0;
+    '>
+        <div style='
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg,
+                #d4ff00 0%,
+                #b8e600 20%,
+                #7fa830 40%,
+                #4d7a40 60%,
+                #0f6a6a 80%,
+                #0a4b4b 100%);
+        '></div>
+    </div>
+""", unsafe_allow_html=True)
+
+# Add spacing after nav
 st.markdown("<div style='margin-bottom: 40px;'></div>", unsafe_allow_html=True)
 
-# MAIN CONTENT AREA - This is where pages render
+# ============================================
+# MAIN CONTENT AREA
+# ============================================
 content_container = st.container()
 
 with content_container:
@@ -314,7 +254,6 @@ with content_container:
         "Investor Portal": pg.show_investor_portal,
     }
 
-    # Call the appropriate page function
     go_to = functions.get(st.session_state.current_page)
     if go_to:
         go_to()

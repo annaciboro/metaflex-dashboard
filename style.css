@@ -3,6 +3,94 @@
    ============================================ */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Marcellus&display=swap');
 
+/* ============================================
+   METAFLEX PREMIUM CSS VARIABLES
+   ============================================ */
+:root {
+    /* MetaFlex Brand Colors */
+    --metaflex-lime: #d4ff00;
+    --metaflex-lime-soft: #c8e66f;
+    --metaflex-lime-dark: #b8e600;
+    --metaflex-teal: #0a4b4b;
+    --metaflex-teal-light: #0f6a6a;
+    --metaflex-teal-lighter: #5f8c8c;
+
+    /* Semantic Colors */
+    --color-primary: var(--metaflex-lime);
+    --color-secondary: var(--metaflex-teal);
+    --color-text: #1a2424;
+    --color-text-muted: #6a7878;
+    --color-bg: #ffffff;
+    --color-card: #ffffff;
+
+    /* Elevation */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.06);
+
+    /* Spacing */
+    --spacing-xs: 8px;
+    --spacing-sm: 16px;
+    --spacing-md: 24px;
+    --spacing-lg: 32px;
+    --spacing-xl: 48px;
+
+    /* Border Radius */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-pill: 24px;
+}
+
+/* ============================================
+   CUSTOM SCROLLBAR - LIME GREEN WITH GRADIENT EFFECT
+   ============================================ */
+
+/* Scrollbar for webkit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+::-webkit-scrollbar-track {
+    background: #e8eaed !important;
+    border-radius: 0 !important;
+}
+
+/* Create gradient effect using multiple background layers */
+::-webkit-scrollbar-thumb {
+    background-color: #d4ff00 !important;
+    background-image: linear-gradient(180deg,
+        rgba(212, 255, 0, 1) 0%,
+        rgba(184, 230, 0, 1) 20%,
+        rgba(127, 168, 48, 1) 40%,
+        rgba(77, 122, 64, 1) 60%,
+        rgba(15, 106, 106, 1) 80%,
+        rgba(10, 75, 75, 1) 100%) !important;
+    border-radius: 8px !important;
+    border: 3px solid #e8eaed !important;
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.1) !important;
+    transition: all 0.3s ease !important;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #e0ff33 !important;
+    background-image: linear-gradient(180deg,
+        rgba(224, 255, 51, 1) 0%,
+        rgba(200, 230, 0, 1) 20%,
+        rgba(143, 184, 64, 1) 40%,
+        rgba(93, 138, 80, 1) 60%,
+        rgba(15, 106, 106, 1) 80%,
+        rgba(15, 106, 106, 1) 100%) !important;
+    border: 3px solid #d8dadd !important;
+}
+
+/* Firefox scrollbar - gradient not supported, use solid lime green */
+html, body, * {
+    scrollbar-width: thin !important;
+    scrollbar-color: #d4ff00 #e8eaed !important;
+}
+
 /* Premium Navigation Bar - Exact match to HTML design */
 .nav-container {
     position: fixed;
@@ -64,7 +152,6 @@
 .nav-button {
     background: transparent;
     border: none;
-    border-radius: 24px;
     color: #516060;
     font-size: 14px;
     font-weight: 500;
@@ -155,30 +242,30 @@
 
 html, body, [data-testid="stAppViewContainer"], .main {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
-    background-color: #f0f2f5 !important;
-    background: #f0f2f5 !important;
+    background: linear-gradient(135deg, #fafbfc 0%, #f5f7f7 100%) !important;
+    background-color: #f8f9fa !important;
 }
 
-/* PREMIUM NAVIGATION - Force darker gray background on main container for contrast */
+/* PREMIUM NAVIGATION - Pale grey gradient background on main container */
 [data-testid="stAppViewContainer"] > section:first-child {
-    background: #f0f2f5 !important;
-    background-color: #f0f2f5 !important;
+    background: linear-gradient(135deg, #fafbfc 0%, #f5f7f7 100%) !important;
+    background-color: #f8f9fa !important;
 }
 
 section.main {
-    background: #f0f2f5 !important;
-    background-color: #f0f2f5 !important;
+    background: linear-gradient(135deg, #fafbfc 0%, #f5f7f7 100%) !important;
+    background-color: #f8f9fa !important;
 }
 
-/* Force darker gray background on content area for contrast */
+/* Force pale grey gradient background on content area */
 .stApp {
-    background: #f0f2f5 !important;
-    background-color: #f0f2f5 !important;
+    background: linear-gradient(135deg, #fafbfc 0%, #f5f7f7 100%) !important;
+    background-color: #f8f9fa !important;
 }
 
 [data-testid="stAppViewContainer"] {
-    background: #f0f2f5 !important;
-    background-color: #f0f2f5 !important;
+    background: linear-gradient(135deg, #fafbfc 0%, #f5f7f7 100%) !important;
+    background-color: #f8f9fa !important;
 }
 
 /* ============================================
@@ -211,8 +298,8 @@ section.main > div:first-child {
     padding: 40px 60px !important;
     max-width: 1440px !important;
     margin: 0 auto !important;
-    background: #f0f2f5 !important;
-    background-color: #f0f2f5 !important;
+    background: linear-gradient(135deg, #fafbfc 0%, #f5f7f7 100%) !important;
+    background-color: #f8f9fa !important;
 }
 
 /* ===================================================================
@@ -237,19 +324,38 @@ section.main > div:first-child {
         0 2px 8px rgba(0, 0, 0, 0.08),
         0 4px 16px rgba(0, 0, 0, 0.05),
         0 1px 0 rgba(255, 255, 255, 0.8) inset !important;
-    /* Subtle teal border for brand accent */
-    border-bottom: 1.5px solid rgba(95, 140, 140, 0.2) !important;
+    /* NO BORDER - using ::after gradient instead */
+    border-bottom: none !important;
     padding: 0 48px 0 48px !important;
     padding-right: 250px !important;
-    height: 140px !important;
-    min-height: 140px !important;
-    max-height: 140px !important;
+    height: 180px !important;
+    min-height: 180px !important;
+    max-height: 180px !important;
     display: flex !important;
     align-items: center !important;
     flex-wrap: nowrap !important;
     margin: 0 !important;
     overflow: visible !important;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* LIME TO TEAL GRADIENT LINE UNDER NAV - using ::after pseudo-element */
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child::after {
+    content: '' !important;
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    height: 4px !important;
+    background: linear-gradient(90deg,
+        #d4ff00 0%,
+        #b8e600 25%,
+        #7fa830 50%,
+        #4d7a40 75%,
+        #0a4b4b 100%) !important;
+    z-index: 10000 !important;
+    pointer-events: none !important;
 }
 
 /* Enhanced shadow on hover - MORE dramatic */
@@ -272,6 +378,8 @@ section.main > div:first-child {
     min-width: 0 !important;
     background: transparent !important;
     background-color: transparent !important;
+    position: relative !important;
+    z-index: 1 !important;
 }
 
 /* Force all elements inside nav columns to be transparent */
@@ -324,560 +432,844 @@ section.main > div:first-child {
    NOTION-STYLE NAVIGATION BUTTONS - Minimal & Elegant
    =================================================================== */
 
-/* ALL NAVIGATION BUTTONS - White background with teal text */
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button,
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="secondary"],
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[data-testid="baseButton-secondary"] {
-    background: #ffffff !important;
-    color: #0f6a6a !important;
-    border: none !important;
-    border-radius: 8px !important;
-    font-size: 14px !important;
-    font-weight: 500 !important;
-    padding: 8px 16px !important;
-    margin: 0 4px !important;
-    transition: all 0.2s ease !important;
-    white-space: nowrap !important;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
-    height: auto !important;
-    letter-spacing: 0.01em !important;
+/* ALL NAVIGATION BUTTONS - PILL-SHAPED with subtle shadows */
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button,
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="secondary"],
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[data-testid="baseButton-secondary"] {
+// DISABLED:     background: #ffffff !important;
+// DISABLED:     color: #0f6a6a !important;
+// DISABLED:     border: none !important;
+// DISABLED:     border-radius: 24px !important;
+// DISABLED:     font-size: 15px !important;
+// DISABLED:     font-weight: 500 !important;
+// DISABLED:     padding: 10px 20px !important;
+// DISABLED:     margin: 0 6px !important;
+// DISABLED:     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+// DISABLED:     white-space: nowrap !important;
+// DISABLED:     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+// DISABLED:     height: auto !important;
+// DISABLED:     letter-spacing: 0.01em !important;
+// DISABLED:     position: relative !important;
+// DISABLED:     flex-shrink: 0 !important;
+// DISABLED:     min-height: 0 !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: /* Remove Streamlit's nested element styling issues */
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button *,
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="secondary"] * {
+// DISABLED:     color: inherit !important;
+// DISABLED:     background: transparent !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: /* Hover state - lift with stronger shadow */
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button:hover,
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="secondary"]:hover {
+// DISABLED:     background: #f8f9fa !important;
+// DISABLED:     color: #0d5858 !important;
+// DISABLED:     transform: translateY(-2px) !important;
+// DISABLED:     box-shadow: 0 6px 16px rgba(15, 106, 106, 0.18), 0 2px 4px rgba(0, 0, 0, 0.06) !important;
+// DISABLED:     border: none !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: /* ACTIVE STATE - CLEAR teal fill pill */
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"],
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child [data-testid="column"] button[kind="primary"],
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[data-testid="baseButton-primary"] {
+// DISABLED:     background: linear-gradient(135deg, #0f6a6a 0%, #0d5858 100%) !important;
+// DISABLED:     color: #ffffff !important;
+// DISABLED:     font-weight: 600 !important;
+// DISABLED:     transform: none !important;
+// DISABLED:     box-shadow: 0 4px 12px rgba(15, 106, 106, 0.35), 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+// DISABLED:     border: none !important;
+// DISABLED:     border-radius: 24px !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: /* Force white text in active buttons - all nested elements */
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"] *,
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"] p,
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"] div,
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"] span {
+// DISABLED:     color: #ffffff !important;
+// DISABLED:     background: transparent !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: /* Focus state - accessible outline */
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button:focus-visible {
+// DISABLED:     outline: 2px solid #7a9999 !important;
+// DISABLED:     outline-offset: 2px !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: /* Remove default focus outline */
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button:focus:not(:focus-visible) {
+// DISABLED:     outline: none !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: /* ===================================================================
+// DISABLED:    USER SECTION - Notion-style Minimal & Clean
+// DISABLED:    =================================================================== */
+// DISABLED: 
+// DISABLED: /* User badge styling - simple, clean */
+// DISABLED: .user-badge-nav {
+// DISABLED:     display: inline-block !important;
+// DISABLED:     background: rgba(55, 53, 47, 0.06) !important;
+// DISABLED:     border-radius: 6px !important;
+// DISABLED:     padding: 6px 12px !important;
+// DISABLED:     border: none !important;
+// DISABLED:     box-shadow: none !important;
+// DISABLED:     transition: background 0.12s ease !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: .user-badge-nav:hover {
+// DISABLED:     background: rgba(55, 53, 47, 0.08) !important;
+// DISABLED:     transform: none !important;
+// DISABLED:     box-shadow: none !important;
+// DISABLED:     cursor: pointer !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: .user-badge-nav span {
+// DISABLED:     color: rgba(55, 53, 47, 0.85) !important;
+// DISABLED:     font-weight: 500 !important;
+// DISABLED:     font-size: 14px !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: /* Logout button - subtle, minimal */
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child > div[data-testid="column"]:last-child button,
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[key*="logout"] {
+// DISABLED:     background: transparent !important;
+// DISABLED:     color: rgba(55, 53, 47, 0.65) !important;
+// DISABLED:     border: none !important;
+// DISABLED:     border-radius: 6px !important;
+// DISABLED:     font-weight: 500 !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child > div[data-testid="column"]:last-child button:hover,
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[key*="logout"]:hover {
+// DISABLED:     background: rgba(55, 53, 47, 0.08) !important;
+// DISABLED:     color: rgba(55, 53, 47, 0.85) !important;
+// DISABLED:     transform: none !important;
+// DISABLED:     box-shadow: none !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: /* Navigation container smooth scroll transition (v3.1) */
+// DISABLED: div.stContainer:first-of-type {
+// DISABLED:     transition: box-shadow 0.4s ease, backdrop-filter 0.3s ease !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: /* Premium grip texture overlay (v4.0) */
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child::before {
+// DISABLED:     content: "" !important;
+// DISABLED:     position: absolute !important;
+// DISABLED:     top: 0 !important;
+// DISABLED:     left: 0 !important;
+// DISABLED:     right: 0 !important;
+// DISABLED:     bottom: 0 !important;
+// DISABLED:     background-image:
+// DISABLED:         repeating-linear-gradient(
+// DISABLED:             90deg,
+// DISABLED:             transparent,
+// DISABLED:             transparent 2px,
+// DISABLED:             rgba(212, 255, 0, 0.02) 2px,
+// DISABLED:             rgba(212, 255, 0, 0.02) 4px
+// DISABLED:         ),
+// DISABLED:         repeating-linear-gradient(
+// DISABLED:             0deg,
+// DISABLED:             transparent,
+// DISABLED:             transparent 2px,
+// DISABLED:             rgba(212, 255, 0, 0.02) 2px,
+// DISABLED:             rgba(212, 255, 0, 0.02) 4px
+// DISABLED:         ) !important;
+// DISABLED:     pointer-events: none !important;
+// DISABLED:     z-index: 0 !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: /* PREMIUM LIME BORDER at nav bottom (v4.0) */
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child::after {
+// DISABLED:     content: "" !important;
+// DISABLED:     position: absolute !important;
+// DISABLED:     bottom: 0 !important;
+// DISABLED:     left: 0 !important;
+// DISABLED:     right: 0 !important;
+// DISABLED:     width: 100% !important;
+// DISABLED:     height: 5px !important;
+// DISABLED:     background: linear-gradient(90deg, #c8e66f 0%, #b8d95f 50%, #c8e66f 100%) !important;
+// DISABLED:     pointer-events: none !important;
+// DISABLED:     z-index: 10000 !important;
+// DISABLED:     display: block !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: /* ============================================
+// DISABLED:    TYPOGRAPHY HIERARCHY - REDESIGNED
+// DISABLED:    ============================================ */
+// DISABLED: 
+// DISABLED: /* Main Page Heading (Welcome back) - Large & Personal */
+// DISABLED: /* Section headers need more weight - Marcellus for all */
+// DISABLED: h1, h2, h3 {
+// DISABLED:     font-family: 'Marcellus', serif !important;
+// DISABLED:     color: #1a2424 !important;
+// DISABLED:     font-weight: 600 !important;
+// DISABLED:     letter-spacing: -0.02em !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: /* "Welcome back, Tēa" should pop */
+// DISABLED: h1,
+// DISABLED: .main h1:first-of-type {
+// DISABLED:     font-size: 42px !important;
+// DISABLED:     margin-bottom: 48px !important;
+// DISABLED:     margin-top: 0 !important;
+// DISABLED:     line-height: 1.2 !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: /* Section titles like "Analytics Dashboard" */
+// DISABLED: h2 {
+// DISABLED:     font-size: 28px !important;
+// DISABLED:     margin-bottom: 8px !important;
+// DISABLED:     margin-top: 0 !important;
+// DISABLED:     line-height: 1.3 !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: /* Subsection Headers - chart titles, etc */
+// DISABLED: h3 {
+// DISABLED:     font-size: 20px !important;
+// DISABLED:     margin-top: 0 !important;
+// DISABLED:     margin-bottom: 0 !important;
+// DISABLED:     line-height: 1.4 !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: /* Subtitles should be lighter */
+// DISABLED: .subtitle, p {
+// DISABLED:     color: #6a7878 !important;
+// DISABLED:     font-size: 15px !important;
+// DISABLED:     line-height: 1.6 !important;
+// DISABLED:     font-family: 'Inter', sans-serif !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: /* Body text elements */
+// DISABLED: div, span, label {
+// DISABLED:     font-family: 'Inter', sans-serif !important;
+// DISABLED:     color: #5a6a6a !important;
+// DISABLED:     font-size: 15px !important;
+// DISABLED:     line-height: 1.6 !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: /* Subtitle/description text - muted */
+// DISABLED: .subtitle {
+// DISABLED:     font-size: 16px !important;
+// DISABLED:     color: #7a8888 !important;
+// DISABLED:     font-weight: 400 !important;
+// DISABLED:     margin-top: 0 !important;
+// DISABLED:     margin-bottom: 0 !important;
+// DISABLED:     line-height: 1.5 !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: /* ============================================
+// DISABLED:    STREAMLIT WIDGETS (excluding navigation buttons)
+// DISABLED:    ============================================ */
+// DISABLED: /* Only style buttons NOT in the navigation bar */
+// DISABLED: section.main [data-testid="stButton"] button {
+// DISABLED:     background: #0f6a6a !important;
+// DISABLED:     color: white !important;
+// DISABLED:     border: none !important;
+// DISABLED:     border-radius: 8px !important;
+// DISABLED:     padding: 10px 24px !important;
+// DISABLED:     font-weight: 500 !important;
+// DISABLED:     transition: all 0.2s ease !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: section.main [data-testid="stButton"] button:hover {
+// DISABLED:     background: #0d5858 !important;
+// DISABLED:     transform: translateY(-1px) !important;
+// DISABLED:     box-shadow: 0 4px 12px rgba(15, 106, 106, 0.2) !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: /* Input fields */
+// DISABLED: input, textarea, select {
+// DISABLED:     border: 1px solid #e2e8f0 !important;
+// DISABLED:     border-radius: 8px !important;
+// DISABLED:     padding: 10px 14px !important;
+// DISABLED:     font-family: 'Inter', sans-serif !important;
+// DISABLED:     transition: border-color 0.2s ease !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: input:focus, textarea:focus, select:focus {
+// DISABLED:     border-color: #0f6a6a !important;
+// DISABLED:     outline: none !important;
+// DISABLED:     box-shadow: 0 0 0 3px rgba(15, 106, 106, 0.1) !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: /* Checkboxes - elegant styling */
+// DISABLED: [data-testid="stCheckbox"] {
+// DISABLED:     padding: 8px 0 !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: [data-testid="stCheckbox"] label {
+// DISABLED:     font-size: 14px !important;
+// DISABLED:     color: rgba(55, 53, 47, 0.85) !important;
+// DISABLED:     font-weight: 500 !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: /* ============================================
+// DISABLED:    METRIC CARDS - REDESIGNED FOR VISUAL HIERARCHY
+// DISABLED:    ============================================ */
+// DISABLED: 
+// DISABLED: /* Metric card containers - WHITE ELEVATION with colored accent */
+// DISABLED: [data-testid="metric-container"] {
+// DISABLED:     background: #ffffff !important;
+// DISABLED:     border: 1px solid #e8eced !important;
+// DISABLED:     border-radius: 16px !important;
+// DISABLED:     padding: 32px 28px !important;
+// DISABLED:     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08),
+// DISABLED:                 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+// DISABLED:     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+// DISABLED:     position: relative !important;
+// DISABLED:     overflow: hidden !important;
+// DISABLED:     text-align: center !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: /* Hover effect for metric cards - LIFT with stronger shadow */
+// DISABLED: [data-testid="metric-container"]:hover {
+// DISABLED:     transform: translateY(-3px) !important;
+// DISABLED:     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12),
+// DISABLED:                 0 4px 8px rgba(0, 0, 0, 0.06) !important;
+// DISABLED:     border-color: #0f6a6a !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: /* Metric labels - uppercase, small, muted, centered */
+// DISABLED: [data-testid="stMetricLabel"] {
+// DISABLED:     font-size: 11px !important;
+// DISABLED:     font-weight: 600 !important;
+// DISABLED:     text-transform: uppercase !important;
+// DISABLED:     letter-spacing: 1.2px !important;
+// DISABLED:     color: #7a8888 !important;
+// DISABLED:     margin-bottom: 16px !important;
+// DISABLED:     text-align: center !important;
+// DISABLED:     display: block !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: /* Metric values - BIGGER and BOLDER with GRADIENT */
+// DISABLED: [data-testid="stMetricValue"] {
+// DISABLED:     font-size: 72px !important;
+// DISABLED:     font-weight: 700 !important;
+// DISABLED:     background: linear-gradient(135deg, var(--metaflex-teal) 0%, var(--metaflex-teal-light) 100%) !important;
+// DISABLED:     -webkit-background-clip: text !important;
+// DISABLED:     -webkit-text-fill-color: transparent !important;
+// DISABLED:     background-clip: text !important;
+// DISABLED:     letter-spacing: -0.03em !important;
+// DISABLED:     line-height: 1 !important;
+// DISABLED:     text-align: center !important;
+// DISABLED:     display: block !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: /* Add LIME GREEN top accent bar */
+// DISABLED: [data-testid="metric-container"]::before {
+// DISABLED:     content: '' !important;
+// DISABLED:     position: absolute !important;
+// DISABLED:     top: 0 !important;
+// DISABLED:     left: 0 !important;
+// DISABLED:     right: 0 !important;
+// DISABLED:     height: 3px !important;
+// DISABLED:     background: linear-gradient(90deg, #d4ff00, #b8e600) !important;
+// DISABLED:     border-radius: 16px 16px 0 0 !important;
+// DISABLED:     opacity: 1 !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: [data-testid="metric-container"]:hover::before {
+// DISABLED:     opacity: 1 !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: /* ============================================
+// DISABLED:    SPACING & LAYOUT IMPROVEMENTS
+// DISABLED:    ============================================ */
+// DISABLED: 
+// DISABLED: /* Add MORE breathing room between sections */
+// DISABLED: .main .block-container {
+// DISABLED:     padding: 48px 64px 80px 64px !important;
+// DISABLED:     max-width: 1400px !important;
+// DISABLED:     margin: 0 auto !important;
+// DISABLED:     background: linear-gradient(135deg, #fafbfc 0%, #f5f7f7 100%) !important;
+// DISABLED:     background-attachment: fixed !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: /* Section spacing - MORE SPACE */
+// DISABLED: section[data-testid="stVerticalBlock"] {
+// DISABLED:     margin-bottom: 48px !important;
+// DISABLED:     background: #ffffff !important;
+// DISABLED:     border-radius: 16px !important;
+// DISABLED:     padding: 32px !important;
+// DISABLED:     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: /* Column spacing for metric cards - more generous and even */
+// DISABLED: [data-testid="column"] {
+// DISABLED:     padding: 0 16px !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: [data-testid="column"]:first-child {
+// DISABLED:     padding-left: 0 !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: [data-testid="column"]:last-child {
+// DISABLED:     padding-right: 0 !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: /* ============================================
+// DISABLED:    CARDS & CONTAINERS
+// DISABLED:    ============================================ */
+// DISABLED: [data-testid="stExpander"] {
+// DISABLED:     background: white !important;
+// DISABLED:     border: 1px solid #e2e8f0 !important;
+// DISABLED:     border-radius: 12px !important;
+// DISABLED:     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+// DISABLED:     margin-bottom: 16px !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: /* ============================================
+// DISABLED:    AGGRID TABLES - ELEGANT STYLING
+// DISABLED:    ============================================ */
+// DISABLED: .ag-theme-streamlit {
+// DISABLED:     border: 1px solid #e8eced !important;
+// DISABLED:     border-radius: 12px !important;
+// DISABLED:     overflow: hidden !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: .ag-header {
+// DISABLED:     background: #f0f2f5 !important;
+// DISABLED:     border-bottom: 1.5px solid #e8eced !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: .ag-header-cell {
+// DISABLED:     font-weight: 600 !important;
+// DISABLED:     font-size: 13px !important;
+// DISABLED:     color: rgba(55, 53, 47, 0.85) !important;
+// DISABLED:     text-transform: uppercase !important;
+// DISABLED:     letter-spacing: 0.5px !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: .ag-row {
+// DISABLED:     border-bottom: 1px solid #f0f2f2 !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: .ag-row:hover {
+// DISABLED:     background: rgba(122, 153, 153, 0.04) !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: /* ============================================
+// DISABLED:    NAVIGATION BUTTON COLOR OVERRIDES - CRITICAL
+// DISABLED:    ============================================ */
+// DISABLED: /* Force remove default Streamlit button colors in navigation - ULTRA SPECIFIC */
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="secondary"][data-testid="baseButton-secondary"],
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"][data-testid="baseButton-primary"],
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button.st-emotion-cache-ue6h4q,
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button.st-emotion-cache-19rxjzo,
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[data-baseweb="button"],
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="secondary"],
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child div[data-testid="column"] button,
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child div[data-testid="column"] button[kind="secondary"],
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child div[data-testid="stButton"] button {
+// DISABLED:     background-color: #ffffff !important;
+// DISABLED:     background-image: none !important;
+// DISABLED:     background: #ffffff !important;
+// DISABLED:     border-color: transparent !important;
+// DISABLED:     border: none !important;
+// DISABLED:     color: #0f6a6a !important;
+// DISABLED:     border-radius: 8px !important;
+// DISABLED:     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: /* Hover on secondary buttons in nav */
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="secondary"]:hover,
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[data-baseweb="button"]:hover,
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child div[data-testid="column"] button:hover,
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child div[data-testid="column"] button[kind="secondary"]:hover {
+// DISABLED:     background: #ffffff !important;
+// DISABLED:     background-color: #ffffff !important;
+// DISABLED:     background-image: none !important;
+// DISABLED:     color: #0d5858 !important;
+// DISABLED:     border: none !important;
+// DISABLED:     transform: translateY(-1px) !important;
+// DISABLED:     box-shadow: 0 4px 12px rgba(15, 106, 106, 0.15) !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: /* Active/Primary state in nav */
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"]:not([key*="logout"]),
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child div[data-testid="column"] button[kind="primary"] {
+// DISABLED:     background: #0f6a6a !important;
+// DISABLED:     background-color: #0f6a6a !important;
+// DISABLED:     background-image: none !important;
+// DISABLED:     color: #ffffff !important;
+// DISABLED:     border: none !important;
+// DISABLED:     font-weight: 600 !important;
+// DISABLED:     box-shadow: 0 2px 8px rgba(15, 106, 106, 0.25) !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: /* ============================================
+// DISABLED:    UTILITY CLASSES
+// DISABLED:    ============================================ */
+// DISABLED: .premium-card {
+// DISABLED:     background: white;
+// DISABLED:     border-radius: 12px;
+// DISABLED:     padding: 24px;
+// DISABLED:     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+// DISABLED:     border: 1px solid #e2e8f0;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: .text-teal {
+// DISABLED:     color: #0f6a6a !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: .text-lime {
+// DISABLED:     color: #d4ff00 !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: .bg-teal {
+// DISABLED:     background-color: #0f6a6a !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: .bg-lime {
+// DISABLED:     background-color: #d4ff00 !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: /* ============================================
+// DISABLED:    FINAL CATCH-ALL FOR NAVIGATION BUTTONS
+// DISABLED:    Must be at end to override everything
+// DISABLED:    ============================================ */
+// DISABLED: /* Target all buttons in first horizontal block regardless of class */
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button:not([kind="primary"]) {
+// DISABLED:     background: #ffffff !important;
+// DISABLED:     background-color: #ffffff !important;
+// DISABLED:     background-image: none !important;
+// DISABLED:     border: none !important;
+// DISABLED:     border-radius: 8px !important;
+// DISABLED:     color: #0f6a6a !important;
+// DISABLED:     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button:not([kind="primary"]):hover {
+// DISABLED:     background: #ffffff !important;
+// DISABLED:     background-color: #ffffff !important;
+// DISABLED:     background-image: none !important;
+// DISABLED:     color: #0d5858 !important;
+// DISABLED:     transform: translateY(-1px) !important;
+// DISABLED:     box-shadow: 0 4px 12px rgba(15, 106, 106, 0.15) !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: /* Primary button (active page) - MetaFlex teal with white text */
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"] {
+// DISABLED:     background: #0f6a6a !important;
+// DISABLED:     background-color: #0f6a6a !important;
+// DISABLED:     background-image: none !important;
+// DISABLED:     border: none !important;
+// DISABLED:     border-radius: 8px !important;
+// DISABLED:     color: #ffffff !important;
+// DISABLED:     font-weight: 600 !important;
+// DISABLED:     box-shadow: 0 2px 8px rgba(15, 106, 106, 0.25) !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: /* ============================================
+// DISABLED:    FINAL NUCLEAR OVERRIDE - DO NOT MODIFY
+// DISABLED:    These rules must be at the end of the file
+// DISABLED:    ============================================ */
+// DISABLED: 
+// DISABLED: /* WHITE FROSTED GLASS NAV - EVERY POSSIBLE SELECTOR */
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child,
+// DISABLED: div[data-testid="stVerticalBlock"] > div[data-testid="stHorizontalBlock"]:first-child,
+// DISABLED: html [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child,
+// DISABLED: body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child,
+// DISABLED: html body [data-testid="stAppViewContainer"] [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child {
+// DISABLED:     background: rgba(255, 255, 255, 0.95) !important;
+// DISABLED:     background-color: rgba(255, 255, 255, 0.95) !important;
+// DISABLED:     background-image: none !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: /* Force transparent on all columns */
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child [data-testid="column"],
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child div[data-testid="column"] {
+// DISABLED:     background: transparent !important;
+// DISABLED:     background-color: transparent !important;
+// DISABLED:     background-image: none !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: /* RED LOGOUT BUTTON - EVERY POSSIBLE SELECTOR */
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child > div:last-child button,
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child [data-testid="column"]:last-child button,
+// DISABLED: html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child > div:last-child button,
+// DISABLED: html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[key="nav_logout"] {
+// DISABLED:     color: #e08585 !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child > div:last-child button *,
+// DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child [data-testid="column"]:last-child button *,
+// DISABLED: html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child > div:last-child button *,
+// DISABLED: html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[key="nav_logout"] *,
+// DISABLED: html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[key="nav_logout"] p,
+// DISABLED: html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[key="nav_logout"] div {
+// DISABLED:     color: #e08585 !important;
+// DISABLED: }
+// DISABLED: 
+// DISABLED: /* ABSOLUTE FINAL OVERRIDE - ADDED AT RUNTIME */
+// DISABLED: div[data-testid='stHorizontalBlock']:first-child,
+// DISABLED: div[data-testid='stHorizontalBlock']:first-of-type,
+// DISABLED: section:first-child > div:first-child > div:first-child > div:first-child {
+// DISABLED:     background: rgba(255, 255, 255, 0.95) !important;
+// DISABLED:     background-color: rgba(255, 255, 255, 0.95) !important;
+// DISABLED: }
+// DISABLED: 
+/* LIME GREEN TO TEAL GRADIENT BORDER UNDER NAV */
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child,
+html [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child,
+body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child,
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child,
+html body div [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child {
     position: relative !important;
-    flex-shrink: 0 !important;
-    min-height: 0 !important;
+    border-bottom: none !important;
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.08),
+        0 1px 3px rgba(0, 0, 0, 0.04) !important;
 }
 
-/* Remove Streamlit's nested element styling issues */
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button *,
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="secondary"] * {
-    color: inherit !important;
-    background: transparent !important;
-}
-
-/* Hover state - slightly darker white with lifted shadow */
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button:hover,
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="secondary"]:hover {
-    background: #ffffff !important;
-    color: #0d5858 !important;
-    transform: translateY(-1px) !important;
-    box-shadow: 0 4px 12px rgba(15, 106, 106, 0.15) !important;
-    border: none !important;
-}
-
-/* ACTIVE STATE - MetaFlex teal background with white text */
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"],
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child [data-testid="column"] button[kind="primary"],
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[data-testid="baseButton-primary"] {
-    background: #0f6a6a !important;
-    color: #ffffff !important;
-    font-weight: 600 !important;
-    transform: none !important;
-    box-shadow: 0 2px 8px rgba(15, 106, 106, 0.25) !important;
-    border: none !important;
-    border-radius: 8px !important;
-}
-
-/* Force white text in active buttons - all nested elements */
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"] *,
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"] p,
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"] div,
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"] span {
-    color: #ffffff !important;
-    background: transparent !important;
-}
-
-/* Focus state - accessible outline */
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button:focus-visible {
-    outline: 2px solid #7a9999 !important;
-    outline-offset: 2px !important;
-}
-
-/* Remove default focus outline */
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button:focus:not(:focus-visible) {
-    outline: none !important;
-}
-
-/* ===================================================================
-   USER SECTION - Notion-style Minimal & Clean
-   =================================================================== */
-
-/* User badge styling - simple, clean */
-.user-badge-nav {
-    display: inline-block !important;
-    background: rgba(55, 53, 47, 0.06) !important;
-    border-radius: 6px !important;
-    padding: 6px 12px !important;
-    border: none !important;
-    box-shadow: none !important;
-    transition: background 0.12s ease !important;
-}
-
-.user-badge-nav:hover {
-    background: rgba(55, 53, 47, 0.08) !important;
-    transform: none !important;
-    box-shadow: none !important;
-    cursor: pointer !important;
-}
-
-.user-badge-nav span {
-    color: rgba(55, 53, 47, 0.85) !important;
-    font-weight: 500 !important;
-    font-size: 14px !important;
-}
-
-/* Logout button - subtle, minimal */
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child > div[data-testid="column"]:last-child button,
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[key*="logout"] {
-    background: transparent !important;
-    color: rgba(55, 53, 47, 0.65) !important;
-    border: none !important;
-    border-radius: 6px !important;
-    font-weight: 500 !important;
-}
-
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child > div[data-testid="column"]:last-child button:hover,
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[key*="logout"]:hover {
-    background: rgba(55, 53, 47, 0.08) !important;
-    color: rgba(55, 53, 47, 0.85) !important;
-    transform: none !important;
-    box-shadow: none !important;
-}
-
-/* Navigation container smooth scroll transition (v3.1) */
-div.stContainer:first-of-type {
-    transition: box-shadow 0.4s ease, backdrop-filter 0.3s ease !important;
-}
-
-/* Subtle gradient line at nav bottom for depth (v3.1) */
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child::after {
-    content: "" !important;
+/* Create gradient line using ::after pseudo-element */
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child::after,
+html [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child::after,
+body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child::after,
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child::after,
+html body div [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child::after {
+    content: '' !important;
     position: absolute !important;
     bottom: 0 !important;
     left: 0 !important;
     right: 0 !important;
-    height: 1px !important;
-    background: linear-gradient(to bottom, rgba(255,255,255,0.6), rgba(255,255,255,0)) !important;
-    pointer-events: none !important;
-}
-
-/* ============================================
-   TYPOGRAPHY HIERARCHY - REDESIGNED
-   ============================================ */
-
-/* Main Page Heading (Welcome back) - Large & Personal */
-h1 {
-    font-family: 'Marcellus', serif !important;
-    font-size: 48px !important;
-    font-weight: 400 !important;
-    color: #1a2424 !important;
-    letter-spacing: -0.02em !important;
-    line-height: 1.2 !important;
-    margin-bottom: 12px !important;
-    margin-top: 0 !important;
-}
-
-/* Section Headers (Analytics Dashboard, Performance Overview) - Medium & Clear */
-h2 {
-    font-family: 'Marcellus', serif !important;
-    font-size: 32px !important;
-    font-weight: 400 !important;
-    color: #2a3a3a !important;
-    letter-spacing: -0.01em !important;
-    line-height: 1.3 !important;
-    margin-top: 0 !important;
-    margin-bottom: 8px !important;
-}
-
-/* Subsection Headers (Project Names) - Smaller */
-h3 {
-    font-family: 'Inter', sans-serif !important;
-    font-size: 20px !important;
-    font-weight: 600 !important;
-    color: #2a3a3a !important;
-    letter-spacing: -0.01em !important;
-    line-height: 1.4 !important;
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-}
-
-/* Body text, subtitles, descriptions */
-p, div, span, label {
-    font-family: 'Inter', sans-serif !important;
-    color: #5a6a6a !important;
-    font-size: 15px !important;
-    line-height: 1.6 !important;
-}
-
-/* Subtitle/description text - muted */
-.subtitle {
-    font-size: 16px !important;
-    color: #7a8888 !important;
-    font-weight: 400 !important;
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-    line-height: 1.5 !important;
-}
-
-/* ============================================
-   STREAMLIT WIDGETS (excluding navigation buttons)
-   ============================================ */
-/* Only style buttons NOT in the navigation bar */
-section.main [data-testid="stButton"] button {
-    background: #0f6a6a !important;
-    color: white !important;
-    border: none !important;
-    border-radius: 8px !important;
-    padding: 10px 24px !important;
-    font-weight: 500 !important;
-    transition: all 0.2s ease !important;
-}
-
-section.main [data-testid="stButton"] button:hover {
-    background: #0d5858 !important;
-    transform: translateY(-1px) !important;
-    box-shadow: 0 4px 12px rgba(15, 106, 106, 0.2) !important;
-}
-
-/* Input fields */
-input, textarea, select {
-    border: 1px solid #e2e8f0 !important;
-    border-radius: 8px !important;
-    padding: 10px 14px !important;
-    font-family: 'Inter', sans-serif !important;
-    transition: border-color 0.2s ease !important;
-}
-
-input:focus, textarea:focus, select:focus {
-    border-color: #0f6a6a !important;
-    outline: none !important;
-    box-shadow: 0 0 0 3px rgba(15, 106, 106, 0.1) !important;
-}
-
-/* Checkboxes - elegant styling */
-[data-testid="stCheckbox"] {
-    padding: 8px 0 !important;
-}
-
-[data-testid="stCheckbox"] label {
-    font-size: 14px !important;
-    color: rgba(55, 53, 47, 0.85) !important;
-    font-weight: 500 !important;
-}
-
-/* ============================================
-   METRIC CARDS - REDESIGNED FOR VISUAL HIERARCHY
-   ============================================ */
-
-/* Metric card containers - add visual separation and center text */
-[data-testid="metric-container"] {
-    background: #ffffff !important;
-    border: 1.5px solid #e8eced !important;
-    border-radius: 16px !important;
-    padding: 32px 24px !important;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    position: relative !important;
-    overflow: hidden !important;
-    text-align: center !important;
-}
-
-/* Hover effect for metric cards */
-[data-testid="metric-container"]:hover {
-    border-color: #7a9999 !important;
-    box-shadow: 0 8px 24px rgba(122, 153, 153, 0.12) !important;
-    transform: translateY(-2px) !important;
-}
-
-/* Metric labels - uppercase, small, muted, centered */
-[data-testid="stMetricLabel"] {
-    font-size: 11px !important;
-    font-weight: 600 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 1.2px !important;
-    color: #7a8888 !important;
-    margin-bottom: 16px !important;
-    text-align: center !important;
-    display: block !important;
-}
-
-/* Metric values - BIG and BOLD, centered */
-[data-testid="stMetricValue"] {
-    font-size: 56px !important;
-    font-weight: 700 !important;
-    color: #1a2424 !important;
-    letter-spacing: -0.02em !important;
-    line-height: 1 !important;
-    text-align: center !important;
-    display: block !important;
-}
-
-/* Add subtle accent bar to metric cards */
-[data-testid="metric-container"]::before {
-    content: '' !important;
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
     height: 4px !important;
-    background: linear-gradient(90deg, #7a9999, #5f8c8c) !important;
-    opacity: 0 !important;
-    transition: opacity 0.3s ease !important;
+    background: linear-gradient(90deg, #d4ff00 0%, #b8e600 25%, #7fa830 50%, #4d7a40 75%, #0a4b4b 100%) !important;
+    z-index: 1000 !important;
 }
 
-[data-testid="metric-container"]:hover::before {
-    opacity: 1 !important;
-}
-
-/* ============================================
-   SPACING & LAYOUT IMPROVEMENTS
-   ============================================ */
-
-/* Add breathing room between sections */
-.main .block-container {
-    padding: 48px 64px 80px 64px !important;
-    max-width: 1400px !important;
-    margin: 0 auto !important;
-    background: #f0f2f5 !important;
-}
-
-/* Section spacing */
-section[data-testid="stVerticalBlock"] {
-    margin-bottom: 64px !important;
-}
-
-/* Column spacing for metric cards - more generous and even */
-[data-testid="column"] {
-    padding: 0 16px !important;
-}
-
-[data-testid="column"]:first-child {
-    padding-left: 0 !important;
-}
-
-[data-testid="column"]:last-child {
-    padding-right: 0 !important;
-}
-
-/* ============================================
-   CARDS & CONTAINERS
-   ============================================ */
-[data-testid="stExpander"] {
-    background: white !important;
-    border: 1px solid #e2e8f0 !important;
-    border-radius: 12px !important;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
-    margin-bottom: 16px !important;
-}
-
-/* ============================================
-   AGGRID TABLES - ELEGANT STYLING
-   ============================================ */
-.ag-theme-streamlit {
-    border: 1px solid #e8eced !important;
-    border-radius: 12px !important;
-    overflow: hidden !important;
-}
-
-.ag-header {
-    background: #f0f2f5 !important;
-    border-bottom: 1.5px solid #e8eced !important;
-}
-
-.ag-header-cell {
-    font-weight: 600 !important;
-    font-size: 13px !important;
-    color: rgba(55, 53, 47, 0.85) !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.5px !important;
-}
-
-.ag-row {
-    border-bottom: 1px solid #f0f2f2 !important;
-}
-
-.ag-row:hover {
-    background: rgba(122, 153, 153, 0.04) !important;
-}
-
-/* ============================================
-   NAVIGATION BUTTON COLOR OVERRIDES - CRITICAL
-   ============================================ */
-/* Force remove default Streamlit button colors in navigation - ULTRA SPECIFIC */
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="secondary"][data-testid="baseButton-secondary"],
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"][data-testid="baseButton-primary"],
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button.st-emotion-cache-ue6h4q,
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button.st-emotion-cache-19rxjzo,
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[data-baseweb="button"],
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="secondary"],
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child div[data-testid="column"] button,
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child div[data-testid="column"] button[kind="secondary"],
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child div[data-testid="stButton"] button {
-    background-color: #ffffff !important;
-    background-image: none !important;
-    background: #ffffff !important;
-    border-color: transparent !important;
-    border: none !important;
-    color: #0f6a6a !important;
-    border-radius: 8px !important;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
-}
-
-/* Hover on secondary buttons in nav */
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="secondary"]:hover,
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[data-baseweb="button"]:hover,
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child div[data-testid="column"] button:hover,
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child div[data-testid="column"] button[kind="secondary"]:hover {
-    background: #ffffff !important;
-    background-color: #ffffff !important;
-    background-image: none !important;
-    color: #0d5858 !important;
-    border: none !important;
-    transform: translateY(-1px) !important;
-    box-shadow: 0 4px 12px rgba(15, 106, 106, 0.15) !important;
-}
-
-/* Active/Primary state in nav */
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"]:not([key*="logout"]),
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child div[data-testid="column"] button[kind="primary"] {
-    background: #0f6a6a !important;
-    background-color: #0f6a6a !important;
-    background-image: none !important;
-    color: #ffffff !important;
-    border: none !important;
-    font-weight: 600 !important;
-    box-shadow: 0 2px 8px rgba(15, 106, 106, 0.25) !important;
-}
-
-/* ============================================
-   UTILITY CLASSES
-   ============================================ */
-.premium-card {
-    background: white;
-    border-radius: 12px;
-    padding: 24px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-    border: 1px solid #e2e8f0;
-}
-
-.text-teal {
-    color: #0f6a6a !important;
-}
-
-.text-lime {
-    color: #d4ff00 !important;
-}
-
-.bg-teal {
-    background-color: #0f6a6a !important;
-}
-
-.bg-lime {
-    background-color: #d4ff00 !important;
-}
-
-/* ============================================
-   FINAL CATCH-ALL FOR NAVIGATION BUTTONS
-   Must be at end to override everything
-   ============================================ */
-/* Target all buttons in first horizontal block regardless of class */
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button:not([kind="primary"]) {
-    background: #ffffff !important;
-    background-color: #ffffff !important;
-    background-image: none !important;
-    border: none !important;
-    border-radius: 8px !important;
-    color: #0f6a6a !important;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
-}
-
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button:not([kind="primary"]):hover {
-    background: #ffffff !important;
-    background-color: #ffffff !important;
-    background-image: none !important;
-    color: #0d5858 !important;
-    transform: translateY(-1px) !important;
-    box-shadow: 0 4px 12px rgba(15, 106, 106, 0.15) !important;
-}
-
-/* Primary button (active page) - MetaFlex teal with white text */
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"] {
-    background: #0f6a6a !important;
-    background-color: #0f6a6a !important;
-    background-image: none !important;
-    border: none !important;
-    border-radius: 8px !important;
-    color: #ffffff !important;
-    font-weight: 600 !important;
-    box-shadow: 0 2px 8px rgba(15, 106, 106, 0.25) !important;
-}
-
-/* ============================================
-   FINAL NUCLEAR OVERRIDE - DO NOT MODIFY
-   These rules must be at the end of the file
-   ============================================ */
-
-/* WHITE FROSTED GLASS NAV - EVERY POSSIBLE SELECTOR */
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child,
-div[data-testid="stVerticalBlock"] > div[data-testid="stHorizontalBlock"]:first-child,
-html [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child,
-body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child,
-html body [data-testid="stAppViewContainer"] [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child {
-    background: rgba(255, 255, 255, 0.95) !important;
-    background-color: rgba(255, 255, 255, 0.95) !important;
-    background-image: none !important;
-}
-
-/* Force transparent on all columns */
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child [data-testid="column"],
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child div[data-testid="column"] {
-    background: transparent !important;
-    background-color: transparent !important;
-    background-image: none !important;
-}
-
-/* RED LOGOUT BUTTON - EVERY POSSIBLE SELECTOR */
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child > div:last-child button,
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child [data-testid="column"]:last-child button,
-html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child > div:last-child button,
-html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[key="nav_logout"] {
-    color: #e08585 !important;
-}
-
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child > div:last-child button *,
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child [data-testid="column"]:last-child button *,
-html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child > div:last-child button *,
-html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[key="nav_logout"] *,
-html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[key="nav_logout"] p,
-html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[key="nav_logout"] div {
-    color: #e08585 !important;
-}
-
-/* ABSOLUTE FINAL OVERRIDE - ADDED AT RUNTIME */
-div[data-testid='stHorizontalBlock']:first-child,
-div[data-testid='stHorizontalBlock']:first-of-type,
-section:first-child > div:first-child > div:first-child > div:first-child {
-    background: rgba(255, 255, 255, 0.95) !important;
-    background-color: rgba(255, 255, 255, 0.95) !important;
-}
-
-/* CENTER ALL CHART TITLES - ULTRA AGGRESSIVE */
+/* LEFT ALIGN CHART TITLES - Bar chart and pie chart titles */
 [data-testid="column"] h3,
 [data-testid="column"] > div > h3,
 [data-testid="column"] div[data-testid="stMarkdownContainer"] h3,
 [data-testid="column"] [data-testid="stMarkdownContainer"] h3,
 [data-testid="stMarkdownContainer"] h3,
 .main h3,
-div[data-testid="column"] > div > div > h3 {
-    text-align: center !important;
+div[data-testid="column"] > div > div > h3,
+div[data-testid="column"] h3,
+section[data-testid="stVerticalBlock"] [data-testid="column"] h3,
+[data-testid="element-container"] h3,
+div[data-testid="stVerticalBlockBorderWrapper"] h3 {
+    text-align: left !important;
     width: 100% !important;
     display: block !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
 }
 
-/* Force center on the markdown container itself */
+/* Left align all containers */
 [data-testid="column"] [data-testid="stMarkdownContainer"],
-[data-testid="column"] div[data-testid="stMarkdownContainer"] {
-    text-align: center !important;
+[data-testid="column"] div[data-testid="stMarkdownContainer"],
+[data-testid="column"] [data-testid="element-container"],
+div[data-testid="column"] > div {
+    text-align: left !important;
     width: 100% !important;
 }
 
+/* ============================================
+   TABLE ENHANCEMENTS - Zebra Striping & Hover
+   ============================================ */
+
+/* Dataframe/Table containers */
+[data-testid="stDataFrame"],
+.dataframe-container {
+    border-radius: 12px !important;
+    overflow: hidden !important;
+}
+
+/* Table styling */
+table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+}
+
+/* Table headers */
+thead th {
+    background: #f8f9fa !important;
+    color: #1a2424 !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    padding: 14px 16px !important;
+    text-align: left !important;
+    border-bottom: 2px solid #e8eced !important;
+}
+
+/* Table cells */
+tbody td {
+    padding: 14px 16px !important;
+    font-size: 13px !important;
+    color: #2a3a3a !important;
+    border-bottom: 1px solid #f0f2f5 !important;
+}
+
+/* Zebra striping - alternate row colors */
+tbody tr:nth-child(odd) {
+    background: #ffffff !important;
+}
+
+tbody tr:nth-child(even) {
+    background: #fafbfc !important;
+}
+
+/* Row hover state - light teal */
+tbody tr:hover {
+    background: #f0f7f7 !important;
+    transition: background 0.2s ease !important;
+    cursor: pointer !important;
+}
+
+/* First and last row special styling */
+tbody tr:first-child td {
+    padding-top: 16px !important;
+}
+
+tbody tr:last-child td {
+    border-bottom: none !important;
+    padding-bottom: 16px !important;
+}
+
+/* ============================================
+   CONTAINERS - WHITE GRADIENT BACKGROUND
+   ============================================ */
+
+/* All containers get white gradient */
+html body [data-testid="stVerticalBlock"],
+html body [data-testid="stHorizontalBlock"],
+html body [data-testid="element-container"],
+html body div[data-testid="column"],
+html body [data-testid="stVerticalBlockBorderWrapper"] {
+    background: linear-gradient(135deg, #ffffff 0%, #fefefe 100%) !important;
+    background-color: #ffffff !important;
+    background-image: linear-gradient(135deg, #ffffff 0%, #fefefe 100%) !important;
+}
+
+/* Metric containers */
+html body [data-testid="stMetric"],
+html body [data-testid="metric-container"] {
+    background: linear-gradient(135deg, #ffffff 0%, #fefefe 100%) !important;
+    background-color: #ffffff !important;
+    background-image: linear-gradient(135deg, #ffffff 0%, #fefefe 100%) !important;
+    padding: 16px !important;
+    border-radius: 12px !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Charts and plot containers */
+html body [data-testid="stPlotlyChart"],
+html body [class*="plot-container"] {
+    background: linear-gradient(135deg, #ffffff 0%, #fefefe 100%) !important;
+    background-color: #ffffff !important;
+    background-image: linear-gradient(135deg, #ffffff 0%, #fefefe 100%) !important;
+    padding: 16px !important;
+    border-radius: 12px !important;
+}
+
+/* ============================================
+   NAVIGATION BUTTONS - MATCH DESIGN
+   ============================================ */
+
+/* All nav buttons - FORCE transparent background, NO borders */
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button,
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button:not([kind="primary"]),
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="secondary"],
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child .stButton > button:not([kind="primary"]),
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[data-testid="baseButton-secondary"],
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child [data-testid="stButton"] button {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border: none !important;
+    border-width: 0 !important;
+    border-style: none !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    outline: none !important;
+    border-radius: 0 !important;
+}
+
+/* Hover - transparent */
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button:hover,
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button:not([kind="primary"]):hover {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border: none !important;
+    border-width: 0 !important;
+    border-style: none !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+}
+
+/* Active/Primary button - LIME GREEN PILL */
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"] {
+    background: #d4ff00 !important;
+    background-color: #d4ff00 !important;
+    background-image: none !important;
+    border: none !important;
+    border-width: 0 !important;
+    outline: none !important;
+    box-shadow: none !important;
+    color: #1a1a1a !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    padding: 12px 24px !important;
+    border-radius: 24px !important;
+    transition: all 0.2s ease !important;
+    text-shadow: none !important;
+}
+
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"]:hover {
+    background: #c8e600 !important;
+    background-color: #c8e600 !important;
+    background-image: none !important;
+    border: none !important;
+    border-width: 0 !important;
+    box-shadow: 0 2px 8px rgba(212, 255, 0, 0.3) !important;
+}
+
+/* Logout button - red/coral text */
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child div[data-testid="column"]:last-child button {
+    background: linear-gradient(135deg, #fafbfc 0%, #f5f7f7 100%) !important;
+    background-color: #f8f9fa !important;
+    background-image: linear-gradient(135deg, #fafbfc 0%, #f5f7f7 100%) !important;
+    border: none !important;
+    border-width: 0 !important;
+    color: #ff6b6b !important;
+    text-transform: uppercase !important;
+}
+
+/* ULTIMATE BORDER REMOVAL - Target Streamlit's button classes directly */
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="secondary"],
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[data-testid="baseButton-secondary"],
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child .stButton button {
+    border: 0 !important;
+    border-style: none !important;
+    border-width: 0 !important;
+    border-color: transparent !important;
+    outline: 0 !important;
+    outline-style: none !important;
+    outline-width: 0 !important;
+    outline-color: transparent !important;
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+}
+
+/* Also target the button's inner div */
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button div[data-testid="stMarkdownContainer"],
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button div,
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button p {
+    border: 0 !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+}
+
+/* NUCLEAR OPTION - MUST BE LAST */
+body button:not([kind="primary"]) {
+    border: 0 !important;
+    outline: 0 !important;
+}

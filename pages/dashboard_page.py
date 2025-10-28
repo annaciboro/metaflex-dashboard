@@ -128,13 +128,9 @@ def load_google_sheet():
 
         # Authorize and open the sheet
         client = gspread.authorize(creds)
-        # Extract sheet ID from URL or use direct ID
-        if "google_sheet_id" in st.secrets:
-            sheet_id = st.secrets["google_sheet_id"]
-        else:
-            # Extract from google_sheets.SHEET_URL
-            sheet_url = st.secrets["google_sheets"]["SHEET_URL"]
-            sheet_id = sheet_url.split("/d/")[1].split("/")[0]
+        
+        # Use Google Sheet ID: 1U_9CEbWHWMQVS2C20O0fpOG5gVxoYjB7BmppKlTHIzc
+        sheet_id = "1U_9CEbWHWMQVS2C20O0fpOG5gVxoYjB7BmppKlTHIzc"
 
         # Try to open Otter_Tasks worksheet, fallback to first sheet
         try:
@@ -229,13 +225,9 @@ def update_google_sheet(updated_df):
             st.secrets["gcp_service_account"], scopes=SCOPES
         )
         gc = gspread.authorize(creds)
-        # Extract sheet ID from URL or use direct ID
-        if "google_sheet_id" in st.secrets:
-            SHEET_ID = st.secrets["google_sheet_id"]
-        else:
-            # Extract from google_sheets.SHEET_URL
-            sheet_url = st.secrets["google_sheets"]["SHEET_URL"]
-            SHEET_ID = sheet_url.split("/d/")[1].split("/")[0]
+        
+        # Use Google Sheet ID: 1U_9CEbWHWMQVS2C20O0fpOG5gVxoYjB7BmppKlTHIzc
+        SHEET_ID = "1U_9CEbWHWMQVS2C20O0fpOG5gVxoYjB7BmppKlTHIzc"
 
         # Try to open Otter_Tasks worksheet, fallback to first sheet
         try:
@@ -697,10 +689,17 @@ def render_editable_task_grid(df, current_user, is_tea=False, key_prefix="", sho
             cols.insert(status_idx + 1, "Progress Status")
             display_df = display_df[cols]
 
+    # Add unique row IDs for proper AG-Grid tracking
+    display_df = display_df.reset_index(drop=False)
+    display_df = display_df.rename(columns={'index': '_row_id'})
+
     # Configure AgGrid - DISABLE pagination to show all on one page
     gb = GridOptionsBuilder.from_dataframe(display_df)
     gb.configure_pagination(enabled=False)  # Disable pagination
     gb.configure_default_column(editable=True, filter=True, sortable=True, resizable=True)
+
+    # Hide the internal row ID column
+    gb.configure_column("_row_id", hide=True)
 
     # Configure specific columns using clean names
     if "Status" in display_df.columns:
@@ -733,6 +732,9 @@ def render_editable_task_grid(df, current_user, is_tea=False, key_prefix="", sho
     if "Progress %" in display_df.columns:
         gb.configure_column("Progress %", hide=True)
 
+    # Set getRowId using GridOptionsBuilder to avoid unsafe JavaScript
+    gb.configure_grid_options(getRowNodeId='_row_id')
+
     grid_options = gb.build()
 
     # Render AgGrid with display dataframe (clean column names)
@@ -741,81 +743,28 @@ def render_editable_task_grid(df, current_user, is_tea=False, key_prefix="", sho
         gridOptions=grid_options,
         theme="streamlit",
         update_mode=GridUpdateMode.MODEL_CHANGED,
-        allow_unsafe_jscode=True,
+        allow_unsafe_jscode=False,  # Security: Disable unsafe JavaScript code execution
         fit_columns_on_grid_load=True,
         height=800,  # Increased height to show more rows
     )
 
     edited_df = pd.DataFrame(response["data"])
 
+    # Remove internal row ID column if present
+    if "_row_id" in edited_df.columns:
+        edited_df = edited_df.drop(columns=["_row_id"])
+
     # Add manual "Send to Google Sheets" button
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # Check if any changes were made
-    has_changes = not edited_df.equals(display_df)
+    # Check if any changes were made (compare without _row_id column)
+    display_df_compare = display_df.drop(columns=["_row_id"]) if "_row_id" in display_df.columns else display_df
+    has_changes = not edited_df.equals(display_df_compare)
 
     if has_changes:
         st.info("You have unsaved changes in the grid above.")
 
-    # Custom button styling to match MetaFlex color scheme
-    st.markdown("""
-        <style>
-        /* Google Sheets sync button styling - target all primary buttons in this section */
-        button[kind="primary"],
-        .stButton > button[kind="primary"],
-        button[data-testid="baseButton-primary"] {
-            background: linear-gradient(135deg, #0f6a6a 0%, #0d5858 80%) !important;
-            color: #ffffff !important;
-            border: none !important;
-            border-radius: 8px !important;
-            padding: 14px 28px !important;
-            font-weight: 600 !important;
-            font-size: 14px !important;
-            letter-spacing: 0.5px !important;
-            transition: all 0.25s ease-in-out !important;
-            box-shadow: 0 2px 6px rgba(15, 106, 106, 0.15) !important;
-        }
-        button[kind="primary"]:hover:not(:disabled),
-        .stButton > button[kind="primary"]:hover:not(:disabled),
-        button[data-testid="baseButton-primary"]:hover:not(:disabled) {
-            background: linear-gradient(135deg, #127878 0%, #0f6a6a 80%) !important;
-            box-shadow: 0 4px 12px rgba(15, 106, 106, 0.25) !important;
-            transform: translateY(-1px);
-        }
-        button[kind="primary"]:disabled,
-        .stButton > button[kind="primary"]:disabled,
-        button[data-testid="baseButton-primary"]:disabled {
-            background: #e7ecec !important;
-            color: #7a8c8c !important;
-            cursor: not-allowed !important;
-            box-shadow: none !important;
-            opacity: 0.6;
-        }
-
-        /* Archive button styling - secondary button to match primary */
-        button[kind="secondary"],
-        .stButton > button[kind="secondary"],
-        button[data-testid="baseButton-secondary"] {
-            background: linear-gradient(135deg, #e08585 0%, #d66b6b 80%) !important;
-            color: #ffffff !important;
-            border: none !important;
-            border-radius: 8px !important;
-            padding: 14px 28px !important;
-            font-weight: 600 !important;
-            font-size: 14px !important;
-            letter-spacing: 0.5px !important;
-            transition: all 0.25s ease-in-out !important;
-            box-shadow: 0 2px 6px rgba(224, 133, 133, 0.15) !important;
-        }
-        button[kind="secondary"]:hover,
-        .stButton > button[kind="secondary"]:hover,
-        button[data-testid="baseButton-secondary"]:hover {
-            background: linear-gradient(135deg, #d66b6b 0%, #c95555 80%) !important;
-            box-shadow: 0 4px 12px rgba(224, 133, 133, 0.25) !important;
-            transform: translateY(-1px) !important;
-        }
-        </style>
-    """, unsafe_allow_html=True)
+    # No custom CSS needed - all styling handled by metaflex_premium.css
 
     # Create single "Send to Google Sheets" button
     if st.button("Send to Google Sheets", type="primary", disabled=not has_changes, use_container_width=True, key=f"{key_prefix}_save_button"):
@@ -892,8 +841,18 @@ def show_dashboard():
     # Get first name for greeting
     first_name = user_name.split()[0] if user_name else "User"
 
-    # Main page heading - Large and personal (removed redundant subtitle)
+    # Main page heading - Large and personal in white container
+    st.markdown("""
+        <div style='
+            background: linear-gradient(135deg, #ffffff 0%, #fefefe 100%);
+            padding: 32px 40px;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            margin-bottom: 32px;
+        '>
+    """, unsafe_allow_html=True)
     st.markdown(f"# Welcome back, {first_name}")
+    st.markdown("</div>", unsafe_allow_html=True)
 
     # Load data from Google Sheet
     with st.spinner("Loading dashboard data..."):
@@ -906,13 +865,24 @@ def show_dashboard():
     # Calculate team-wide KPIs (all data)
     team_kpis = calculate_kpis(df, user_name, is_personal=False)
 
-    # Section: Analytics Dashboard - Clear hierarchy with elegant spacing
-    st.markdown("<div style='margin-top: 48px;'></div>", unsafe_allow_html=True)
+    # Section: Analytics Dashboard - In white container
+    st.markdown("""
+        <div style='
+            background: linear-gradient(135deg, #ffffff 0%, #fefefe 100%);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            margin-top: 32px;
+            margin-bottom: 32px;
+        '>
+    """, unsafe_allow_html=True)
     st.markdown("## Analytics Dashboard")
     st.markdown('<p class="subtitle">Real-time insights into team performance and project progress</p>', unsafe_allow_html=True)
-    st.markdown("<div style='margin-bottom: 32px;'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='margin-bottom: 24px;'></div>", unsafe_allow_html=True)
 
     render_kpi_section(team_kpis)
+
+    st.markdown("</div>", unsafe_allow_html=True)
 
     # Section: Performance Overview - More breathing room
     st.markdown("<div style='margin-top: 64px;'></div>", unsafe_allow_html=True)
@@ -984,3 +954,28 @@ def show_dashboard():
                 st.markdown("<div style='margin-bottom: 48px;'></div>", unsafe_allow_html=True)
     else:
         st.info("Project column not found in data.")
+
+    # LOAD METAFLEX JAVASCRIPT AT END OF PAGE
+    import os
+    import streamlit.components.v1 as components
+
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    js_path = os.path.join(os.path.dirname(current_dir), "static", "metaflex_interactions.js")
+
+    if os.path.exists(js_path):
+        with open(js_path, 'r') as f:
+            js_code = f.read()
+
+        # Inject via iframe (only way to run JS in Streamlit)
+        components.html(
+            f"""
+            <script>
+            {js_code}
+            </script>
+            """,
+            height=0,
+            width=0
+        )
+        print(f"✅ MetaFlex JS loaded on Home page from: {js_path}")
+    else:
+        print(f"❌ JS not found at: {js_path}")

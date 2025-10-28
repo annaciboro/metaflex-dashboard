@@ -28,8 +28,8 @@ def show_analytics():
     header_col1, header_col2 = st.columns([3, 1])
 
     with header_col1:
-        st.markdown('<h2 style="font-family: \'Marcellus\', serif; font-size: 32px; font-weight: 400; color: #2a3a3a; margin: 0;">All Task Management</h2>', unsafe_allow_html=True)
-        st.markdown('<p style="font-family: \'Inter\', sans-serif; font-size: 15px; color: #7a8888; margin-top: 8px; margin-bottom: 0;">Edit fields directly, then sync to Google Sheets</p>', unsafe_allow_html=True)
+        st.markdown('<h1 style="font-family: \'Marcellus\', serif; font-size: 42px; font-weight: 600; color: #1a2424; margin: 0; letter-spacing: -0.02em;">All Task Management</h1>', unsafe_allow_html=True)
+        st.markdown('<p style="font-family: \'Inter\', sans-serif; font-size: 15px; color: #6a7878; margin-top: 8px; margin-bottom: 0; line-height: 1.6;">Edit fields directly, then sync to Google Sheets</p>', unsafe_allow_html=True)
 
     with header_col2:
         st.markdown(f'<p style="font-family: \'Inter\', sans-serif; font-size: 16px; color: #2a3a3a; font-weight: 600; text-align: right; margin-top: 8px;">Total Tasks: {len(df)}</p>', unsafe_allow_html=True)

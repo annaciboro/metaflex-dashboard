@@ -77,7 +77,7 @@ def create_team_completion_donut(open_tasks, working_tasks, done_tasks):
         align='center'
     )
 
-    # Premium white background layout - aligned with bar chart
+    # Premium white background layout - TALLER with MORE SPACE
     fig.update_layout(
         showlegend=True,
         legend=dict(
@@ -89,8 +89,8 @@ def create_team_completion_donut(open_tasks, working_tasks, done_tasks):
             font=dict(size=14, color='#6b778c', family='Inter', weight=600),
             itemsizing='constant'
         ),
-        height=550,
-        margin=dict(t=20, b=100, l=40, r=40),
+        height=650,
+        margin=dict(t=30, b=100, l=50, r=50),
         paper_bgcolor='rgba(0,0,0,0)',  # Transparent background
         plot_bgcolor='rgba(0,0,0,0)',
         font=dict(family='Inter, -apple-system, sans-serif')
@@ -146,10 +146,10 @@ def create_project_breakdown_chart(df):
         width=0.6  # Slimmer bars for premium look
     )])
 
-    # Premium white background layout - matched height and margins with donut chart
+    # Premium white background layout - TALLER with MORE SPACE
     fig.update_layout(
-        height=550,
-        margin=dict(t=20, b=100, l=20, r=80),
+        height=650,
+        margin=dict(t=30, b=100, l=30, r=90),
         paper_bgcolor='rgba(0,0,0,0)',  # Transparent background
         plot_bgcolor='rgba(0,0,0,0)',
         xaxis=dict(
@@ -158,16 +158,16 @@ def create_project_breakdown_chart(df):
             gridwidth=1,
             zeroline=False,
             title='',
-            tickfont=dict(size=13, color='#6b778c', family='Inter'),
+            tickfont=dict(size=14, color='#6b778c', family='Inter'),
             range=[0, max(counts) * 1.15]  # Extra space for text labels
         ),
         yaxis=dict(
             title='',
-            tickfont=dict(size=15, color='#1f2937', family='Inter', weight=600),
+            tickfont=dict(size=16, color='#1f2937', family='Inter', weight=600),
             showgrid=False
         ),
         font=dict(family='Inter, -apple-system, sans-serif'),
-        bargap=0.3
+        bargap=0.35
     )
 
     return fig
