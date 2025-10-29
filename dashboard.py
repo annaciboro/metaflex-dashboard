@@ -455,8 +455,8 @@ nav_container = st.container()
 with nav_container:
     nav_items_without_logout = [p for p in pages_list if p != "Logout"]
 
-    # Create columns for navigation - white space on left, logo close to Home
-    cols = st.columns([0.15, 0.2] + [1]*len(nav_items_without_logout) + [0.5, 0.1, 0.8])
+    # Create columns for navigation - white space on left, logo, spacer, then nav buttons
+    cols = st.columns([0.15, 0.2, 0.3] + [1]*len(nav_items_without_logout) + [0.5, 0.1, 0.8])
 
     # White space column (left side padding)
     with cols[0]:
@@ -467,9 +467,13 @@ with nav_container:
         if os.path.exists(logo_path):
             st.image(logo_path)
 
-    # Navigation buttons
+    # Spacer after logo
+    with cols[2]:
+        st.write("")
+
+    # Navigation buttons - start at column 3
     for idx, page_name in enumerate(nav_items_without_logout):
-        with cols[idx + 2]:
+        with cols[idx + 3]:
             is_active = st.session_state.current_page == page_name
 
             # Custom CSS for this specific button - GREEN UNDERLINE FOR ACTIVE STATE
@@ -487,14 +491,14 @@ with nav_container:
 
             st.markdown(f"""
                 <style>
-                /* ULTRA SPECIFIC Target for column {idx + 3} - Override emotion cache */
-                html body div[data-testid="column"]:nth-child({idx + 3}) button.st-emotion-cache-5qfegl.e8vg11g2,
-                html body div[data-testid="column"]:nth-child({idx + 3}) button.st-emotion-cache-5qfegl,
-                html body div[data-testid="column"]:nth-child({idx + 3}) button.e8vg11g2,
-                html body div[data-testid="column"]:nth-child({idx + 3}) button[kind="secondary"],
-                html body div[data-testid="column"]:nth-child({idx + 3}) button[data-testid="stBaseButton-secondary"],
-                html body div[data-testid="column"]:nth-child({idx + 3}) .stButton > button,
-                html body div[data-testid="column"]:nth-child({idx + 3}) button {{
+                /* ULTRA SPECIFIC Target for column {idx + 4} - Override emotion cache */
+                html body div[data-testid="column"]:nth-child({idx + 4}) button.st-emotion-cache-5qfegl.e8vg11g2,
+                html body div[data-testid="column"]:nth-child({idx + 4}) button.st-emotion-cache-5qfegl,
+                html body div[data-testid="column"]:nth-child({idx + 4}) button.e8vg11g2,
+                html body div[data-testid="column"]:nth-child({idx + 4}) button[kind="secondary"],
+                html body div[data-testid="column"]:nth-child({idx + 4}) button[data-testid="stBaseButton-secondary"],
+                html body div[data-testid="column"]:nth-child({idx + 4}) .stButton > button,
+                html body div[data-testid="column"]:nth-child({idx + 4}) button {{
                     background: transparent !important;
                     background-color: transparent !important;
                     background-image: none !important;
@@ -523,9 +527,9 @@ with nav_container:
                 }}
 
                 /* Hover state */
-                html body div[data-testid="column"]:nth-child({idx + 3}) button:hover,
-                html body div[data-testid="column"]:nth-child({idx + 3}) button.st-emotion-cache-5qfegl:hover,
-                html body div[data-testid="column"]:nth-child({idx + 3}) button[kind="secondary"]:hover {{
+                html body div[data-testid="column"]:nth-child({idx + 4}) button:hover,
+                html body div[data-testid="column"]:nth-child({idx + 4}) button.st-emotion-cache-5qfegl:hover,
+                html body div[data-testid="column"]:nth-child({idx + 4}) button[kind="secondary"]:hover {{
                     background: transparent !important;
                     background-color: transparent !important;
                     background-image: none !important;
@@ -541,8 +545,8 @@ with nav_container:
                 }}
 
                 /* Active/click state */
-                html body div[data-testid="column"]:nth-child({idx + 3}) button:active,
-                html body div[data-testid="column"]:nth-child({idx + 3}) button.st-emotion-cache-5qfegl:active {{
+                html body div[data-testid="column"]:nth-child({idx + 4}) button:active,
+                html body div[data-testid="column"]:nth-child({idx + 4}) button.st-emotion-cache-5qfegl:active {{
                     background: transparent !important;
                     background-color: transparent !important;
                     color: #2d5016 !important;
@@ -550,19 +554,19 @@ with nav_container:
                 }}
 
                 /* Force text color on nested elements - TARGET EXACT STREAMLIT CLASSES */
-                html body div[data-testid="column"]:nth-child({idx + 3}) button.st-emotion-cache-5qfegl.e8vg11g2 .st-emotion-cache-12j140x.et2rgd20,
-                html body div[data-testid="column"]:nth-child({idx + 3}) button.st-emotion-cache-5qfegl.e8vg11g2 .st-emotion-cache-12j140x.et2rgd20 p,
-                html body div[data-testid="column"]:nth-child({idx + 3}) button.st-emotion-cache-5qfegl .st-emotion-cache-12j140x,
-                html body div[data-testid="column"]:nth-child({idx + 3}) .st-emotion-cache-12j140x.et2rgd20,
-                html body div[data-testid="column"]:nth-child({idx + 3}) .st-emotion-cache-12j140x.et2rgd20 p,
-                html body div[data-testid="column"]:nth-child({idx + 3}) button *,
-                html body div[data-testid="column"]:nth-child({idx + 3}) button p,
-                html body div[data-testid="column"]:nth-child({idx + 3}) button div,
-                html body div[data-testid="column"]:nth-child({idx + 3}) button.st-emotion-cache-5qfegl p,
-                html body div[data-testid="column"]:nth-child({idx + 3}) button .st-emotion-cache-12j140x,
-                html body div[data-testid="column"]:nth-child({idx + 3}) button .st-emotion-cache-12j140x p,
-                html body div[data-testid="column"]:nth-child({idx + 3}) button[data-testid="stBaseButton-secondary"] p,
-                html body div[data-testid="column"]:nth-child({idx + 3}) div[data-testid="stMarkdownContainer"] p {{
+                html body div[data-testid="column"]:nth-child({idx + 4}) button.st-emotion-cache-5qfegl.e8vg11g2 .st-emotion-cache-12j140x.et2rgd20,
+                html body div[data-testid="column"]:nth-child({idx + 4}) button.st-emotion-cache-5qfegl.e8vg11g2 .st-emotion-cache-12j140x.et2rgd20 p,
+                html body div[data-testid="column"]:nth-child({idx + 4}) button.st-emotion-cache-5qfegl .st-emotion-cache-12j140x,
+                html body div[data-testid="column"]:nth-child({idx + 4}) .st-emotion-cache-12j140x.et2rgd20,
+                html body div[data-testid="column"]:nth-child({idx + 4}) .st-emotion-cache-12j140x.et2rgd20 p,
+                html body div[data-testid="column"]:nth-child({idx + 4}) button *,
+                html body div[data-testid="column"]:nth-child({idx + 4}) button p,
+                html body div[data-testid="column"]:nth-child({idx + 4}) button div,
+                html body div[data-testid="column"]:nth-child({idx + 4}) button.st-emotion-cache-5qfegl p,
+                html body div[data-testid="column"]:nth-child({idx + 4}) button .st-emotion-cache-12j140x,
+                html body div[data-testid="column"]:nth-child({idx + 4}) button .st-emotion-cache-12j140x p,
+                html body div[data-testid="column"]:nth-child({idx + 4}) button[data-testid="stBaseButton-secondary"] p,
+                html body div[data-testid="column"]:nth-child({idx + 4}) div[data-testid="stMarkdownContainer"] p {{
                     color: #2d5016 !important;
                     text-transform: uppercase !important;
                     font-size: 12px !important;
@@ -703,16 +707,19 @@ with nav_container:
 
             # Don't call st.rerun() - let JavaScript handle the redirect
 
-# Neon green gradient line under navigation
+# Neon green gradient line under navigation - starts after logo
 st.markdown("""
     <div style='
         width: 100%;
         max-width: 100vw;
         margin: 10px 0 0 0;
-        padding: 0 20px 0 0;
+        padding: 0;
+        display: flex;
     '>
+        <div style='width: 15%; height: 4px;'></div>
+        <div style='width: 20%; height: 4px;'></div>
         <div style='
-            width: 95%;
+            width: 65%;
             height: 4px;
             background: linear-gradient(90deg,
                 #d4ff00 0%,
