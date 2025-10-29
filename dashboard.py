@@ -153,28 +153,99 @@ if st.session_state.get("authentication_status") is None:
             max-width: 100% !important;
         }
 
-        /* Input fields */
-        input {
+        /* Input fields - Override all Streamlit defaults */
+        input,
+        input[type="text"],
+        input[type="password"],
+        section[data-testid="stForm"] input,
+        input[aria-invalid="false"],
+        input[aria-invalid="true"],
+        .st-ba.st-bb.st-bc.st-bd.st-be.st-bf.st-bg.st-bh.st-bi.st-bj input,
+        div[data-baseweb="base-input"] input {
             border-radius: 14px !important;
             border: 2px solid #4d7a40 !important;
+            border-color: #4d7a40 !important;
+            border-style: solid !important;
             padding: 18px 24px !important;
             font-size: 15px !important;
             background: #ffffff !important;
+            caret-color: #4d7a40 !important;
+            outline: none !important;
+            box-shadow: none !important;
         }
 
-        input:focus {
+        input:focus,
+        input[type="text"]:focus,
+        input[type="password"]:focus,
+        section[data-testid="stForm"] input:focus,
+        input:focus-visible,
+        input[type="text"]:focus-visible,
+        input[type="password"]:focus-visible,
+        input[aria-invalid="false"]:focus,
+        input[aria-invalid="true"]:focus,
+        .st-ba.st-bb.st-bc.st-bd.st-be.st-bf.st-bg.st-bh.st-bi.st-bj input:focus,
+        div[data-baseweb="base-input"] input:focus {
             border: 2px solid #d4ff00 !important;
+            border-color: #d4ff00 !important;
+            border-style: solid !important;
             box-shadow: 0 0 0 4px rgba(212, 255, 0, 0.2) !important;
             outline: none !important;
+            caret-color: #4d7a40 !important;
         }
 
-        /* Login button - centered with dark green */
+        /* Remove any red error styling from Streamlit */
+        input[aria-invalid="true"],
+        input[aria-invalid="false"] {
+            border: 2px solid #4d7a40 !important;
+            border-color: #4d7a40 !important;
+        }
+
+        input[aria-invalid="true"]:focus,
+        input[aria-invalid="false"]:focus {
+            border: 2px solid #d4ff00 !important;
+            border-color: #d4ff00 !important;
+            box-shadow: 0 0 0 4px rgba(212, 255, 0, 0.2) !important;
+        }
+
+        /* Target Streamlit's baseweb input wrapper */
+        div[data-baseweb="base-input"],
+        div[data-baseweb="input"] {
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        /* Override any Streamlit emotion cache classes */
+        [class*="st-emotion-cache"] input,
+        [class*="st-ba"] input {
+            border: 2px solid #4d7a40 !important;
+            border-color: #4d7a40 !important;
+        }
+
+        [class*="st-emotion-cache"] input:focus,
+        [class*="st-ba"] input:focus {
+            border: 2px solid #d4ff00 !important;
+            border-color: #d4ff00 !important;
+            box-shadow: 0 0 0 4px rgba(212, 255, 0, 0.2) !important;
+        }
+
+        /* Login button - dark MetaFlex green gradient with white text - ULTRA AGGRESSIVE */
         button[kind="primary"],
         section[data-testid="stForm"] button[type="submit"],
-        section[data-testid="stForm"] button {
+        section[data-testid="stForm"] button,
+        form button,
+        form button[type="submit"],
+        [data-testid="stForm"] button,
+        [data-testid="stFormSubmitButton"] button,
+        div[data-testid="stFormSubmitButton"] > button,
+        [class*="stFormSubmitButton"] button {
             background: linear-gradient(135deg, #4d7a40 0%, #0a4b4b 100%) !important;
-            color: white !important;
+            background-color: #4d7a40 !important;
+            background-image: linear-gradient(135deg, #4d7a40 0%, #0a4b4b 100%) !important;
+            color: #ffffff !important;
             border: none !important;
+            border-color: transparent !important;
+            border-width: 0 !important;
+            border-style: none !important;
             border-radius: 14px !important;
             padding: 16px 32px !important;
             font-weight: 700 !important;
@@ -182,12 +253,53 @@ if st.session_state.get("authentication_status") is None:
             width: 100% !important;
             display: block !important;
             margin: 0 auto !important;
+            transition: all 0.2s ease !important;
+            box-shadow: 0 2px 8px rgba(10, 75, 75, 0.3) !important;
+            outline: none !important;
         }
 
+        /* Force white text on button and all nested elements */
+        section[data-testid="stForm"] button,
+        section[data-testid="stForm"] button *,
+        section[data-testid="stForm"] button p,
+        section[data-testid="stForm"] button div,
+        [data-testid="stFormSubmitButton"] button,
+        [data-testid="stFormSubmitButton"] button * {
+            color: #ffffff !important;
+        }
+
+        /* Hover state - slightly lighter */
         button[kind="primary"]:hover,
-        section[data-testid="stForm"] button:hover {
+        section[data-testid="stForm"] button:hover,
+        form button:hover,
+        [data-testid="stFormSubmitButton"] button:hover {
             background: linear-gradient(135deg, #5a8a4d 0%, #0d5757 100%) !important;
+            background-image: linear-gradient(135deg, #5a8a4d 0%, #0d5757 100%) !important;
             transform: translateY(-1px) !important;
+            box-shadow: 0 4px 12px rgba(10, 75, 75, 0.4) !important;
+            border: none !important;
+        }
+
+        /* Active/Clicked state - neon green with dark green text */
+        button[kind="primary"]:active,
+        section[data-testid="stForm"] button:active,
+        section[data-testid="stForm"] button[type="submit"]:active,
+        form button:active,
+        [data-testid="stFormSubmitButton"] button:active {
+            background: linear-gradient(135deg, #d4ff00 0%, #c8ff00 100%) !important;
+            background-image: linear-gradient(135deg, #d4ff00 0%, #c8ff00 100%) !important;
+            color: #0a4b4b !important;
+            transform: translateY(0) !important;
+            box-shadow: 0 0 0 4px rgba(212, 255, 0, 0.3) !important;
+            border: none !important;
+        }
+
+        /* Force dark green text when active */
+        section[data-testid="stForm"] button:active,
+        section[data-testid="stForm"] button:active *,
+        [data-testid="stFormSubmitButton"] button:active,
+        [data-testid="stFormSubmitButton"] button:active * {
+            color: #0a4b4b !important;
         }
 
         /* Labels - Dark green */
@@ -229,7 +341,7 @@ if st.session_state.get("authentication_status") is None:
     # Copyright footer
     st.markdown("""
         <div class="copyright-footer">
-            © 2025 SBS
+            © 2025 SBS ARCHITECTED
         </div>
     """, unsafe_allow_html=True)
 
@@ -479,15 +591,6 @@ st.markdown("""
                 #0a4b4b 80%,
                 #0a4b4b 100%);
         '></div>
-        <div style='
-            width: 100%;
-            text-align: right;
-            padding: 4px 20px 0 0;
-            font-size: 8px;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-            color: rgba(10, 75, 75, 0.4);
-        '>Architected by SBS</div>
     </div>
 """, unsafe_allow_html=True)
 

@@ -1061,11 +1061,15 @@ def show_dashboard():
     is_tea = user_name.lower() == "tea" or user_name.lower() == "tēa" or "tea" in user_name.lower()
     is_jess = "jess" in user_name.lower()
 
+    # DEBUG: Show detection status
+    st.write(f"DEBUG: user_name = '{user_name}', is_tea = {is_tea}, is_jess = {is_jess}")
+
     # Filter data based on user type
     if is_tea:
         # Tea sees all data with team KPIs
         filtered_df = df
         kpis = calculate_kpis(filtered_df, user_name, is_personal=False)
+        st.write(f"DEBUG: KPIs = {kpis}")
     elif is_jess:
         # Jess sees only her, Megan's, and Justin's tasks
         assignee_col = None
@@ -1128,9 +1132,11 @@ def show_dashboard():
         # Render KPIs based on user type
         if is_tea or is_jess:
             # Tea and Jess see all 3 KPI cards
+            st.write("DEBUG: Calling render_kpi_section() for Tea/Jess - should show 3 cards")
             render_kpi_section(kpis)
         else:
             # Other users see only 2 KPI cards (My Open Tasks, Active Projects)
+            st.write("DEBUG: Calling render_personal_kpi_section() for regular user - should show 2 cards")
             render_personal_kpi_section(kpis)
 
         # Section: Performance Overview
@@ -1138,6 +1144,7 @@ def show_dashboard():
 
         # Charts (filtered based on user)
         # Only Tea and Jess see the "Tasks by Project" chart; regular users only see Task Completion Status
+        st.write(f"DEBUG: Calling render_charts_section with show_project_chart={(is_tea or is_jess)}")
         render_charts_section(kpis, filtered_df, show_project_chart=(is_tea or is_jess))
 
     # Close the white container div
