@@ -228,13 +228,18 @@ if st.session_state.get("authentication_status") is None:
             box-shadow: 0 0 0 4px rgba(212, 255, 0, 0.2) !important;
         }
 
-        /* Center the submit button container */
+        /* Center the submit button container - ULTRA AGGRESSIVE */
+        section[data-testid="stForm"] [data-testid="stFormSubmitButton"],
+        section[data-testid="stForm"] div[data-testid="stFormSubmitButton"],
         [data-testid="stFormSubmitButton"],
-        div[data-testid="stFormSubmitButton"] {
+        div[data-testid="stFormSubmitButton"],
+        .stFormSubmitButton,
+        section[data-testid="stForm"] > div:last-child {
             display: flex !important;
             justify-content: center !important;
             align-items: center !important;
             width: 100% !important;
+            text-align: center !important;
         }
 
         /* Login button - dark MetaFlex green gradient with white text - ULTRA AGGRESSIVE */
@@ -262,8 +267,8 @@ if st.session_state.get("authentication_status") is None:
             width: auto !important;
             min-width: 200px !important;
             max-width: 300px !important;
-            display: block !important;
-            margin: 0 auto !important;
+            display: inline-block !important;
+            margin: 0 !important;
             transition: all 0.2s ease !important;
             box-shadow: 0 2px 8px rgba(10, 75, 75, 0.3) !important;
             outline: none !important;
