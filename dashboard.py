@@ -118,16 +118,21 @@ if st.session_state.get("authentication_status") is None:
 
         /* Center everything with ULTRA massive side space */
         .main .block-container {
-            max-width: 1200px !important;
+            max-width: 100% !important;
             padding-top: 8rem !important;
-            padding-left: 2rem !important;
-            padding-right: 2rem !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
             margin: 0 auto !important;
             position: relative !important;
             z-index: 1 !important;
+        }
+
+        /* Center the form container */
+        .main .block-container > div:first-child {
             display: flex !important;
             justify-content: center !important;
             align-items: flex-start !important;
+            width: 100% !important;
         }
 
         /* Login box with green gradient background and border - CENTERED */
