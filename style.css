@@ -1291,7 +1291,10 @@ html body [class*="plot-container"] {
    NAVIGATION BUTTONS - TRANSPARENT WITH GREEN UNDERLINE
    ============================================ */
 
-/* All nav buttons - FORCE transparent background, NO borders, UPPERCASE */
+/* All nav buttons - FORCE transparent background, NO borders, UPPERCASE - ULTRA AGGRESSIVE */
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button.st-emotion-cache-5qfegl.e8vg11g2,
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button.st-emotion-cache-5qfegl,
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button.e8vg11g2,
 html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button,
 html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="secondary"],
 html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"],
@@ -1322,6 +1325,22 @@ html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:fi
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
     transform: translateY(0) !important;
+    font-variant-caps: normal !important;
+}
+
+/* Force uppercase on child divs and paragraphs */
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button .st-emotion-cache-12j140x.et2rgd20,
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button .st-emotion-cache-12j140x.et2rgd20 p,
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button .st-emotion-cache-12j140x,
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button .et2rgd20,
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button p,
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button div,
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button span {
+    text-transform: uppercase !important;
+    color: #2d5016 !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    font-variant-caps: normal !important;
 }
 
 /* NUCLEAR OPTION - Force on all nested elements INCLUDING UPPERCASE */
