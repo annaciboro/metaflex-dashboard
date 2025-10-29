@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MetaFlex Navigation</title>
+</head>
+<body>
+  <nav class="mf-nav">
+    <div class="logo">
+      <!-- The base64 image from Python will be injected here -->
+      <img src="data:image/png;base64,{{LOGO_BASE64}}" alt="MetaFlex Logo" />
+    </div>
+    <ul class="nav-links">
+      <li>Home</li>
+      <li>My Tasks</li>
+      <li>Team Tasks</li>
+      <li>Archive</li>
+      <li>Sales Portal</li>
+      <li>Investor Portal</li>
+      <li class="logout">Logout</li>
+    </ul>
+  </nav>
+  <!-- 👇 Add this line to load your JS -->
+  <script src="script.js"></script>
+</body>
+</html>

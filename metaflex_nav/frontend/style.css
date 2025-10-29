@@ -1,0 +1,74 @@
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ================================================
+   META FLEX STICKY NAVIGATION BAR
+   ================================================ */
+.mf-nav {
+  position: fixed;              /* ✅ keeps nav visible while scrolling */
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;                /* ensures it stays above Streamlit UI */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 40px;
+  height: 68px;
+  background: linear-gradient(135deg, #d4ff00, #0f6a6a);
+  color: #1a2424;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* logo */
+.mf-nav .logo img {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: white;
+  padding: 4px;
+  box-shadow: 0 0 8px rgba(212, 255, 0, 0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.mf-nav .logo img:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 14px rgba(212, 255, 0, 0.6);
+}
+
+/* links */
+.nav-links {
+  display: flex;
+  gap: 28px;
+  list-style: none;
+  margin: 0;
+}
+
+.nav-links li {
+  cursor: pointer;
+  font-weight: 600;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  color: #1a2424;
+}
+
+/* hover effect */
+.nav-links li:hover {
+  color: #0f6a6a;
+  transform: translateY(-2px);
+  text-shadow: 0 0 8px rgba(212, 255, 0, 0.5);
+}
+
+/* logout button color */
+.nav-links li.logout {
+  color: #ff6b6b;
+}
+
+/* optional: active state (future use)
+.nav-links li.active {
+  color: #d4ff00;
+  text-shadow: 0 0 10px rgba(212, 255, 0, 0.6);
+} */

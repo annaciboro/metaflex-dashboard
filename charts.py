@@ -44,8 +44,8 @@ def create_team_completion_donut(open_tasks, working_tasks, done_tasks):
         st.info("No tasks to display in chart.")
         return None
 
-    # Muted sophisticated colors - matching progress indicators
-    colors = ['#c97a6f', '#a5a872', '#7a9183']  # Muted coral (not started), Muted lime (in progress), Muted sage (completed)
+    # Muted coral, amber, forest colors
+    colors = ['#d17a6f', '#e8b968', '#4d7a40']  # Coral (not started), Amber (in progress), Forest (completed)
 
     # Create donut chart with percentages on slices
     fig = go.Figure(data=[go.Pie(
@@ -57,7 +57,7 @@ def create_team_completion_donut(open_tasks, working_tasks, done_tasks):
             line=dict(color='#ffffff', width=5)  # Thicker white lines for separation
         ),
         textinfo='percent',  # Show percentages on each slice
-        textfont=dict(size=15, color='#1f2937', family='Inter', weight=600),
+        textfont=dict(size=13, color='#ffffff', family='-apple-system, sans-serif', weight=700),
         textposition='inside',
         insidetextorientation='horizontal',
         hovertemplate='<b>%{label}</b><br>Tasks: %{value}<br>Percentage: %{percent}<extra></extra>',
@@ -70,30 +70,30 @@ def create_team_completion_donut(open_tasks, working_tasks, done_tasks):
 
     # Add center text showing overall progress
     fig.add_annotation(
-        text=f'<b style="font-size: 54px; color: #1f2937;">{overall_progress}%</b><br><span style="font-size: 16px; color: #6b778c; font-weight: 600;">OVERALL PROGRESS</span>',
+        text=f'<b style="font-size: 40px; color: #2d5016; font-weight: 900;">{overall_progress}%</b><br><span style="font-size: 12px; color: #2d5016; font-weight: 600;">OVERALL PROGRESS</span>',
         x=0.5, y=0.5,
-        font=dict(size=20, color='#1f2937', family='Inter'),
+        font=dict(size=16, color='#2d5016', family='-apple-system, sans-serif'),
         showarrow=False,
         align='center'
     )
 
-    # Premium white background layout - TALLER with MORE SPACE
+    # Compact layout with smaller height
     fig.update_layout(
         showlegend=True,
         legend=dict(
             orientation="h",
             yanchor="bottom",
-            y=-0.18,
+            y=-0.15,
             xanchor="center",
             x=0.5,
-            font=dict(size=14, color='#6b778c', family='Inter', weight=600),
+            font=dict(size=12, color='#2d5016', family='-apple-system, sans-serif', weight=700),
             itemsizing='constant'
         ),
-        height=650,
-        margin=dict(t=30, b=100, l=50, r=50),
+        height=350,
+        margin=dict(t=20, b=80, l=40, r=40),
         paper_bgcolor='rgba(0,0,0,0)',  # Transparent background
         plot_bgcolor='rgba(0,0,0,0)',
-        font=dict(family='Inter, -apple-system, sans-serif')
+        font=dict(family='-apple-system, sans-serif')
     )
 
     return fig
@@ -121,13 +121,18 @@ def create_project_breakdown_chart(df):
     projects = [p.title() for p in project_counts.index]
     counts = project_counts.values
 
-    # Create gradient colors based on value intensity
-    max_count = max(counts)
-    bar_colors = []
-    for count in counts:
-        intensity = count / max_count
-        # Interpolate opacity for sophisticated gradient effect
-        bar_colors.append(f'rgba(95, 140, 140, {0.3 + intensity * 0.5})')
+    # Create MetaFlex green gradient colors - different shade for each bar
+    green_shades = [
+        '#0a4b4b',  # Dark teal
+        '#2d5016',  # Dark forest green
+        '#4a7c59',  # Medium green
+        '#6bcf7f',  # Light green
+        '#8ee99f',  # Lighter green
+        '#b8ffc6',  # Very light green
+    ]
+
+    # Assign colors cycling through the green palette
+    bar_colors = [green_shades[i % len(green_shades)] for i in range(len(counts))]
 
     # Create horizontal bar chart with rounded corners
     fig = go.Figure(data=[go.Bar(
@@ -135,21 +140,21 @@ def create_project_breakdown_chart(df):
         x=counts,
         orientation='h',
         marker=dict(
-            color=bar_colors,  # Gradient based on value
-            line=dict(color='#5f8c8c', width=2),  # Primary teal border
+            color=bar_colors,  # Different MetaFlex green for each bar
+            line=dict(color='#2d5016', width=2),  # Dark forest green border
             cornerradius=8  # Rounded corners for modern look
         ),
         text=[f'<b>{count}</b>' for count in counts],
         textposition='outside',
-        textfont=dict(size=16, color='#1f2937', family='Inter', weight=700),
+        textfont=dict(size=16, color='#2d5016', family='-apple-system, sans-serif', weight=900),
         hovertemplate='<b>%{y}</b><br>Tasks: %{x}<extra></extra>',
         width=0.6  # Slimmer bars for premium look
     )])
 
-    # Premium white background layout - TALLER with MORE SPACE
+    # Compact layout with smaller height
     fig.update_layout(
-        height=650,
-        margin=dict(t=30, b=100, l=30, r=90),
+        height=350,
+        margin=dict(t=20, b=80, l=30, r=70),
         paper_bgcolor='rgba(0,0,0,0)',  # Transparent background
         plot_bgcolor='rgba(0,0,0,0)',
         xaxis=dict(
@@ -158,15 +163,15 @@ def create_project_breakdown_chart(df):
             gridwidth=1,
             zeroline=False,
             title='',
-            tickfont=dict(size=14, color='#6b778c', family='Inter'),
+            tickfont=dict(size=12, color='#2d5016', family='-apple-system, sans-serif', weight=700),
             range=[0, max(counts) * 1.15]  # Extra space for text labels
         ),
         yaxis=dict(
             title='',
-            tickfont=dict(size=16, color='#1f2937', family='Inter', weight=600),
+            tickfont=dict(size=13, color='#2d5016', family='-apple-system, sans-serif', weight=700),
             showgrid=False
         ),
-        font=dict(family='Inter, -apple-system, sans-serif'),
+        font=dict(family='-apple-system, sans-serif'),
         bargap=0.35
     )
 

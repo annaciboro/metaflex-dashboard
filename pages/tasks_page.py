@@ -13,10 +13,18 @@ from .dashboard_page import (
 
 def show_tasks():
     """
-    Téa's Tasks Page - Shows all of Téa's personal tasks with KPIs and charts
+    My Tasks Page - Shows user's personal tasks with KPIs and charts
     """
-    st.markdown("### Téa's Tasks")
-    st.caption("Your personal workload overview")
+    # Get logged-in user's name from session state
+    user_name = st.session_state.get("name", "User")
+    first_name = user_name.split()[0] if user_name else "User"
+
+    # Determine if user is Tea (admin sees everything)
+    is_tea = user_name.lower() == "tea" or user_name.lower() == "tēa" or "tea" in user_name.lower()
+    is_jess = "jess" in user_name.lower()
+
+    # Everyone sees "My Tasks" - this is a personal tasks page
+    st.markdown("### My Tasks")
     st.markdown("<br>", unsafe_allow_html=True)
 
     # Load data from Google Sheet
@@ -27,14 +35,22 @@ def show_tasks():
         st.warning("No data available. Please check your Google Sheet connection.")
         return
 
-    # Filter for Téa's tasks only
-    user_name = "Téa Phillips"
-    if has_column(df, "Person"):
-        person_col = get_column(df, "Person")
-        personal_df = df[df[person_col].str.contains("Téa", case=False, na=False)]
-    elif has_column(df, "Assigned To"):
-        person_col = get_column(df, "Assigned To")
-        personal_df = df[df[person_col].str.contains("Téa", case=False, na=False)]
+    # Filter for user's tasks based on assignee column
+    assignee_col = None
+    if has_column(df, "Assigned To"):
+        assignee_col = get_column(df, "Assigned To")
+    elif has_column(df, "Person"):
+        assignee_col = get_column(df, "Person")
+    elif has_column(df, "assignee"):
+        assignee_col = get_column(df, "assignee")
+
+    if assignee_col:
+        # For Tea, show all tasks; for everyone else (including Jess), filter by user name
+        if is_tea:
+            personal_df = df.copy()
+        else:
+            # All users (Jess, Megan, Justin) see only their own personal tasks on "My Tasks"
+            personal_df = df[df[assignee_col].str.lower().str.contains(user_name.lower(), na=False)].copy()
     else:
         personal_df = pd.DataFrame()
 
@@ -44,83 +60,247 @@ def show_tasks():
         personal_df = personal_df[~personal_df[status_col].str.lower().isin(['done', 'complete', 'completed', 'closed'])]
 
     if personal_df.empty:
-        st.info("No open tasks assigned to Téa.")
+        st.info(f"No open tasks assigned to {first_name}.")
         return
 
     # Calculate personal KPIs from filtered data (only open tasks)
-    my_open_tasks = len(personal_df)
-
-    # Count active projects
-    active_projects = 0
-    if has_column(personal_df, "Project"):
-        project_col = get_column(personal_df, "Project")
-        active_projects = personal_df[project_col].nunique()
-
-    # Calculate KPIs for charts (using calculate_kpis function)
     personal_kpis = calculate_kpis(personal_df, user_name, is_personal=True)
 
-    # Display KPI Metrics (only showing MY data, not team data)
-    col1, col2, col3 = st.columns(3)
+    # For regular users (Megan, Justin, Jess), show chart above everything
+    # For Tea only, show all KPIs and charts below
+    if not is_tea:
+        # Show Task Completion Status donut chart at the top for regular users
+        from charts import create_team_completion_donut
 
-    with col1:
-        st.metric(
-            label="MY OPEN TASKS",
-            value=my_open_tasks,
-            delta=None
-        )
+        # Create the donut chart centered
+        col_left, col_chart, col_right = st.columns([1, 2, 1])
+        with col_chart:
+            donut_fig = create_team_completion_donut(
+                personal_kpis.get("my_open_tasks", 0),
+                personal_kpis.get("working_tasks", 0),
+                personal_kpis.get("done_tasks", 0)
+            )
 
-    with col2:
-        st.metric(
-            label="ACTIVE PROJECTS",
-            value=active_projects,
-            delta=None
-        )
+            if donut_fig:
+                st.plotly_chart(donut_fig, use_container_width=True, config={
+                    'displayModeBar': False
+                })
 
-    with col3:
-        # Calculate completion rate
-        if has_column(personal_df, "Progress %"):
-            try:
-                progress_col = get_column(personal_df, "Progress %")
-                # Convert to numeric, coerce errors to NaN
-                progress_numeric = pd.to_numeric(personal_df[progress_col], errors='coerce')
-                avg_progress = int(progress_numeric.fillna(0).mean())
-                st.metric(
-                    label="AVG PROGRESS",
-                    value=f"{avg_progress}%",
-                    delta=None
-                )
-            except Exception as e:
+        st.markdown("<br>", unsafe_allow_html=True)
+    else:
+        # Tea sees full KPI metrics
+        my_open_tasks = len(personal_df)
+
+        # Count active projects
+        active_projects = 0
+        if has_column(personal_df, "Project"):
+            project_col = get_column(personal_df, "Project")
+            active_projects = personal_df[project_col].nunique()
+
+        # Display KPI Metrics (only showing MY data, not team data)
+        col1, col2, col3 = st.columns(3)
+
+        with col1:
+            st.metric(
+                label="MY OPEN TASKS",
+                value=my_open_tasks,
+                delta=None
+            )
+
+        with col2:
+            st.metric(
+                label="ACTIVE PROJECTS",
+                value=active_projects,
+                delta=None
+            )
+
+        with col3:
+            # Calculate completion rate
+            if has_column(personal_df, "Progress %"):
+                try:
+                    progress_col = get_column(personal_df, "Progress %")
+                    # Convert to numeric, coerce errors to NaN
+                    progress_numeric = pd.to_numeric(personal_df[progress_col], errors='coerce')
+                    avg_progress = int(progress_numeric.fillna(0).mean())
+                    st.metric(
+                        label="AVG PROGRESS",
+                        value=f"{avg_progress}%",
+                        delta=None
+                    )
+                except Exception as e:
+                    st.metric(
+                        label="AVG PROGRESS",
+                        value="N/A",
+                        delta=None
+                    )
+            else:
                 st.metric(
                     label="AVG PROGRESS",
                     value="N/A",
                     delta=None
                 )
-        else:
-            st.metric(
-                label="AVG PROGRESS",
-                value="N/A",
-                delta=None
-            )
 
-    st.markdown("<br>", unsafe_allow_html=True)
+        st.markdown("<br>", unsafe_allow_html=True)
 
-    # Display Charts
-    render_charts_section(personal_kpis, personal_df)
+        # Display all Charts for Tea only
+        render_charts_section(personal_kpis, personal_df)
 
     st.markdown("<br>", unsafe_allow_html=True)
 
     # Display all personal OPEN tasks - with no limit
-    st.markdown(f"### My Open Tasks ({len(personal_df)} total)")
+    # For regular users (Megan, Justin, Jess), just show the count; for Tea, show "My Open Tasks"
+    if is_tea:
+        st.markdown(f"### My Open Tasks ({len(personal_df)} total)")
+    else:
+        st.markdown(f"<h2 style='font-size: 1.75rem; font-weight: 700; color: #2d5016; margin-bottom: 8px;'>{len(personal_df)} Open Tasks</h2>", unsafe_allow_html=True)
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # Add search box
-    search_term = st.text_input("🔍 Search tasks", placeholder="Type to search by task name, project, or status...", key="search_tasks")
+    # Add "Add New Task" and "Save Changes" buttons with KPI card styling
+    st.markdown("""
+        <style>
+        /* KPI card-style buttons - matching the pale forest green gradient */
+        button[kind="secondary"], button[kind="primary"] {
+            background: linear-gradient(135deg, #f5faf2 0%, #f8fbf8 100%) !important;
+            color: #2d5016 !important;
+            border: 1px solid #e8eced !important;
+            border-left: 4px solid #0a4b4b !important;
+            font-weight: 700 !important;
+            padding: 12px 24px !important;
+            border-radius: 8px !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02) !important;
+        }
+        button[kind="secondary"]:hover, button[kind="primary"]:hover {
+            background: linear-gradient(135deg, #f0f5ec 0%, #f5faf2 100%) !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 0 4px 12px rgba(10, 75, 75, 0.15), 0 2px 4px rgba(0, 0, 0, 0.08) !important;
+            border-left-color: #0a4b4b !important;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+    # Search and action buttons in one row - search left, buttons right
+    col_search, col_spacer, col_btn1, col_btn2 = st.columns([3, 0.5, 1, 1])
+
+    with col_search:
+        search_term = st.text_input("Search tasks", placeholder="Type to search by task name, project, or status...", key="search_tasks", label_visibility="collapsed")
+
+    with col_btn1:
+        add_task = st.button("Add New Task", key="add_task_btn", use_container_width=True)
+
+    with col_btn2:
+        save_changes = st.button("Save Changes", key="save_changes_btn", type="primary", use_container_width=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # Create a clean display DataFrame with all tasks
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    # Handle adding new task
+    if add_task:
+        st.session_state.show_add_task_form = True
+
+    if st.session_state.get("show_add_task_form", False):
+        with st.form("new_task_form"):
+            st.markdown("#### Add New Task")
+
+            col1, col2 = st.columns(2)
+            with col1:
+                new_transcript_id = st.text_input("Transcript ID", help="Unique identifier for this task")
+                new_task = st.text_input("Task Description *", help="Required")
+                new_project = st.text_input("Project")
+                new_progress = st.slider("Progress %", 0, 100, 0)
+
+            with col2:
+                import datetime
+                new_date_added = st.text_input("Date Added", value=datetime.date.today().strftime("%m/%d/%Y"), help="Format: MM/DD/YYYY")
+                # All users can set status to "Done"
+                new_status = st.selectbox("Status", ["Open", "Working On It", "Done"])
+                new_due_date = st.text_input("Due Date", help="Format: MM/DD/YYYY")
+
+            st.markdown("<br>", unsafe_allow_html=True)
+
+            col_submit, col_cancel = st.columns(2)
+            with col_submit:
+                st.markdown("""
+                    <style>
+                    /* KPI card-style for form submit buttons */
+                    button[kind="formSubmit"] {
+                        background: linear-gradient(135deg, #f5faf2 0%, #f8fbf8 100%) !important;
+                        color: #2d5016 !important;
+                        border: 1px solid #e8eced !important;
+                        border-left: 4px solid #0a4b4b !important;
+                        font-weight: 700 !important;
+                        width: 100% !important;
+                        border-radius: 8px !important;
+                        padding: 12px 24px !important;
+                        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02) !important;
+                    }
+                    button[kind="formSubmit"]:hover {
+                        background: linear-gradient(135deg, #f0f5ec 0%, #f5faf2 100%) !important;
+                        transform: translateY(-2px) !important;
+                        box-shadow: 0 4px 12px rgba(10, 75, 75, 0.15), 0 2px 4px rgba(0, 0, 0, 0.08) !important;
+                        border-left-color: #0a4b4b !important;
+                    }
+                    </style>
+                """, unsafe_allow_html=True)
+                submit = st.form_submit_button("Add Task")
+            with col_cancel:
+                cancel = st.form_submit_button("Cancel")
+
+            if submit and new_task:
+                # Add new task to Google Sheet
+                try:
+                    scope = [
+                        "https://spreadsheets.google.com/feeds",
+                        "https://www.googleapis.com/auth/drive"
+                    ]
+                    creds_dict = st.secrets["gcp_service_account"]
+                    from google.oauth2.service_account import Credentials
+                    creds = Credentials.from_service_account_info(creds_dict, scopes=scope)
+                    import gspread
+                    client = gspread.authorize(creds)
+                    sheet_id = "1U_9CEbWHWMQVS2C20O0fpOG5gVxoYjB7BmppKlTHIzc"
+                    sheet = client.open_by_key(sheet_id).worksheet("Otter_Tasks")
+
+                    # Append new row with all fields including Transcript ID and Date Added
+                    new_row = [
+                        new_transcript_id,
+                        new_task,
+                        user_name,
+                        new_status,
+                        new_project,
+                        new_due_date,
+                        new_progress,
+                        new_date_added
+                    ]
+                    sheet.append_row(new_row)
+
+                    st.success("Task added successfully!")
+                    st.session_state.show_add_task_form = False
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"Error adding task: {str(e)}")
+
+            if cancel:
+                st.session_state.show_add_task_form = False
+                st.rerun()
+
+    # Create a clean display DataFrame with all tasks - including row IDs
     display_columns = []
-    for col in ["Task", "Status", "Project", "Due Date", "Progress %"]:
+
+    # Add Transcript ID if it exists
+    if has_column(personal_df, "Transcript ID"):
+        display_columns.append(get_column(personal_df, "Transcript ID"))
+
+    # For regular users (Megan, Justin, Jess), exclude the "Person" column since they only see their own tasks
+    # For Tea only, show the "Person" column
+    if is_tea:
+        cols_to_display = ["Task", "Status", "Project", "Due Date", "Progress %", "Person", "Date Added"]
+    else:
+        cols_to_display = ["Task", "Status", "Project", "Due Date", "Progress %", "Date Added"]
+
+    for col in cols_to_display:
         if has_column(personal_df, col):
             display_columns.append(get_column(personal_df, col))
 
@@ -150,52 +330,32 @@ def show_tasks():
 
             st.caption(f"Showing {len(clean_table_df)} of {len(personal_df)} tasks")
 
-        # Add progress status with colors matching pie chart
-        if "Progress %" in clean_table_df.columns:
-            def create_progress_display(value):
-                try:
-                    val_str = str(value).strip().replace('%', '')
-                    if val_str == '' or val_str.lower() == 'nan':
-                        val = 0
-                    else:
-                        val = float(val_str)
-                except:
-                    val = 0
+        # Store original dataframe with row indices for updates
+        if 'task_edits' not in st.session_state:
+            st.session_state.task_edits = clean_table_df.copy()
 
-                # Use colored circles matching the pie chart colors
-                if val == 0:
-                    indicator = "🔴"  # Red for Not Started (coral in chart)
-                    status = "Not Started"
-                elif val < 100:
-                    indicator = "🟡"  # Yellow for In Progress (lime in chart)
-                    status = "In Progress"
-                else:
-                    indicator = "🟢"  # Green for Completed (sage in chart)
-                    status = "Complete"
+        # Configure column settings for editable table
+        # All users can now set status to "Done"
+        status_options = ["Open", "Working On It", "Done"]
 
-                return f"{indicator} {status}"
-
-            clean_table_df["Progress Status"] = clean_table_df["Progress %"].apply(create_progress_display)
-            clean_table_df = clean_table_df.drop(columns=["Progress %"])
-
-            # Reorder columns to put Progress Status after Status
-            cols = clean_table_df.columns.tolist()
-            if "Progress Status" in cols and "Status" in cols:
-                cols.remove("Progress Status")
-                status_idx = cols.index("Status")
-                cols.insert(status_idx + 1, "Progress Status")
-                clean_table_df = clean_table_df[cols]
-
-        # Configure column settings
         column_config = {
+            "Transcript ID": st.column_config.TextColumn(
+                "ID",
+                width="small",
+                help="Transcript/Row ID",
+                disabled=True  # Read-only
+            ),
             "Task": st.column_config.TextColumn(
                 "Task",
                 width="large",
-                help="Task description"
+                help="Task description (editable)"
             ),
-            "Status": st.column_config.TextColumn(
+            "Status": st.column_config.SelectboxColumn(
                 "Status",
-                width="small"
+                width="small",
+                options=status_options,
+                required=True,
+                help="Change task status"
             ),
             "Project": st.column_config.TextColumn(
                 "Project",
@@ -203,30 +363,119 @@ def show_tasks():
             ),
             "Due Date": st.column_config.TextColumn(
                 "Due Date",
-                width="small"
+                width="small",
+                help="Enter date as text (e.g., 2025-01-15)"
             ),
-            "Progress Status": st.column_config.TextColumn(
-                "Progress Status",
-                help="Task completion status",
-                width="medium"
+            "Progress %": st.column_config.NumberColumn(
+                "Progress %",
+                width="small",
+                min_value=0,
+                max_value=100,
+                step=5,
+                format="%d%%"
+            ),
+            "Person": st.column_config.TextColumn(
+                "Assigned To",
+                width="medium",
+                disabled=False  # Allow reassignment
+            ),
+            "Date Added": st.column_config.TextColumn(
+                "Date Added",
+                width="small",
+                help="Format: MM/DD/YYYY",
+                disabled=True  # Read-only
             )
         }
 
-        # Compact table height - fits on page without scrolling
+        # Add MetaFlex styling to the data editor table
         st.markdown("""
             <style>
-            [data-testid="stDataFrame"] {
-                max-height: 500px !important;
+            /* MetaFlex table styling */
+            [data-testid="stDataFrameResizable"] {
+                background: linear-gradient(135deg, #f5faf2 0%, #f8fbf8 100%) !important;
+                border: 1px solid #e8eced !important;
+                border-left: 4px solid #0a4b4b !important;
+                border-radius: 8px !important;
+                padding: 8px !important;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02) !important;
+            }
+
+            /* Table headers */
+            [data-testid="stDataFrameResizable"] thead th {
+                background: linear-gradient(135deg, #f0f5ec 0%, #f5faf2 100%) !important;
+                color: #2d5016 !important;
+                font-weight: 700 !important;
+                border-bottom: 2px solid #0a4b4b !important;
+                padding: 12px 8px !important;
+            }
+
+            /* Table cells */
+            [data-testid="stDataFrameResizable"] tbody td {
+                border-bottom: 1px solid #e8eced !important;
+                padding: 10px 8px !important;
+                color: #2d5016 !important;
+            }
+
+            /* Hover effect on rows */
+            [data-testid="stDataFrameResizable"] tbody tr:hover {
+                background: rgba(10, 75, 75, 0.05) !important;
             }
             </style>
         """, unsafe_allow_html=True)
 
-        # Display the full table
-        st.dataframe(
+        # Display editable table
+        edited_df = st.data_editor(
             clean_table_df,
             use_container_width=True,
             hide_index=True,
-            column_config=column_config
+            column_config=column_config,
+            num_rows="dynamic",  # Allow adding/deleting rows
+            key="task_editor"
         )
+
+        # Handle save changes
+        if save_changes:
+            try:
+                # Connect to Google Sheets
+                scope = [
+                    "https://spreadsheets.google.com/feeds",
+                    "https://www.googleapis.com/auth/drive"
+                ]
+                creds_dict = st.secrets["gcp_service_account"]
+                from google.oauth2.service_account import Credentials
+                import gspread
+                creds = Credentials.from_service_account_info(creds_dict, scopes=scope)
+                client = gspread.authorize(creds)
+                sheet_id = "1U_9CEbWHWMQVS2C20O0fpOG5gVxoYjB7BmppKlTHIzc"
+                sheet = client.open_by_key(sheet_id).worksheet("Otter_Tasks")
+
+                # Update changed rows
+                changes_made = False
+                for idx, row in edited_df.iterrows():
+                    # Check if row was modified
+                    if idx < len(clean_table_df):
+                        original_row = clean_table_df.iloc[idx]
+                        if not row.equals(original_row):
+                            # Find the row in Google Sheets by Transcript ID if available
+                            if "Transcript ID" in row and pd.notna(row["Transcript ID"]):
+                                # Update specific row by ID
+                                row_num = idx + 2  # +2 for header and 0-indexing
+
+                                # Update each column
+                                for col_idx, col_name in enumerate(edited_df.columns):
+                                    if col_name != "Transcript ID":
+                                        cell_value = row[col_name]
+                                        sheet.update_cell(row_num, col_idx + 1, str(cell_value))
+
+                                changes_made = True
+
+                if changes_made:
+                    st.success("✅ Changes saved successfully!")
+                    st.rerun()
+                else:
+                    st.info("No changes detected.")
+
+            except Exception as e:
+                st.error(f"Error saving changes: {str(e)}")
     else:
         st.info("No task details available to display.")

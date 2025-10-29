@@ -4,13 +4,9 @@ import streamlit.components.v1 as components
 import pages as pg
 import time
 import base64
-
-def get_base64_image(image_path):
-    """Convert image to base64 for embedding in HTML"""
-    if os.path.exists(image_path):
-        with open(image_path, "rb") as f:
-            return base64.b64encode(f.read()).decode()
-    return ""
+import yaml
+import streamlit_authenticator as stauth
+from yaml.loader import SafeLoader
 
 st.set_page_config(
     page_title="MetaFlex Ops",
@@ -19,92 +15,343 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Get current directory
-current_dir = os.path.dirname(os.path.abspath(__file__))
+# ============================================
+# HANDLE LOGOUT QUERY PARAMETER
+# ============================================
+# Check if we're in logout mode - clear everything BEFORE loading authenticator
+query_params = st.query_params
+if "logout" in query_params:
+    # Clear all session state except critical keys
+    keys_to_clear = [k for k in list(st.session_state.keys()) if k not in ['_is_running_with_streamlit']]
+    for key in keys_to_clear:
+        try:
+            del st.session_state[key]
+        except:
+            pass
+
+    # Force authentication status to None
+    st.session_state.authentication_status = None
+    st.session_state.name = None
+    st.session_state.username = None
+
+    # Remove logout query param and redirect to clean page
+    st.query_params.clear()
+    st.rerun()
 
 # ============================================
-# LOAD METAFLEX CSS
+# AUTHENTICATION
 # ============================================
-css_path = os.path.join(current_dir, "style.css")
+# Load credentials from config.yaml
+config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "config.yaml")
+with open(config_path) as file:
+    config = yaml.load(file, Loader=SafeLoader)
 
-if os.path.exists(css_path):
-    with open(css_path, 'r') as f:
-        css_content = f.read()
-        # Add timestamp to force browser cache refresh
-        css_timestamp = str(int(time.time()))
-        st.markdown(
-            f"<style>/* CSS TIMESTAMP: {css_timestamp} - METAFLEX */\n{css_content}</style>",
-            unsafe_allow_html=True
-        )
-        print(f"✅ MetaFlex CSS loaded with timestamp: {css_timestamp}")
-else:
-    st.error(f"⚠️ CSS FILE NOT FOUND at: {css_path}")
+# Initialize authenticator
+authenticator = stauth.Authenticate(
+    config["credentials"],
+    config["cookie"]["name"],
+    config["cookie"]["key"],
+    config["cookie"]["expiry_days"]
+)
 
-# ============================================
-# LOAD METAFLEX JAVASCRIPT - AFTER CSS TO OVERRIDE
-# ============================================
-js_path = os.path.join(current_dir, "static", "metaflex_interactions.js")
-if os.path.exists(js_path):
-    with open(js_path, 'r') as f:
-        js_code = f.read()
+# Custom CSS for high-end MetaFlex SaaS login page
+if st.session_state.get("authentication_status") is None:
+    # Add huge gradient METAFLEX OPS header with logo as X - LIME GREEN to DARK GREEN
+    logo_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "logo.png")
 
-    # BASE64 encode the JavaScript to avoid ALL escaping issues
-    js_b64 = base64.b64encode(js_code.encode('utf-8')).decode('utf-8')
+    # Convert logo to base64 for embedding
+    import base64
+    with open(logo_path, "rb") as f:
+        logo_data = base64.b64encode(f.read()).decode()
 
-    # DIRECT INJECTION using base64 - NO ESCAPING NEEDED
-    st.components.v1.html(
-        f"""
-        <script>
-        (function() {{
-            try {{
-                const parent = window.parent;
-                const doc = parent.document;
+    # Load favicon
+    favicon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "favicon.png")
+    with open(favicon_path, "rb") as f:
+        favicon_data = base64.b64encode(f.read()).decode()
 
-                if (parent.metaflexInjected) {{
-                    console.log('[IFRAME] ✅ MetaFlex already injected');
-                    return;
-                }}
+    st.markdown(f"""
+        <div style="text-align: center; margin-bottom: 56px; margin-top: -20px;">
+            <!-- Favicon above header -->
+            <img src="data:image/png;base64,{favicon_data}" style="
+                width: 80px;
+                height: 80px;
+                margin-bottom: 24px;
+                filter: drop-shadow(0 4px 12px rgba(212, 255, 0, 0.3));
+            " />
 
-                parent.metaflexInjected = true;
-                console.log('[IFRAME] 💥 Injecting MetaFlex into PARENT window...');
+            <div style="
+                font-size: 64px;
+                font-weight: 900;
+                font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+                margin: 0 0 12px 0;
+                padding: 0;
+                line-height: 1.1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            ">
+                <span style="
+                    background: linear-gradient(135deg, #2d5016 0%, #0a4b4b 100%);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                    letter-spacing: -0.03em;
+                ">METAFLE</span><img
+                    src="data:image/png;base64,{logo_data}"
+                    style="
+                        height: 52px;
+                        width: auto;
+                        margin: 0 4px 0 2px;
+                        display: inline-block;
+                        filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.15));
+                    "
+                /><span style="
+                    background: linear-gradient(135deg, #2d5016 0%, #0a4b4b 100%);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                    letter-spacing: -0.03em;
+                    margin-left: 18px;
+                ">OPS</span>
+            </div>
+            <p style="
+                font-size: 16px;
+                font-weight: 600;
+                background: linear-gradient(135deg, #d4ff00 0%, #4d7a40 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                margin: 0;
+                letter-spacing: 0.5px;
+                font-family: 'Inter', sans-serif;
+            ">Enterprise Operations System</p>
+        </div>
+    """, unsafe_allow_html=True)
 
-                // Decode base64 JavaScript
-                const jsCode = atob('{js_b64}');
+    # Add copyright footer
+    st.markdown("""
+        <div style="
+            position: fixed;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 13px;
+            color: #6b7280;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            z-index: 999;
+        ">
+            2025 SBS Architected
+        </div>
+    """, unsafe_allow_html=True)
 
-                // Create script in parent
-                const script = doc.createElement('script');
-                script.id = 'metaflex-system';
-                script.textContent = jsCode;
+    st.markdown("""
+        <style>
+        /* Login page background - Subtle green gradient */
+        .main, section.main, [data-testid="stAppViewContainer"] {
+            background: linear-gradient(135deg,
+                #f9fff0 0%,
+                #f3fce8 25%,
+                #e8f5dc 50%,
+                #d8edd3 75%,
+                #cce5ca 100%) !important;
+            position: relative !important;
+            min-height: 100vh !important;
+        }
 
-                doc.head.appendChild(script);
-                console.log('[IFRAME] ✅ MetaFlex injected into <head>');
+        /* Very subtle overlay */
+        .main::before {
+            content: '' !important;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            background: radial-gradient(circle at 50% 50%, rgba(212, 255, 0, 0.05) 0%, transparent 60%) !important;
+            pointer-events: none !important;
+            z-index: 0 !important;
+        }
 
-            }} catch (error) {{
-                console.error('[IFRAME] ❌ Injection failed:', error);
-                console.log('[IFRAME] ⚠️ Running in iframe (limited functionality)...');
+        /* Center the login form */
+        .main .block-container {
+            max-width: 520px !important;
+            padding-top: 5rem !important;
+            position: relative !important;
+            z-index: 1 !important;
+        }
 
-                // Fallback: decode and run in iframe
-                const jsCode = atob('{js_b64}');
-                const script = document.createElement('script');
-                script.textContent = jsCode;
-                document.head.appendChild(script);
-            }}
-        }})();
-        </script>
-        """,
-        height=0
-    )
-    print(f"✅ MetaFlex JavaScript NUCLEAR INJECTED from: {js_path}")
-else:
-    print(f"⚠️ MetaFlex JavaScript not found at: {js_path}")
-    st.warning("MetaFlex interactions could not be loaded.")
+        /* Login container styling - Premium SaaS Glassmorphism */
+        section[data-testid="stForm"] {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(20px) !important;
+            -webkit-backdrop-filter: blur(20px) !important;
+            border-radius: 24px !important;
+            padding: 48px 40px !important;
+            box-shadow:
+                0 8px 32px rgba(10, 75, 75, 0.12),
+                0 4px 16px rgba(0, 0, 0, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+            border: 1px solid rgba(255, 255, 255, 0.8) !important;
+            background-clip: padding-box !important;
+            position: relative !important;
+            transform: translateY(0) !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
 
-# ============================================
-# LOAD NAV OVERRIDE JAVASCRIPT - DISABLED (using custom HTML nav now)
-# ============================================
-# nav_js_path = os.path.join(current_dir, "static", "nav_override.js")
-# Nav override is disabled because we're using pure HTML navigation with query params
+        /* Hover effect on login form */
+        section[data-testid="stForm"]:hover {
+            transform: translateY(-2px) !important;
+            box-shadow:
+                0 12px 40px rgba(10, 75, 75, 0.15),
+                0 6px 20px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 1) !important;
+        }
 
+        /* Green gradient border effect - using dark teal from logo */
+        section[data-testid="stForm"]::before {
+            content: '' !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            border-radius: 24px !important;
+            padding: 2px !important;
+            background: linear-gradient(135deg, #d4ff00 0%, #4d7a40 50%, #0a4b4b 100%) !important;
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0) !important;
+            -webkit-mask-composite: xor !important;
+            mask-composite: exclude !important;
+            pointer-events: none !important;
+        }
+
+        /* Lime green accent bar with glow */
+        section[data-testid="stForm"]::after {
+            content: '' !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            bottom: 0 !important;
+            width: 6px !important;
+            background: linear-gradient(180deg, #d4ff00 0%, #b8e600 50%, #4d7a40 100%) !important;
+            border-radius: 24px 0 0 24px !important;
+            pointer-events: none !important;
+            box-shadow: 0 0 16px rgba(212, 255, 0, 0.5), inset 0 0 8px rgba(212, 255, 0, 0.3) !important;
+        }
+
+        /* Hide form title "MetaFlex Login" */
+        section[data-testid="stForm"] h1 {
+            display: none !important;
+        }
+
+        /* Input fields - Enhanced MetaFlex Style with generous padding */
+        input {
+            border-radius: 14px !important;
+            border: 2px solid rgba(10, 75, 75, 0.15) !important;
+            padding: 20px 40px !important;
+            font-size: 15px !important;
+            background: linear-gradient(180deg, #ffffff 0%, #fafffe 100%) !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            font-weight: 500 !important;
+        }
+
+        input:focus {
+            border-color: #d4ff00 !important;
+            box-shadow:
+                0 0 0 4px rgba(212, 255, 0, 0.15),
+                0 4px 12px rgba(10, 75, 75, 0.1) !important;
+            outline: none !important;
+            transform: translateY(-1px) !important;
+            background: #ffffff !important;
+        }
+
+        /* Login button - LIME to TEAL gradient with glow */
+        button[kind="primary"] {
+            background: linear-gradient(135deg, #d4ff00 0%, #0a4b4b 100%) !important;
+            color: #0a4b4b !important;
+            border: none !important;
+            border-radius: 14px !important;
+            padding: 18px 32px !important;
+            font-weight: 800 !important;
+            font-size: 15px !important;
+            text-transform: uppercase !important;
+            letter-spacing: 1px !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            box-shadow:
+                0 8px 24px rgba(212, 255, 0, 0.3),
+                0 4px 12px rgba(10, 75, 75, 0.2) !important;
+            width: 100% !important;
+            position: relative !important;
+            overflow: hidden !important;
+        }
+
+        /* Animated shine effect on button */
+        button[kind="primary"]::before {
+            content: '' !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: -100% !important;
+            width: 100% !important;
+            height: 100% !important;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent) !important;
+            transition: left 0.5s !important;
+        }
+
+        button[kind="primary"]:hover::before {
+            left: 100% !important;
+        }
+
+        button[kind="primary"]:hover {
+            background: linear-gradient(135deg, #e0ff1a 0%, #0a5555 100%) !important;
+            box-shadow:
+                0 12px 32px rgba(212, 255, 0, 0.4),
+                0 6px 16px rgba(10, 75, 75, 0.3) !important;
+            transform: translateY(-2px) scale(1.01) !important;
+        }
+
+        button[kind="primary"]:active {
+            transform: translateY(0) scale(0.99) !important;
+        }
+
+        /* Labels - Lime green accent */
+        label {
+            background: linear-gradient(135deg, #d4ff00 0%, #2d5016 100%) !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            background-clip: text !important;
+            font-weight: 700 !important;
+            font-size: 12px !important;
+            text-transform: uppercase !important;
+            letter-spacing: 1.2px !important;
+            margin-bottom: 8px !important;
+            display: block !important;
+        }
+
+        /* Hide any default images/emojis */
+        section[data-testid="stForm"] img,
+        .main img[src*="data:image"] {
+            display: none !important;
+        }
+
+        /* Hide info/error icons */
+        .stAlert img {
+            display: none !important;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+# Render login form
+authenticator.login(location="main", fields={"Form name": "MetaFlex Login"})
+
+# Check authentication status
+if st.session_state.get("authentication_status") is False:
+    st.error("❌ Username or password is incorrect")
+    st.stop()
+
+elif st.session_state.get("authentication_status") is None:
+    st.stop()
+
+# If authenticated, continue with the app
 # ============================================
 # INITIALIZE SESSION STATE
 # ============================================
@@ -114,49 +361,78 @@ if 'current_page' not in st.session_state:
 # ============================================
 # NAVIGATION BAR
 # ============================================
-logo_path = os.path.join(current_dir, "metaflexglove.png")
-pages_list = ["Home", "My Tasks", "Team Tasks", "Archive", "Sales Portal", "Investor Portal", "Logout"]
+logo_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "logo.png")
+
+# Get the logged-in user's name
+user_name = st.session_state.get("name", "")
+user_email = st.session_state.get("username", "")
+is_tea = user_name.lower() == "tea" or user_name.lower() == "tēa"
+is_jess = user_email.lower() == "jess@metaflexglove.com"
+
+# Different navigation based on user type
+if is_tea:
+    # Tea (admin) sees all pages
+    pages_list = ["Home", "My Tasks", "Team Tasks", "Archive", "Sales Portal", "Investor Portal", "Logout"]
+elif is_jess:
+    # Jess sees team-related pages but not Sales/Investor portals
+    pages_list = ["Home", "My Tasks", "Team Tasks", "Archive", "Logout"]
+else:
+    # Regular users only see Home, My Tasks, Archive, and Logout
+    pages_list = ["Home", "My Tasks", "Archive", "Logout"]
 
 nav_container = st.container()
 
 with nav_container:
     nav_items_without_logout = [p for p in pages_list if p != "Logout"]
 
-    # Create columns for navigation
-    cols = st.columns([0.3] + [1]*len(nav_items_without_logout) + [0.5, 0.1, 0.8])
+    # Create columns for navigation - white space on left, logo close to Home
+    cols = st.columns([0.15, 0.2] + [1]*len(nav_items_without_logout) + [0.5, 0.1, 0.8])
 
-    # Logo
+    # White space column (left side padding)
     with cols[0]:
+        st.write("")
+
+    # Logo - controlled by style.css
+    with cols[1]:
         if os.path.exists(logo_path):
-            st.image(logo_path, width=38)
+            st.image(logo_path)
 
     # Navigation buttons
     for idx, page_name in enumerate(nav_items_without_logout):
-        with cols[idx + 1]:
+        with cols[idx + 2]:
             is_active = st.session_state.current_page == page_name
 
-            # Custom CSS for this specific button
+            # Custom CSS for this specific button - LIME GREEN ACTIVE STATE
             st.markdown(f"""
                 <style>
-                div[data-testid="column"]:nth-child({idx + 2}) button {{
-                    background: transparent !important;
-                    color: #0d4d3d !important;
+                div[data-testid="column"]:nth-child({idx + 3}) button {{
+                    background: {'linear-gradient(135deg, #d4ff00 0%, #c8ff00 100%)' if is_active else 'transparent'} !important;
+                    color: {'#1a1a1a' if is_active else '#2d5016'} !important;
                     border: none !important;
-                    box-shadow: none !important;
-                    padding: 10px 20px !important;
-                    font-size: 13px !important;
-                    font-weight: {'700' if is_active else '600'} !important;
+                    box-shadow: {'0 4px 12px rgba(212, 255, 0, 0.4), 0 2px 6px rgba(0, 0, 0, 0.1)' if is_active else 'none'} !important;
+                    padding: {'14px 28px' if is_active else '12px 24px'} !important;
+                    font-size: {'13px' if is_active else '12px'} !important;
+                    font-weight: {'900' if is_active else '600'} !important;
                     text-transform: uppercase !important;
-                    letter-spacing: 0.8px !important;
-                    font-family: 'Inter', sans-serif !important;
+                    letter-spacing: {'0.08em' if is_active else '0.05em'} !important;
+                    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
                     width: 100% !important;
-                    text-shadow: {'0 0 10px #d4ff00, 0 0 20px #d4ff00, 0 0 30px #d4ff00' if is_active else 'none'} !important;
-                    transition: all 0.3s ease !important;
-                    border-radius: 0 !important;
+                    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                    border-radius: {'28px' if is_active else '0px'} !important;
+                    transform: translateY(0) !important;
                 }}
-                div[data-testid="column"]:nth-child({idx + 2}) button:hover {{
-                    text-shadow: 0 0 8px #d4ff00, 0 0 15px #d4ff00 !important;
+                div[data-testid="column"]:nth-child({idx + 3}) button:hover {{
+                    background: {'linear-gradient(135deg, #e0ff1a 0%, #d4ff00 100%)' if is_active else 'rgba(212, 255, 0, 0.15)'} !important;
+                    color: {'#1a1a1a' if is_active else '#2d5016'} !important;
                     border: none !important;
+                    box-shadow: {'0 6px 16px rgba(212, 255, 0, 0.5), 0 3px 8px rgba(0, 0, 0, 0.12)' if is_active else 'none'} !important;
+                    transform: {'translateY(-2px)' if is_active else 'none'} !important;
+                    border-radius: {'28px' if is_active else '12px'} !important;
+                }}
+                div[data-testid="column"]:nth-child({idx + 3}) button:active {{
+                    background: linear-gradient(135deg, #d4ff00 0%, #c8ff00 100%) !important;
+                    color: #1a1a1a !important;
+                    transform: scale(0.98) !important;
                 }}
                 </style>
             """, unsafe_allow_html=True)
@@ -166,11 +442,11 @@ with nav_container:
                 st.rerun()
 
     # Spacer
-    with cols[len(nav_items_without_logout) + 1]:
+    with cols[len(nav_items_without_logout) + 2]:
         st.write("")
 
     # Separator before logout
-    with cols[len(nav_items_without_logout) + 2]:
+    with cols[len(nav_items_without_logout) + 3]:
         st.markdown("""
             <div style="height: 56px; display: flex; align-items: center; justify-content: center;">
                 <div style="
@@ -183,61 +459,230 @@ with nav_container:
             </div>
         """, unsafe_allow_html=True)
 
-    # Logout button
-    with cols[len(nav_items_without_logout) + 3]:
+    # Logout button - VIBRANT CORAL
+    with cols[len(nav_items_without_logout) + 4]:
         st.markdown(f"""
             <style>
             div[data-testid="column"]:last-child button {{
                 background: transparent !important;
-                color: #0d4d3d !important;
+                color: #d17a6f !important;
                 border: none !important;
                 box-shadow: none !important;
-                padding: 10px 20px !important;
-                font-size: 13px !important;
-                font-weight: 600 !important;
+                padding: 12px 24px !important;
+                font-size: 12px !important;
+                font-weight: 700 !important;
                 text-transform: uppercase !important;
-                letter-spacing: 0.8px !important;
-                font-family: 'Inter', sans-serif !important;
+                letter-spacing: 0.08em !important;
+                font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
                 width: 100% !important;
-                transition: all 0.3s ease !important;
-                border-radius: 0 !important;
+                transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                border-radius: 24px !important;
             }}
             div[data-testid="column"]:last-child button:hover {{
-                text-shadow: 0 0 8px #d4ff00, 0 0 15px #d4ff00 !important;
+                color: #b96860 !important;
+                background: rgba(209, 122, 111, 0.15) !important;
                 border: none !important;
+                transform: translateY(-1px) !important;
             }}
             </style>
         """, unsafe_allow_html=True)
 
         if st.button("Logout", key="nav_logout", use_container_width=True):
-            for key in list(st.session_state.keys()):
-                del st.session_state[key]
-            st.rerun()
+            # ULTIMATE LOGOUT FIX: Use st.components.html for immediate execution
+            # This executes BEFORE Streamlit can interfere
 
-# Neon green gradient line under navigation - full width in container
+            # Clear authentication-related session state only
+            auth_keys = ['authentication_status', 'name', 'username', 'logout', 'login']
+            for key in auth_keys:
+                if key in st.session_state:
+                    try:
+                        del st.session_state[key]
+                    except:
+                        pass
+
+            # Force authentication status to None explicitly
+            st.session_state.authentication_status = None
+            st.session_state.name = None
+            st.session_state.username = None
+
+            # Call authenticator logout
+            try:
+                authenticator.logout(location='unrendered', key='unique_logout_key')
+            except:
+                pass
+
+            # Use components.html for IMMEDIATE JavaScript execution
+            components.html(
+                """
+                <script>
+                // This executes immediately in an iframe, then redirects parent
+                (function() {
+                    // Clear all cookies in parent window
+                    var cookies = document.cookie.split(";");
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = cookies[i];
+                        var eqPos = cookie.indexOf("=");
+                        var name = eqPos > -1 ? cookie.substr(0, eqPos).trim() : cookie.trim();
+                        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+                        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=" + window.location.hostname;
+                        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=." + window.location.hostname;
+                    }
+
+                    // Clear storage
+                    try { window.localStorage.clear(); } catch(e) {}
+                    try { window.sessionStorage.clear(); } catch(e) {}
+
+                    // Try to access parent window and clear cookies there too
+                    try {
+                        var parentCookies = window.parent.document.cookie.split(";");
+                        for (var i = 0; i < parentCookies.length; i++) {
+                            var cookie = parentCookies[i];
+                            var eqPos = cookie.indexOf("=");
+                            var name = eqPos > -1 ? cookie.substr(0, eqPos).trim() : cookie.trim();
+                            window.parent.document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+                            window.parent.document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=" + window.location.hostname;
+                            window.parent.document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=." + window.location.hostname;
+                        }
+
+                        // Clear parent storage
+                        try { window.parent.localStorage.clear(); } catch(e) {}
+                        try { window.parent.sessionStorage.clear(); } catch(e) {}
+                    } catch(e) {
+                        console.log("Could not access parent:", e);
+                    }
+
+                    // Force redirect after brief delay
+                    setTimeout(function() {
+                        window.top.location.href = window.location.origin + "?logout=1&_=" + Date.now();
+                    }, 100);
+                })();
+                </script>
+                """,
+                height=0,
+                width=0
+            )
+
+            # Also set query param for backup
+            st.query_params["logout"] = "1"
+
+            # Don't call st.rerun() - let JavaScript handle the redirect
+
+# Neon green gradient line under navigation
 st.markdown("""
     <div style='
         width: 100%;
         max-width: 100vw;
-        margin: 10px 0 20px 0;
+        margin: 10px 0 0 0;
         padding: 0;
     '>
         <div style='
             width: 100%;
-            height: 1px;
+            height: 4px;
             background: linear-gradient(90deg,
                 #d4ff00 0%,
                 #b8e600 20%,
                 #7fa830 40%,
                 #4d7a40 60%,
-                #0f6a6a 80%,
+                #0a4b4b 80%,
                 #0a4b4b 100%);
         '></div>
+        <div style='
+            width: 100%;
+            text-align: right;
+            padding: 4px 20px 0 0;
+            font-size: 8px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            color: rgba(10, 75, 75, 0.4);
+        '>Architected by SBS</div>
     </div>
 """, unsafe_allow_html=True)
 
+# JavaScript to forcefully fix logo height AND make nav sticky with MutationObserver
+st.markdown("""
+<script>
+function forceLogoHeight() {
+    const logo = document.querySelector('[data-testid="stVerticalBlock"] [data-testid="stHorizontalBlock"] img');
+    if (logo) {
+        logo.removeAttribute('style');
+        logo.style.cssText = 'width: auto !important; height: 140px !important; max-width: none !important; border-radius: 0px !important;';
+    }
+}
+
+function makeNavSticky() {
+    const nav = document.querySelector('[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child');
+    if (nav) {
+        nav.style.position = 'fixed';
+        nav.style.top = '0';
+        nav.style.left = '0';
+        nav.style.right = '0';
+        nav.style.zIndex = '99999';
+    }
+}
+
+function applyAll() {
+    forceLogoHeight();
+    makeNavSticky();
+}
+
+// Run multiple times to catch Streamlit re-renders
+setTimeout(applyAll, 50);
+setTimeout(applyAll, 200);
+setTimeout(applyAll, 500);
+setTimeout(applyAll, 1000);
+
+// Re-run on any Streamlit update
+const observer = new MutationObserver(applyAll);
+observer.observe(document.body, { childList: true, subtree: true });
+</script>
+""", unsafe_allow_html=True)
+
 # Add spacing after nav
-st.markdown("<div style='margin-bottom: 40px;'></div>", unsafe_allow_html=True)
+st.markdown("<div style='margin-bottom: 30px;'></div>", unsafe_allow_html=True)
+
+# ============================================
+# GET CURRENT DIRECTORY
+# ============================================
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+# ============================================
+# LOAD METAFLEX BRAND DNA (CSS + JS)
+# ============================================
+
+def inject_css(path):
+    """Embed CSS into Streamlit app with aggressive cache busting."""
+    if os.path.exists(path):
+        with open(path) as f:
+            css = f.read()
+            # Add timestamp for cache busting
+            cache_buster = int(time.time() * 1000)  # Millisecond precision
+            st.markdown(f'<style id="metaflex-css-{cache_buster}">{css}</style>', unsafe_allow_html=True)
+            # VISIBLE indicator that CSS loaded
+            st.markdown(f'<div style="position: fixed; bottom: 10px; right: 10px; background: #d4ff00; color: #000; padding: 5px 10px; border-radius: 5px; font-size: 10px; z-index: 999999;">CSS v{cache_buster}</div>', unsafe_allow_html=True)
+            print(f"✅ MetaFlex CSS loaded with cache buster v{cache_buster}")
+    else:
+        st.error(f"⚠️ CSS file not found: {path}")
+
+def inject_js(path):
+    """Embed JS safely inside Streamlit iframe."""
+    if os.path.exists(path):
+        with open(path) as f:
+            js = f.read()
+            st.markdown(f"<script>{js}</script>", unsafe_allow_html=True)
+            print(f"✅ MetaFlex JS injected")
+    else:
+        st.warning(f"⚠️ JS file not found: {path}")
+
+# --- Apply brand files ---
+css_path = os.path.join(current_dir, "style.css")
+js_path = os.path.join(current_dir, "static", "metaflex.js")
+
+inject_css(css_path)
+inject_js(js_path)
+
+
+
+
 
 # ============================================
 # MAIN CONTENT AREA

@@ -21,7 +21,7 @@ credentials:
     jess@metaflexglove.com:
       email: jess@metaflexglove.com
       name: Jess Lewis
-      password: "$2b$12$lmK9pQvR7xN2jT8wB5hZ3u6F9sD4kL1mP7cQ8rT2nY0xW3vU6aJ5K"  # met4
+      password: "$2b$12$bOKQXzz/bSCPis6MNTZUt.JRHtF1vjBgkRK7aQDtuWaljG7lS3AQ6"  # met4
       admin: false
       view_all_tasks: true
 

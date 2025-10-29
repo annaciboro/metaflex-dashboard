@@ -12,7 +12,7 @@
     --metaflex-lime-soft: #c8e66f;
     --metaflex-lime-dark: #b8e600;
     --metaflex-teal: #0a4b4b;
-    --metaflex-teal-light: #0f6a6a;
+    --metaflex-teal-light: #0a4b4b;
     --metaflex-teal-lighter: #5f8c8c;
 
     /* Semantic Colors */
@@ -42,26 +42,78 @@
     --radius-pill: 24px;
 }
 /* ============================================
-   FIX FOR NEW STREAMLIT EMOTION CONTAINERS
+   STREAMLIT CONTAINER CLEANUP
    ============================================ */
 
-/* Unify app background */
+/* Soft white gradient app background */
 .st-emotion-cache-1r4qj8v,
-[data-testid="stAppViewContainer"] {
-    background: linear-gradient(135deg, #fafbfc 0%, #f5f7f7 100%) !important;
-    background-color: #f8f9fa !important;
+[data-testid="stAppViewContainer"],
+.main,
+.block-container {
+    background: linear-gradient(135deg, #ffffff 0%, #f9fafa 100%) !important;
 }
 
-/* Ensure card/section containers get your white gradient + shadow */
-.st-emotion-cache-3uj0rx,
-section[data-testid="stVerticalBlock"],
-section[data-testid="stHorizontalBlock"],
-div[data-testid="stVerticalBlockBorderWrapper"] {
-    background: linear-gradient(135deg, #ffffff 0%, #fefefe 100%) !important;
-    border-radius: 16px !important;
-    padding: 32px 40px !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04) !important;
-    margin-bottom: 32px !important;
+/* Ensure main content area has soft white gradient background */
+section.main > div {
+    background: linear-gradient(135deg, #ffffff 0%, #f9fafa 100%) !important;
+}
+
+/* Make all Streamlit blocks transparent so green gradient shows through */
+[data-testid="stVerticalBlock"],
+[data-testid="stHorizontalBlock"] {
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+}
+
+/* EXCEPTION: Nav bar must be WHITE - override the transparent rule */
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child,
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child *,
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child [data-testid="stVerticalBlock"],
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child [data-testid="column"] {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+}
+
+/* Remove borders from markdown containers */
+[data-testid="stMarkdownContainer"],
+[data-testid="element-container"] {
+    border: none !important;
+    outline: none !important;
+}
+
+/* Remove white boxes from navigation area */
+[data-testid="stVerticalBlock"]:has(> div[data-testid="column"]) {
+    background: transparent !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+/* Hide extra padding/margins in columns */
+[data-testid="column"] {
+    background: transparent !important;
+    padding: 0 !important;
+}
+
+/* Remove default Streamlit header */
+header[data-testid="stHeader"] {
+    display: none !important;
+}
+
+/* Dark MetaFlex green cursor */
+* {
+    cursor: default;
+    caret-color: #00a896 !important;
+}
+
+a, button, input[type="button"], input[type="submit"], select {
+    cursor: pointer;
+}
+
+input, textarea {
+    caret-color: #00a896 !important;
 }
 
 /* ==============================================
@@ -79,21 +131,21 @@ div[data-testid="stVerticalBlockBorderWrapper"] {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #80ccaa, #66aa77, #4d8866);
+    background: #d4ff00;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, #80ccaa, #66aa77, #4d8866);
+    background: #d4ff00;
 }
 
 ::-webkit-scrollbar-thumb:active {
-    background: linear-gradient(180deg, #80ccaa, #66aa77, #4d8866);
+    background: #d4ff00;
 }
 
 /* Firefox scrollbar styling */
 * {
     scrollbar-width: thin;
-    scrollbar-color: #80ccaa #e8eaed;
+    scrollbar-color: #d4ff00 #e8eaed;
 }
 
 /* Premium Navigation Bar - Exact match to HTML design */
@@ -247,30 +299,31 @@ div[data-testid="stVerticalBlockBorderWrapper"] {
 
 html, body, [data-testid="stAppViewContainer"], .main {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
-    background: linear-gradient(135deg, #fafbfc 0%, #f5f7f7 100%) !important;
-    background-color: #f8f9fa !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #0a4b4b !important;
 }
 
-/* PREMIUM NAVIGATION - Pale grey gradient background on main container */
+/* PREMIUM LIGHT THEME - Soft grey gradient background */
 [data-testid="stAppViewContainer"] > section:first-child {
-    background: linear-gradient(135deg, #fafbfc 0%, #f5f7f7 100%) !important;
-    background-color: #f8f9fa !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
 }
 
 section.main {
-    background: linear-gradient(135deg, #fafbfc 0%, #f5f7f7 100%) !important;
-    background-color: #f8f9fa !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
 }
 
-/* Force pale grey gradient background on content area */
+/* Force grey gradient background on content area */
 .stApp {
-    background: linear-gradient(135deg, #fafbfc 0%, #f5f7f7 100%) !important;
-    background-color: #f8f9fa !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
 }
 
 [data-testid="stAppViewContainer"] {
-    background: linear-gradient(135deg, #fafbfc 0%, #f5f7f7 100%) !important;
-    background-color: #f8f9fa !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
 }
 
 /* ============================================
@@ -303,33 +356,33 @@ section.main > div:first-child {
     padding: 40px 60px !important;
     max-width: 1440px !important;
     margin: 0 auto !important;
-    background: linear-gradient(135deg, #fafbfc 0%, #f5f7f7 100%) !important;
-    background-color: #f8f9fa !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    border-top-left-radius: 24px !important;
+    border-top-right-radius: 24px !important;
 }
 
 /* ===================================================================
    NOTION-INSPIRED ELEGANT NAVIGATION
    =================================================================== */
 
-/* Fixed navigation container - ENHANCED FROSTED GLASS with extra pop */
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child {
+/* Fixed/Sticky navigation container - STRAIGHT WHITE BAR */
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child,
+section.main > div > [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child,
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child {
     position: fixed !important;
     top: 0 !important;
     left: 0 !important;
     right: 0 !important;
-    z-index: 9999 !important;
-    /* Brighter white with stronger contrast */
-    background: rgba(255, 255, 255, 0.98) !important;
-    background-color: rgba(255, 255, 255, 0.98) !important;
-    /* Stronger backdrop blur for premium feel */
+    z-index: 99999 !important;
+    /* Pure white background - flat bar */
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    /* Strong backdrop blur for glass effect */
     backdrop-filter: blur(20px) saturate(180%) !important;
     -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-    /* Enhanced shadow for more depth */
-    box-shadow:
-        0 2px 8px rgba(0, 0, 0, 0.08),
-        0 4px 16px rgba(0, 0, 0, 0.05),
-        0 1px 0 rgba(255, 255, 255, 0.8) inset !important;
-    /* NO BORDER - using ::after gradient instead */
+    /* Subtle shadow for elevation */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04) !important;
     border-bottom: none !important;
     padding: 0 48px 0 48px !important;
     padding-right: 250px !important;
@@ -342,25 +395,33 @@ section.main > div:first-child {
     margin: 0 !important;
     overflow: visible !important;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    /* NO rounded corners - straight bar */
+    border-radius: 0 !important;
 }
 
-/* LIME TO TEAL GRADIENT LINE UNDER NAV - using ::after pseudo-element */
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child::after {
+/* VIBRANT LIME TO TEAL GRADIENT LINE UNDER NAV - using ::after pseudo-element */
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child::after,
+section.main > div > [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child::after,
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child::after {
     content: '' !important;
     position: absolute !important;
     bottom: 0 !important;
     left: 0 !important;
     right: 0 !important;
     width: 100% !important;
-    height: 4px !important;
+    height: 5px !important;
     background: linear-gradient(90deg,
         #d4ff00 0%,
-        #b8e600 25%,
+        #c8ff00 15%,
+        #a8e600 30%,
         #7fa830 50%,
-        #4d7a40 75%,
+        #4d7a40 70%,
         #0a4b4b 100%) !important;
-    z-index: 10000 !important;
+    box-shadow: 0 2px 8px rgba(212, 255, 0, 0.3), 0 1px 3px rgba(10, 75, 75, 0.2) !important;
+    z-index: 100000 !important;
     pointer-events: none !important;
+    /* NO rounded corners - straight bar */
+    border-radius: 0 !important;
 }
 
 /* Enhanced shadow on hover - MORE dramatic */
@@ -372,7 +433,7 @@ section.main > div:first-child {
     border-bottom-color: rgba(95, 140, 140, 0.3) !important;
 }
 
-/* Navigation columns - force transparent and proper alignment */
+/* Navigation columns - force WHITE background to match nav bar */
 [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child > div[data-testid="column"] {
     display: flex !important;
     align-items: center !important;
@@ -381,16 +442,23 @@ section.main > div:first-child {
     flex-shrink: 0 !important;
     white-space: nowrap !important;
     min-width: 0 !important;
-    background: transparent !important;
-    background-color: transparent !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
     position: relative !important;
     z-index: 1 !important;
 }
 
-/* Force all elements inside nav columns to be transparent */
+/* Force all elements inside nav columns to have WHITE background */
 [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child > div[data-testid="column"] > * {
-    background: transparent !important;
-    background-color: transparent !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+}
+
+/* Force all vertical blocks inside nav to be WHITE */
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child [data-testid="stVerticalBlock"],
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child [data-testid="stVerticalBlockBorderWrapper"] {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
 }
 
 /* Logo column - centered on left side */
@@ -413,23 +481,56 @@ section.main > div:first-child {
     gap: 8px !important;
 }
 
-/* Logo - 100px and centered */
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child img {
-    width: 100px !important;
-    height: 100px !important;
-    border-radius: 16px !important;
-    background: white !important;
-    padding: 10px !important;
-    transition: opacity 0.15s ease !important;
+/* FORCE 140px logo height - more specific selectors */
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child img,
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child [data-testid="stImage"] img,
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child [data-testid="column"] img,
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child img {
+    height: 140px !important;
+    width: auto !important;
+    max-height: 140px !important;
+    min-height: 140px !important;
+    max-width: none !important;
+    min-width: auto !important;
+    object-fit: contain !important;
     display: block !important;
-    margin: auto !important;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1)) !important;
+    border-radius: 0px !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    transition: all 0.3s ease !important;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.08)) !important;
     opacity: 1 !important;
 }
 
-[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child img:hover {
-    opacity: 0.9 !important;
-    transform: none !important;
+/* Override Streamlit's inline width styles - MOST AGGRESSIVE */
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child img[style] {
+    width: auto !important;
+    max-width: none !important;
+    height: 140px !important;
+    min-height: 140px !important;
+    max-height: 140px !important;
+}
+
+/* Ensure parent containers don't constrain the image */
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child [data-testid="stImage"],
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child [data-testid="column"]:nth-child(2) {
+    height: auto !important;
+    min-height: 140px !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+/* Logo hover effect with neon glow */
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child img:hover,
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child [data-testid="stImage"] img:hover,
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child [data-testid="column"] img:hover,
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child img:hover {
+    filter: drop-shadow(0 10px 30px rgba(212, 255, 0, 0.8))
+            drop-shadow(0 5px 15px rgba(212, 255, 0, 0.7))
+            drop-shadow(0 0 12px rgba(212, 255, 0, 0.6)) !important;
+    transform: scale(1.05) !important;
     cursor: pointer !important;
 }
 
@@ -442,7 +543,7 @@ section.main > div:first-child {
 // DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="secondary"],
 // DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[data-testid="baseButton-secondary"] {
 // DISABLED:     background: #ffffff !important;
-// DISABLED:     color: #0f6a6a !important;
+// DISABLED:     color: #0a4b4b !important;
 // DISABLED:     border: none !important;
 // DISABLED:     border-radius: 24px !important;
 // DISABLED:     font-size: 15px !important;
@@ -480,7 +581,7 @@ section.main > div:first-child {
 // DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"],
 // DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child [data-testid="column"] button[kind="primary"],
 // DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[data-testid="baseButton-primary"] {
-// DISABLED:     background: linear-gradient(135deg, #0f6a6a 0%, #0d5858 100%) !important;
+// DISABLED:     background: linear-gradient(135deg, #0a4b4b 0%, #0d5858 100%) !important;
 // DISABLED:     color: #ffffff !important;
 // DISABLED:     font-weight: 600 !important;
 // DISABLED:     transform: none !important;
@@ -671,7 +772,7 @@ section.main > div:first-child {
 // DISABLED:    ============================================ */
 // DISABLED: /* Only style buttons NOT in the navigation bar */
 // DISABLED: section.main [data-testid="stButton"] button {
-// DISABLED:     background: #0f6a6a !important;
+// DISABLED:     background: #0a4b4b !important;
 // DISABLED:     color: white !important;
 // DISABLED:     border: none !important;
 // DISABLED:     border-radius: 8px !important;
@@ -696,7 +797,7 @@ section.main > div:first-child {
 // DISABLED: }
 // DISABLED: 
 // DISABLED: input:focus, textarea:focus, select:focus {
-// DISABLED:     border-color: #0f6a6a !important;
+// DISABLED:     border-color: #0a4b4b !important;
 // DISABLED:     outline: none !important;
 // DISABLED:     box-shadow: 0 0 0 3px rgba(15, 106, 106, 0.1) !important;
 // DISABLED: }
@@ -735,7 +836,7 @@ section.main > div:first-child {
 // DISABLED:     transform: translateY(-3px) !important;
 // DISABLED:     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12),
 // DISABLED:                 0 4px 8px rgba(0, 0, 0, 0.06) !important;
-// DISABLED:     border-color: #0f6a6a !important;
+// DISABLED:     border-color: #0a4b4b !important;
 // DISABLED: }
 // DISABLED: 
 // DISABLED: /* Metric labels - uppercase, small, muted, centered */
@@ -790,7 +891,7 @@ section.main > div:first-child {
 // DISABLED:     padding: 48px 64px 80px 64px !important;
 // DISABLED:     max-width: 1400px !important;
 // DISABLED:     margin: 0 auto !important;
-// DISABLED:     background: linear-gradient(135deg, #fafbfc 0%, #f5f7f7 100%) !important;
+// DISABLED:     background: #ffffff !important;
 // DISABLED:     background-attachment: fixed !important;
 // DISABLED: }
 // DISABLED: 
@@ -875,7 +976,7 @@ section.main > div:first-child {
 // DISABLED:     background: #ffffff !important;
 // DISABLED:     border-color: transparent !important;
 // DISABLED:     border: none !important;
-// DISABLED:     color: #0f6a6a !important;
+// DISABLED:     color: #0a4b4b !important;
 // DISABLED:     border-radius: 8px !important;
 // DISABLED:     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
 // DISABLED: }
@@ -897,8 +998,8 @@ section.main > div:first-child {
 // DISABLED: /* Active/Primary state in nav */
 // DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"]:not([key*="logout"]),
 // DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child div[data-testid="column"] button[kind="primary"] {
-// DISABLED:     background: #0f6a6a !important;
-// DISABLED:     background-color: #0f6a6a !important;
+// DISABLED:     background: #0a4b4b !important;
+// DISABLED:     background-color: #0a4b4b !important;
 // DISABLED:     background-image: none !important;
 // DISABLED:     color: #ffffff !important;
 // DISABLED:     border: none !important;
@@ -918,7 +1019,7 @@ section.main > div:first-child {
 // DISABLED: }
 // DISABLED: 
 // DISABLED: .text-teal {
-// DISABLED:     color: #0f6a6a !important;
+// DISABLED:     color: #0a4b4b !important;
 // DISABLED: }
 // DISABLED: 
 // DISABLED: .text-lime {
@@ -926,7 +1027,7 @@ section.main > div:first-child {
 // DISABLED: }
 // DISABLED: 
 // DISABLED: .bg-teal {
-// DISABLED:     background-color: #0f6a6a !important;
+// DISABLED:     background-color: #0a4b4b !important;
 // DISABLED: }
 // DISABLED: 
 // DISABLED: .bg-lime {
@@ -944,7 +1045,7 @@ section.main > div:first-child {
 // DISABLED:     background-image: none !important;
 // DISABLED:     border: none !important;
 // DISABLED:     border-radius: 8px !important;
-// DISABLED:     color: #0f6a6a !important;
+// DISABLED:     color: #0a4b4b !important;
 // DISABLED:     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
 // DISABLED: }
 // DISABLED: 
@@ -959,8 +1060,8 @@ section.main > div:first-child {
 // DISABLED: 
 // DISABLED: /* Primary button (active page) - MetaFlex teal with white text */
 // DISABLED: [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"] {
-// DISABLED:     background: #0f6a6a !important;
-// DISABLED:     background-color: #0f6a6a !important;
+// DISABLED:     background: #0a4b4b !important;
+// DISABLED:     background-color: #0a4b4b !important;
 // DISABLED:     background-image: none !important;
 // DISABLED:     border: none !important;
 // DISABLED:     border-radius: 8px !important;
@@ -1047,7 +1148,7 @@ html body div [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"
     z-index: 1000 !important;
 }
 
-/* LEFT ALIGN CHART TITLES - Bar chart and pie chart titles */
+/* CENTER CHART TITLES - Bar chart and pie chart titles */
 [data-testid="column"] h3,
 [data-testid="column"] > div > h3,
 [data-testid="column"] div[data-testid="stMarkdownContainer"] h3,
@@ -1059,17 +1160,17 @@ div[data-testid="column"] h3,
 section[data-testid="stVerticalBlock"] [data-testid="column"] h3,
 [data-testid="element-container"] h3,
 div[data-testid="stVerticalBlockBorderWrapper"] h3 {
-    text-align: left !important;
+    text-align: center !important;
     width: 100% !important;
     display: block !important;
 }
 
-/* Left align all containers */
+/* Center align all containers */
 [data-testid="column"] [data-testid="stMarkdownContainer"],
 [data-testid="column"] div[data-testid="stMarkdownContainer"],
 [data-testid="column"] [data-testid="element-container"],
 div[data-testid="column"] > div {
-    text-align: left !important;
+    text-align: center !important;
     width: 100% !important;
 }
 
@@ -1136,52 +1237,68 @@ tbody tr:last-child td {
 }
 
 /* ============================================
-   CONTAINERS - WHITE GRADIENT BACKGROUND
+   PREMIUM SAAS CONTAINERS - LIGHT & CLEAN
    ============================================ */
 
-/* All containers get white gradient */
+/* All containers get green gradient background */
 html body [data-testid="stVerticalBlock"],
 html body [data-testid="stHorizontalBlock"],
 html body [data-testid="element-container"],
 html body div[data-testid="column"],
 html body [data-testid="stVerticalBlockBorderWrapper"] {
-    background: linear-gradient(135deg, #ffffff 0%, #fefefe 100%) !important;
-    background-color: #ffffff !important;
-    background-image: linear-gradient(135deg, #ffffff 0%, #fefefe 100%) !important;
+    background: transparent !important;
+    background-color: transparent !important;
 }
 
-/* Metric containers */
+/* Metric containers - Super pale forest green gradient */
 html body [data-testid="stMetric"],
-html body [data-testid="metric-container"] {
-    background: linear-gradient(135deg, #ffffff 0%, #fefefe 100%) !important;
-    background-color: #ffffff !important;
-    background-image: linear-gradient(135deg, #ffffff 0%, #fefefe 100%) !important;
-    padding: 16px !important;
-    border-radius: 12px !important;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+html body [data-testid="metric-container"],
+.kpi-card {
+    background: linear-gradient(135deg, #f5faf2 0%, #f8fbf8 100%) !important;
+    /* Very pale forest green → almost white */
+    border: 1px solid #e8eced !important;
+    border-left: 4px solid #0a4b4b !important;
+    border-top: 2px solid rgba(212, 255, 0, 0.3) !important;
+    padding: 32px 48px !important;
+    border-radius: 16px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
-/* Charts and plot containers */
+html body [data-testid="stMetric"]:hover,
+html body [data-testid="metric-container"]:hover,
+.kpi-card:hover {
+    transform: translateY(-4px) !important;
+    border-left-color: #0a4b4b !important;
+    border-left-width: 4px !important;
+    border-top: 2px solid rgba(212, 255, 0, 0.3) !important;
+    box-shadow:
+        0 6px 16px rgba(0, 0, 0, 0.1),
+        0 2px 6px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Charts and plot containers - Remove default boxes */
 html body [data-testid="stPlotlyChart"],
 html body [class*="plot-container"] {
-    background: linear-gradient(135deg, #ffffff 0%, #fefefe 100%) !important;
-    background-color: #ffffff !important;
-    background-image: linear-gradient(135deg, #ffffff 0%, #fefefe 100%) !important;
-    padding: 16px !important;
-    border-radius: 12px !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
 }
 
 /* ============================================
    NAVIGATION BUTTONS - MATCH DESIGN
    ============================================ */
 
-/* All nav buttons - FORCE transparent background, NO borders */
+/* All nav buttons - FORCE transparent background, NO borders - MATCH KPI STYLING */
 html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button,
 html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button:not([kind="primary"]),
 html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="secondary"],
 html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child .stButton > button:not([kind="primary"]),
 html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[data-testid="baseButton-secondary"],
-html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child [data-testid="stButton"] button {
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child [data-testid="stButton"] button,
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child div[data-testid="column"] button:not([kind="primary"]) {
     background: transparent !important;
     background-color: transparent !important;
     background-image: none !important;
@@ -1192,6 +1309,26 @@ html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:fi
     box-shadow: none !important;
     outline: none !important;
     border-radius: 0 !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    color: #2d5016 !important;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+
+/* NUCLEAR OPTION - Force on all nested elements INCLUDING UPPERCASE */
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button,
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button *,
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button p,
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button div,
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button span {
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    color: #2d5016 !important;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
 }
 
 /* Hover - transparent */
@@ -1208,44 +1345,85 @@ html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:fi
     border-radius: 0 !important;
 }
 
-/* Active/Primary button - LIME GREEN PILL */
-html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"] {
-    background: #d4ff00 !important;
+/* Active/Primary button - VIBRANT LIME GREEN PILL */
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"],
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child div[data-testid="column"] button[kind="primary"] {
+    background: linear-gradient(135deg, #d4ff00 0%, #c8ff00 100%) !important;
     background-color: #d4ff00 !important;
     background-image: none !important;
     border: none !important;
     border-width: 0 !important;
     outline: none !important;
-    box-shadow: none !important;
+    box-shadow: 0 4px 12px rgba(212, 255, 0, 0.4), 0 2px 6px rgba(0, 0, 0, 0.1) !important;
     color: #1a1a1a !important;
-    font-size: 14px !important;
-    font-weight: 700 !important;
+    font-size: 13px !important;
+    font-weight: 900 !important;
     text-transform: uppercase !important;
-    letter-spacing: 0.5px !important;
-    padding: 12px 24px !important;
-    border-radius: 24px !important;
-    transition: all 0.2s ease !important;
+    letter-spacing: 0.08em !important;
+    padding: 14px 28px !important;
+    border-radius: 28px !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
     text-shadow: none !important;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+    transform: translateY(0) !important;
+}
+
+/* Force on primary button nested elements INCLUDING UPPERCASE */
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"],
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"] *,
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"] p,
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"] div,
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"] span {
+    font-size: 13px !important;
+    font-weight: 900 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.08em !important;
+    color: #1a1a1a !important;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
 }
 
 html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"]:hover {
-    background: #c8e600 !important;
-    background-color: #c8e600 !important;
+    background: linear-gradient(135deg, #e0ff1a 0%, #d4ff00 100%) !important;
+    background-color: #e0ff1a !important;
     background-image: none !important;
     border: none !important;
     border-width: 0 !important;
-    box-shadow: 0 2px 8px rgba(212, 255, 0, 0.3) !important;
+    box-shadow: 0 6px 16px rgba(212, 255, 0, 0.5), 0 3px 8px rgba(0, 0, 0, 0.12) !important;
+    transform: translateY(-2px) !important;
 }
 
-/* Logout button - red/coral text */
+/* Logout button - coral text - MATCH KPI STYLING */
 html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child div[data-testid="column"]:last-child button {
-    background: linear-gradient(135deg, #fafbfc 0%, #f5f7f7 100%) !important;
-    background-color: #f8f9fa !important;
-    background-image: linear-gradient(135deg, #fafbfc 0%, #f5f7f7 100%) !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
     border: none !important;
     border-width: 0 !important;
-    color: #ff6b6b !important;
+    color: #d17a6f !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
     text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child div[data-testid="column"]:last-child button:hover {
+    background: rgba(209, 122, 111, 0.12) !important;
+    color: #b96860 !important;
+}
+
+/* Force coral color and font on all nested elements INCLUDING UPPERCASE */
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child div[data-testid="column"]:last-child button,
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child div[data-testid="column"]:last-child button *,
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child div[data-testid="column"]:last-child button p,
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child div[data-testid="column"]:last-child button div,
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child div[data-testid="column"]:last-child button span {
+    color: #d17a6f !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.08em !important;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
 }
 
 /* ULTIMATE BORDER REMOVAL - Target Streamlit's button classes directly */
@@ -1280,3 +1458,102 @@ body button:not([kind="primary"]) {
 }
 
 
+
+/* MAIN PAGE BACKGROUND - SOFT GREY */
+[data-testid="stAppViewContainer"],
+.main,
+section.main > div {
+    background: #ffffff !important;
+}
+
+/* Content container - Grey gradient background */
+.main .block-container {
+    background: #ffffff !important;
+}
+
+/* ============================================
+   KPI CARD HOVER EFFECTS - SLIGHT LIFT
+   ============================================ */
+/* This is now handled above with the metric containers */
+
+/* ============================================
+   CHART CONTAINER HOVER EFFECTS - SUBTLE BORDER WITH MINIMAL LIFT
+   ============================================ */
+.chart-wrapper {
+    background: transparent !important;
+    border-radius: 12px !important;
+    padding: 16px !important;
+    transition: all 0.25s ease !important;
+    border: 1px solid rgba(10, 75, 75, 0.1) !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+}
+
+.chart-wrapper:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06) !important;
+    border: 1px solid rgba(10, 75, 75, 0.2) !important;
+    background: transparent !important;
+}
+
+/* ============================================
+   ABSOLUTE FINAL LOGO FIX - LAST IN FILE
+   ============================================ */
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child img,
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child img[style*="width"],
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child [data-testid="stImage"] img,
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child img {
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: 140px !important;
+    min-height: 140px !important;
+    max-height: 140px !important;
+}
+
+/* ============================================
+   ABSOLUTE FINAL NAV BAR WHITE BACKGROUND - NUCLEAR OPTION
+   MUST BE LAST - DO NOT ADD ANYTHING AFTER THIS
+   ============================================ */
+html body div[data-testid="stVerticalBlock"] > div[data-testid="stHorizontalBlock"]:first-child,
+html body [data-testid="stAppViewContainer"] [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child,
+section.main > div > [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child,
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    background-image: none !important;
+}
+
+/* Force white on ALL children of nav bar */
+html body div[data-testid="stVerticalBlock"] > div[data-testid="stHorizontalBlock"]:first-child *,
+html body [data-testid="stAppViewContainer"] [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child *,
+[data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child * {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    background-image: none !important;
+}
+
+/* Force white on nav columns specifically */
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child [data-testid="column"],
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child div[data-testid="column"],
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child [data-testid="stVerticalBlock"],
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child [data-testid="stVerticalBlockBorderWrapper"] {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    background-image: none !important;
+}
+
+/* ABSOLUTE FINAL TEXT-TRANSFORM UPPERCASE - TARGET STREAMLIT EMOTION CACHE CLASSES */
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[class*="st-emotion-cache"],
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[class*="st-emotion-cache"] *,
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[class*="st-emotion-cache"] p,
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[class*="st-emotion-cache"] div,
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[class*="st-emotion-cache"] span,
+html body div[data-testid="column"] button,
+html body div[data-testid="column"] button *,
+html body div[data-testid="column"] button p,
+html body div[data-testid="column"] button div {
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    font-weight: 600 !important;
+    font-size: 12px !important;
+}
