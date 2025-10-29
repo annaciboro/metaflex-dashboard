@@ -118,16 +118,19 @@ if st.session_state.get("authentication_status") is None:
 
         /* Center everything with ULTRA massive side space */
         .main .block-container {
-            max-width: 100% !important;
+            max-width: 1200px !important;
             padding-top: 8rem !important;
-            padding-left: 35% !important;
-            padding-right: 35% !important;
+            padding-left: 2rem !important;
+            padding-right: 2rem !important;
             margin: 0 auto !important;
             position: relative !important;
             z-index: 1 !important;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: flex-start !important;
         }
 
-        /* Login box with green gradient background and border */
+        /* Login box with green gradient background and border - CENTERED */
         section[data-testid="stForm"] {
             background: linear-gradient(135deg,
                 #f8fdf5 0%,
@@ -145,6 +148,9 @@ if st.session_state.get("authentication_status") is None:
             border: 3px solid transparent !important;
             border-image: linear-gradient(135deg, #4d7a40 0%, #0a4b4b 100%) 1 !important;
             position: relative !important;
+            margin: 0 auto !important;
+            width: 100% !important;
+            max-width: 600px !important;
         }
 
         /* Force the form's parent containers to be narrow */
