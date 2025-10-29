@@ -269,7 +269,7 @@ if st.session_state.get("authentication_status") is None:
             outline: none !important;
         }
 
-        /* Force white text on button and all nested elements */
+        /* Force white text on button and all nested elements - UPPERCASE */
         section[data-testid="stForm"] button,
         section[data-testid="stForm"] button *,
         section[data-testid="stForm"] button p,
@@ -277,6 +277,10 @@ if st.session_state.get("authentication_status") is None:
         [data-testid="stFormSubmitButton"] button,
         [data-testid="stFormSubmitButton"] button * {
             color: #ffffff !important;
+            text-transform: uppercase !important;
+            font-size: 13px !important;
+            letter-spacing: 0.1em !important;
+            font-weight: 700 !important;
         }
 
         /* Hover state - slightly lighter */
@@ -372,7 +376,7 @@ if st.session_state.get("authentication_status") is None:
             margin-bottom: 8px !important;
         }
 
-        /* Form title "Login" - Dark green - multiple selectors */
+        /* Form title "Login" - Dark green - centered - multiple selectors */
         section[data-testid="stForm"] h1,
         section[data-testid="stForm"] h2,
         .stForm h1,
@@ -380,6 +384,8 @@ if st.session_state.get("authentication_status") is None:
             color: #0a4b4b !important;
             font-weight: 700 !important;
             font-size: 32px !important;
+            text-align: center !important;
+            width: 100% !important;
         }
 
         /* Copyright footer at bottom */
@@ -466,37 +472,103 @@ with nav_container:
         with cols[idx + 2]:
             is_active = st.session_state.current_page == page_name
 
-            # Custom CSS for this specific button - LIME GREEN ACTIVE STATE
+            # Custom CSS for this specific button - GREEN UNDERLINE FOR ACTIVE STATE
+            # Add extra padding-top to first button (Home) to push it below the logo
+            extra_padding = 'padding-top: 40px !important;' if idx == 0 else ''
+            # Active state gets green gradient underline
+            if is_active:
+                border_bottom_style = '''
+                    border-bottom: 3px solid #d4ff00 !important;
+                    border-image: linear-gradient(90deg, #d4ff00 0%, #c8ff00 100%) 1 !important;
+                    border-image-slice: 1 !important;
+                '''
+            else:
+                border_bottom_style = 'border-bottom: 3px solid transparent !important;'
+
             st.markdown(f"""
                 <style>
-                div[data-testid="column"]:nth-child({idx + 3}) button {{
-                    background: {'linear-gradient(135deg, #d4ff00 0%, #c8ff00 100%)' if is_active else 'transparent'} !important;
-                    color: {'#1a1a1a' if is_active else '#2d5016'} !important;
+                /* ULTRA SPECIFIC Target for column {idx + 3} - Override emotion cache */
+                html body div[data-testid="column"]:nth-child({idx + 3}) button.st-emotion-cache-5qfegl.e8vg11g2,
+                html body div[data-testid="column"]:nth-child({idx + 3}) button.st-emotion-cache-5qfegl,
+                html body div[data-testid="column"]:nth-child({idx + 3}) button.e8vg11g2,
+                html body div[data-testid="column"]:nth-child({idx + 3}) button[kind="secondary"],
+                html body div[data-testid="column"]:nth-child({idx + 3}) button[data-testid="stBaseButton-secondary"],
+                html body div[data-testid="column"]:nth-child({idx + 3}) .stButton > button,
+                html body div[data-testid="column"]:nth-child({idx + 3}) button {{
+                    background: transparent !important;
+                    background-color: transparent !important;
+                    background-image: none !important;
+                    color: #2d5016 !important;
                     border: none !important;
-                    box-shadow: {'0 4px 12px rgba(212, 255, 0, 0.4), 0 2px 6px rgba(0, 0, 0, 0.1)' if is_active else 'none'} !important;
-                    padding: {'14px 28px' if is_active else '12px 24px'} !important;
-                    font-size: {'13px' if is_active else '12px'} !important;
-                    font-weight: {'900' if is_active else '600'} !important;
+                    border-top: none !important;
+                    border-left: none !important;
+                    border-right: none !important;
+                    {border_bottom_style}
+                    box-shadow: none !important;
+                    outline: none !important;
+                    padding: 12px 24px !important;
+                    padding-bottom: 9px !important;
+                    {extra_padding}
+                    font-size: 12px !important;
+                    font-weight: 600 !important;
                     text-transform: uppercase !important;
-                    letter-spacing: {'0.08em' if is_active else '0.05em'} !important;
+                    letter-spacing: 0.05em !important;
                     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
                     width: 100% !important;
                     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
-                    border-radius: {'28px' if is_active else '0px'} !important;
+                    border-radius: 0px !important;
+                    transform: translateY(0) !important;
+                    min-height: auto !important;
+                    line-height: 1.6 !important;
+                }}
+
+                /* Hover state */
+                html body div[data-testid="column"]:nth-child({idx + 3}) button:hover,
+                html body div[data-testid="column"]:nth-child({idx + 3}) button.st-emotion-cache-5qfegl:hover,
+                html body div[data-testid="column"]:nth-child({idx + 3}) button[kind="secondary"]:hover {{
+                    background: transparent !important;
+                    background-color: transparent !important;
+                    background-image: none !important;
+                    color: #2d5016 !important;
+                    border: none !important;
+                    border-top: none !important;
+                    border-left: none !important;
+                    border-right: none !important;
+                    {border_bottom_style}
+                    box-shadow: none !important;
+                    transform: translateY(-2px) !important;
+                    border-radius: 0px !important;
+                }}
+
+                /* Active/click state */
+                html body div[data-testid="column"]:nth-child({idx + 3}) button:active,
+                html body div[data-testid="column"]:nth-child({idx + 3}) button.st-emotion-cache-5qfegl:active {{
+                    background: transparent !important;
+                    background-color: transparent !important;
+                    color: #2d5016 !important;
                     transform: translateY(0) !important;
                 }}
-                div[data-testid="column"]:nth-child({idx + 3}) button:hover {{
-                    background: {'linear-gradient(135deg, #e0ff1a 0%, #d4ff00 100%)' if is_active else 'rgba(212, 255, 0, 0.15)'} !important;
-                    color: {'#1a1a1a' if is_active else '#2d5016'} !important;
-                    border: none !important;
-                    box-shadow: {'0 6px 16px rgba(212, 255, 0, 0.5), 0 3px 8px rgba(0, 0, 0, 0.12)' if is_active else 'none'} !important;
-                    transform: {'translateY(-2px)' if is_active else 'none'} !important;
-                    border-radius: {'28px' if is_active else '12px'} !important;
-                }}
-                div[data-testid="column"]:nth-child({idx + 3}) button:active {{
-                    background: linear-gradient(135deg, #d4ff00 0%, #c8ff00 100%) !important;
-                    color: #1a1a1a !important;
-                    transform: scale(0.98) !important;
+
+                /* Force text color on nested elements - TARGET EXACT STREAMLIT CLASSES */
+                html body div[data-testid="column"]:nth-child({idx + 3}) button.st-emotion-cache-5qfegl.e8vg11g2 .st-emotion-cache-12j140x.et2rgd20,
+                html body div[data-testid="column"]:nth-child({idx + 3}) button.st-emotion-cache-5qfegl.e8vg11g2 .st-emotion-cache-12j140x.et2rgd20 p,
+                html body div[data-testid="column"]:nth-child({idx + 3}) button.st-emotion-cache-5qfegl .st-emotion-cache-12j140x,
+                html body div[data-testid="column"]:nth-child({idx + 3}) .st-emotion-cache-12j140x.et2rgd20,
+                html body div[data-testid="column"]:nth-child({idx + 3}) .st-emotion-cache-12j140x.et2rgd20 p,
+                html body div[data-testid="column"]:nth-child({idx + 3}) button *,
+                html body div[data-testid="column"]:nth-child({idx + 3}) button p,
+                html body div[data-testid="column"]:nth-child({idx + 3}) button div,
+                html body div[data-testid="column"]:nth-child({idx + 3}) button.st-emotion-cache-5qfegl p,
+                html body div[data-testid="column"]:nth-child({idx + 3}) button .st-emotion-cache-12j140x,
+                html body div[data-testid="column"]:nth-child({idx + 3}) button .st-emotion-cache-12j140x p,
+                html body div[data-testid="column"]:nth-child({idx + 3}) button[data-testid="stBaseButton-secondary"] p,
+                html body div[data-testid="column"]:nth-child({idx + 3}) div[data-testid="stMarkdownContainer"] p {{
+                    color: #2d5016 !important;
+                    text-transform: uppercase !important;
+                    font-size: 12px !important;
+                    font-weight: 600 !important;
+                    font-variant-caps: normal !important;
+                    letter-spacing: 0.05em !important;
                 }}
                 </style>
             """, unsafe_allow_html=True)
@@ -653,7 +725,31 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# JavaScript to forcefully fix logo height AND make nav sticky with MutationObserver
+# Logo styling for navigation bar
+st.markdown("""
+<style>
+.st-emotion-cache-iun7dp {
+    padding: 0rem 0px 0.0rem 0.0rem !important;
+    position: absolute !important;
+    top: -3rem !important;
+    right: 0px !important;
+    transition: none !important;
+    opacity: 0 !important;
+}
+
+.st-emotion-cache-7czcpc > img {
+    border-radius: 0.0rem !important;
+    width: 300% !important;
+    max-width: 300% !important;
+}
+
+img, svg {
+    border-radius: 0 !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
+# JavaScript to forcefully fix logo height, make nav sticky, AND force button styling
 st.markdown("""
 <script>
 function forceLogoHeight() {
@@ -675,9 +771,74 @@ function makeNavSticky() {
     }
 }
 
+function forceButtonStyling() {
+    // Get ALL navigation buttons using multiple selectors
+    const navButtons = document.querySelectorAll(
+        '[data-testid="stVerticalBlock"] [data-testid="stHorizontalBlock"]:first-child button, ' +
+        '[class*="st-emotion-cache"] button[kind="secondary"], ' +
+        '.st-emotion-cache-5qfegl.e8vg11g2, ' +
+        '.st-emotion-cache-5qfegl, ' +
+        '.e8vg11g2, ' +
+        'button[data-testid="stBaseButton-secondary"]'
+    );
+
+    console.log('Found ' + navButtons.length + ' navigation buttons to style');
+
+    navButtons.forEach((button) => {
+        // Check if button is in navigation (not logout or other buttons)
+        const isNavButton = button.closest('[data-testid="stVerticalBlock"]');
+        if (!isNavButton) return;
+
+        // Force transparent background and remove all borders except bottom
+        button.style.setProperty('background', 'transparent', 'important');
+        button.style.setProperty('background-color', 'transparent', 'important');
+        button.style.setProperty('background-image', 'none', 'important');
+        button.style.setProperty('border', 'none', 'important');
+        button.style.setProperty('border-top', 'none', 'important');
+        button.style.setProperty('border-left', 'none', 'important');
+        button.style.setProperty('border-right', 'none', 'important');
+        button.style.setProperty('border-bottom', '3px solid transparent', 'important');
+        button.style.setProperty('box-shadow', 'none', 'important');
+        button.style.setProperty('outline', 'none', 'important');
+        button.style.setProperty('border-radius', '0px', 'important');
+        button.style.setProperty('padding', '12px 24px 9px 24px', 'important');
+        button.style.setProperty('font-size', '12px', 'important');
+        button.style.setProperty('font-weight', '600', 'important');
+        button.style.setProperty('text-transform', 'uppercase', 'important');
+        button.style.setProperty('letter-spacing', '0.05em', 'important');
+        button.style.setProperty('color', '#2d5016', 'important');
+        button.style.setProperty('font-family', "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", 'important');
+        button.style.setProperty('transition', 'all 0.2s ease', 'important');
+        button.style.setProperty('transform', 'translateY(0)', 'important');
+
+        // Force uppercase on text content - target ALL nested elements INCLUDING EXACT STREAMLIT CLASSES
+        const textElements = button.querySelectorAll(
+            'p, div, span, ' +
+            '[data-testid="stMarkdownContainer"], ' +
+            '.st-emotion-cache-12j140x, ' +
+            '.st-emotion-cache-12j140x.et2rgd20, ' +
+            '.et2rgd20'
+        );
+        textElements.forEach(el => {
+            el.style.setProperty('text-transform', 'uppercase', 'important');
+            el.style.setProperty('color', '#2d5016', 'important');
+            el.style.setProperty('font-variant-caps', 'normal', 'important');
+            el.style.setProperty('font-size', '12px', 'important');
+            el.style.setProperty('font-weight', '600', 'important');
+        });
+
+        // Also force on button itself
+        button.style.setProperty('text-transform', 'uppercase', 'important');
+        button.style.setProperty('font-variant-caps', 'normal', 'important');
+    });
+
+    console.log('Button styling applied!');
+}
+
 function applyAll() {
     forceLogoHeight();
     makeNavSticky();
+    forceButtonStyling();
 }
 
 // Run multiple times to catch Streamlit re-renders
@@ -685,6 +846,7 @@ setTimeout(applyAll, 50);
 setTimeout(applyAll, 200);
 setTimeout(applyAll, 500);
 setTimeout(applyAll, 1000);
+setTimeout(applyAll, 2000);
 
 // Re-run on any Streamlit update
 const observer = new MutationObserver(applyAll);
@@ -694,6 +856,54 @@ observer.observe(document.body, { childList: true, subtree: true });
 
 # Add spacing after nav
 st.markdown("<div style='margin-bottom: 30px;'></div>", unsafe_allow_html=True)
+
+# ULTRA AGGRESSIVE NAVIGATION BUTTON OVERRIDE - LOAD LAST
+st.markdown("""
+<style>
+/* FINAL NUCLEAR OVERRIDE FOR NAVIGATION BUTTONS */
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button,
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="secondary"],
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"],
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child [class*="st-emotion"] button,
+html body div[data-testid="column"] button {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border: none !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-bottom: 3px solid transparent !important;
+    box-shadow: none !important;
+    outline: none !important;
+    border-radius: 0px !important;
+    padding: 12px 24px 9px 24px !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    color: #2d5016 !important;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+    transition: all 0.2s ease !important;
+    transform: translateY(0) !important;
+}
+
+/* Force uppercase on all text inside buttons */
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button *,
+html body div[data-testid="column"] button * {
+    text-transform: uppercase !important;
+    color: #2d5016 !important;
+}
+
+/* Hover - lift up */
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button:hover,
+html body div[data-testid="column"] button:hover {
+    background: transparent !important;
+    transform: translateY(-2px) !important;
+    border-bottom: 3px solid transparent !important;
+}
+</style>
+""", unsafe_allow_html=True)
 
 # ============================================
 # GET CURRENT DIRECTORY

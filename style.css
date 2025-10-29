@@ -1288,33 +1288,40 @@ html body [class*="plot-container"] {
 }
 
 /* ============================================
-   NAVIGATION BUTTONS - MATCH DESIGN
+   NAVIGATION BUTTONS - TRANSPARENT WITH GREEN UNDERLINE
    ============================================ */
 
-/* All nav buttons - FORCE transparent background, NO borders - MATCH KPI STYLING */
+/* All nav buttons - FORCE transparent background, NO borders, UPPERCASE */
 html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button,
-html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button:not([kind="primary"]),
 html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="secondary"],
-html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child .stButton > button:not([kind="primary"]),
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"],
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child .stButton > button,
 html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[data-testid="baseButton-secondary"],
 html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child [data-testid="stButton"] button,
-html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child div[data-testid="column"] button:not([kind="primary"]) {
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child div[data-testid="column"] button,
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child [class*="stButton"] button {
     background: transparent !important;
     background-color: transparent !important;
     background-image: none !important;
     border: none !important;
-    border-width: 0 !important;
-    border-style: none !important;
-    border-color: transparent !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-bottom: 3px solid transparent !important;
+    border-width: 0 0 3px 0 !important;
+    border-style: none none solid none !important;
     box-shadow: none !important;
     outline: none !important;
     border-radius: 0 !important;
+    padding: 12px 24px 9px 24px !important;
     font-size: 12px !important;
     font-weight: 600 !important;
     text-transform: uppercase !important;
     letter-spacing: 0.05em !important;
     color: #2d5016 !important;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    transform: translateY(0) !important;
 }
 
 /* NUCLEAR OPTION - Force on all nested elements INCLUDING UPPERCASE */
@@ -1331,64 +1338,20 @@ html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:fi
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
 }
 
-/* Hover - transparent */
+/* Hover - lift text slightly */
 html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button:hover,
-html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button:not([kind="primary"]):hover {
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="secondary"]:hover,
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"]:hover {
     background: transparent !important;
     background-color: transparent !important;
     background-image: none !important;
     border: none !important;
-    border-width: 0 !important;
-    border-style: none !important;
-    border-color: transparent !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-bottom: 3px solid transparent !important;
     box-shadow: none !important;
     border-radius: 0 !important;
-}
-
-/* Active/Primary button - VIBRANT LIME GREEN PILL */
-html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"],
-html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child div[data-testid="column"] button[kind="primary"] {
-    background: linear-gradient(135deg, #d4ff00 0%, #c8ff00 100%) !important;
-    background-color: #d4ff00 !important;
-    background-image: none !important;
-    border: none !important;
-    border-width: 0 !important;
-    outline: none !important;
-    box-shadow: 0 4px 12px rgba(212, 255, 0, 0.4), 0 2px 6px rgba(0, 0, 0, 0.1) !important;
-    color: #1a1a1a !important;
-    font-size: 13px !important;
-    font-weight: 900 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.08em !important;
-    padding: 14px 28px !important;
-    border-radius: 28px !important;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    text-shadow: none !important;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
-    transform: translateY(0) !important;
-}
-
-/* Force on primary button nested elements INCLUDING UPPERCASE */
-html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"],
-html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"] *,
-html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"] p,
-html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"] div,
-html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"] span {
-    font-size: 13px !important;
-    font-weight: 900 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.08em !important;
-    color: #1a1a1a !important;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
-}
-
-html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"]:hover {
-    background: linear-gradient(135deg, #e0ff1a 0%, #d4ff00 100%) !important;
-    background-color: #e0ff1a !important;
-    background-image: none !important;
-    border: none !important;
-    border-width: 0 !important;
-    box-shadow: 0 6px 16px rgba(212, 255, 0, 0.5), 0 3px 8px rgba(0, 0, 0, 0.12) !important;
     transform: translateY(-2px) !important;
 }
 
