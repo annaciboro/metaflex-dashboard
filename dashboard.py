@@ -473,8 +473,8 @@ with nav_container:
             is_active = st.session_state.current_page == page_name
 
             # Custom CSS for this specific button - GREEN UNDERLINE FOR ACTIVE STATE
-            # Add extra padding-top to first button (Home) to push it below the logo
-            extra_padding = 'padding-top: 40px !important;' if idx == 0 else ''
+            # No extra padding needed - buttons align naturally next to logo
+            extra_padding = ''
             # Active state gets green gradient underline
             if is_active:
                 border_bottom_style = '''
@@ -709,10 +709,10 @@ st.markdown("""
         width: 100%;
         max-width: 100vw;
         margin: 10px 0 0 0;
-        padding: 0;
+        padding: 0 20px 0 0;
     '>
         <div style='
-            width: 100%;
+            width: 95%;
             height: 4px;
             background: linear-gradient(90deg,
                 #d4ff00 0%,
