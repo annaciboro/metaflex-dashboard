@@ -109,32 +109,32 @@ if st.session_state.get("authentication_status") is None:
 
     st.markdown("""
         <style>
-        /* Login page background - Beautiful green gradient */
+        /* Login page background - Super soft grey */
         .main, section.main, [data-testid="stAppViewContainer"] {
-            background: linear-gradient(135deg,
-                #f9fff0 0%,
-                #f3fce8 25%,
-                #e8f5dc 50%,
-                #d8edd3 75%,
-                #cce5ca 100%) !important;
+            background: #f7f8f9 !important;
             position: relative !important;
             min-height: 100vh !important;
         }
 
-        /* Center everything with massive side space */
+        /* Center everything with ULTRA massive side space */
         .main .block-container {
             max-width: 100% !important;
             padding-top: 8rem !important;
-            padding-left: 25% !important;
-            padding-right: 25% !important;
+            padding-left: 35% !important;
+            padding-right: 35% !important;
             margin: 0 auto !important;
             position: relative !important;
             z-index: 1 !important;
         }
 
-        /* Make the form element itself narrow */
+        /* Login box with green gradient background and border */
         section[data-testid="stForm"] {
-            background: rgba(255, 255, 255, 0.95) !important;
+            background: linear-gradient(135deg,
+                #f8fdf5 0%,
+                #f0f9ec 25%,
+                #e5f3df 50%,
+                #d8ecce 75%,
+                #cce5bd 100%) !important;
             backdrop-filter: blur(20px) !important;
             -webkit-backdrop-filter: blur(20px) !important;
             border-radius: 24px !important;
@@ -142,7 +142,9 @@ if st.session_state.get("authentication_status") is None:
             box-shadow:
                 0 8px 32px rgba(10, 75, 75, 0.12),
                 0 4px 16px rgba(0, 0, 0, 0.08) !important;
-            border: 1px solid rgba(255, 255, 255, 0.8) !important;
+            border: 3px solid transparent !important;
+            border-image: linear-gradient(135deg, #4d7a40 0%, #0a4b4b 100%) 1 !important;
+            position: relative !important;
         }
 
         /* Force the form's parent containers to be narrow */
@@ -154,20 +156,22 @@ if st.session_state.get("authentication_status") is None:
         /* Input fields */
         input {
             border-radius: 14px !important;
-            border: 2px solid rgba(10, 75, 75, 0.15) !important;
+            border: 2px solid #4d7a40 !important;
             padding: 18px 24px !important;
             font-size: 15px !important;
             background: #ffffff !important;
         }
 
         input:focus {
-            border-color: #4d7a40 !important;
-            box-shadow: 0 0 0 3px rgba(77, 122, 64, 0.1) !important;
+            border: 2px solid #d4ff00 !important;
+            box-shadow: 0 0 0 4px rgba(212, 255, 0, 0.2) !important;
             outline: none !important;
         }
 
-        /* Login button */
-        button[kind="primary"] {
+        /* Login button - centered with dark green */
+        button[kind="primary"],
+        section[data-testid="stForm"] button[type="submit"],
+        section[data-testid="stForm"] button {
             background: linear-gradient(135deg, #4d7a40 0%, #0a4b4b 100%) !important;
             color: white !important;
             border: none !important;
@@ -176,21 +180,57 @@ if st.session_state.get("authentication_status") is None:
             font-weight: 700 !important;
             font-size: 15px !important;
             width: 100% !important;
+            display: block !important;
+            margin: 0 auto !important;
         }
 
-        button[kind="primary"]:hover {
+        button[kind="primary"]:hover,
+        section[data-testid="stForm"] button:hover {
             background: linear-gradient(135deg, #5a8a4d 0%, #0d5757 100%) !important;
             transform: translateY(-1px) !important;
         }
 
-        /* Labels */
-        label {
-            color: #2d5016 !important;
+        /* Labels - Dark green */
+        label,
+        section[data-testid="stForm"] label,
+        .stTextInput label,
+        div[class*="stText"] label {
+            color: #0a4b4b !important;
             font-weight: 600 !important;
             font-size: 14px !important;
             margin-bottom: 8px !important;
         }
+
+        /* Form title "Login" - Dark green - multiple selectors */
+        section[data-testid="stForm"] h1,
+        section[data-testid="stForm"] h2,
+        .stForm h1,
+        form h1 {
+            color: #0a4b4b !important;
+            font-weight: 700 !important;
+            font-size: 32px !important;
+        }
+
+        /* Copyright footer at bottom */
+        .copyright-footer {
+            position: fixed;
+            bottom: 16px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 11px;
+            color: #6b7878;
+            font-weight: 500;
+            z-index: 999;
+        }
         </style>
+    """, unsafe_allow_html=True)
+
+    # Copyright footer
+    st.markdown("""
+        <div class="copyright-footer">
+            © 2025 SBS
+        </div>
     """, unsafe_allow_html=True)
 
 # Render login form
@@ -219,7 +259,7 @@ logo_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "logo.png")
 # Get the logged-in user's name
 user_name = st.session_state.get("name", "")
 user_email = st.session_state.get("username", "")
-is_tea = user_name.lower() == "tea" or user_name.lower() == "tēa"
+is_tea = "tea" in user_name.lower() or "téa" in user_name.lower()
 is_jess = user_email.lower() == "jess@metaflexglove.com"
 
 # Different navigation based on user type

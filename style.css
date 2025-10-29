@@ -1557,3 +1557,16 @@ html body div[data-testid="column"] button div {
     font-weight: 600 !important;
     font-size: 12px !important;
 }
+
+
+/* ============================================
+   HIDE DEBUG/CSS LABELS IN BOTTOM RIGHT
+   ============================================ */
+/* Hide any CSS debug labels or class names that appear as yellow labels */
+div[class*="vrf"],
+span[class*="vrf"],
+[class*="CSS"][class*="vrf"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+}
