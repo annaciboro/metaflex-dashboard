@@ -228,6 +228,15 @@ if st.session_state.get("authentication_status") is None:
             box-shadow: 0 0 0 4px rgba(212, 255, 0, 0.2) !important;
         }
 
+        /* Center the submit button container */
+        [data-testid="stFormSubmitButton"],
+        div[data-testid="stFormSubmitButton"] {
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            width: 100% !important;
+        }
+
         /* Login button - dark MetaFlex green gradient with white text - ULTRA AGGRESSIVE */
         button[kind="primary"],
         section[data-testid="stForm"] button[type="submit"],
@@ -250,7 +259,9 @@ if st.session_state.get("authentication_status") is None:
             padding: 16px 32px !important;
             font-weight: 700 !important;
             font-size: 15px !important;
-            width: 100% !important;
+            width: auto !important;
+            min-width: 200px !important;
+            max-width: 300px !important;
             display: block !important;
             margin: 0 auto !important;
             transition: all 0.2s ease !important;
@@ -300,6 +311,54 @@ if st.session_state.get("authentication_status") is None:
         [data-testid="stFormSubmitButton"] button:active,
         [data-testid="stFormSubmitButton"] button:active * {
             color: #0a4b4b !important;
+        }
+
+        /* Password field container - needs relative positioning */
+        div[data-baseweb="input"],
+        div[data-baseweb="base-input"] {
+            position: relative !important;
+        }
+
+        /* Password visibility toggle button - make it smaller and styled */
+        button[kind="icon"],
+        button[kind="iconButton"],
+        div[data-baseweb="input"] button,
+        section[data-testid="stForm"] button[kind="icon"],
+        [data-testid="stForm"] button[kind="icon"] {
+            background: transparent !important;
+            background-color: transparent !important;
+            background-image: none !important;
+            border: none !important;
+            border-radius: 8px !important;
+            padding: 6px !important;
+            width: 36px !important;
+            min-width: 36px !important;
+            max-width: 36px !important;
+            height: 36px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            margin: 0 !important;
+            box-shadow: none !important;
+            color: #4d7a40 !important;
+            position: absolute !important;
+            right: 8px !important;
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+            z-index: 10 !important;
+        }
+
+        button[kind="icon"]:hover,
+        button[kind="iconButton"]:hover,
+        section[data-testid="stForm"] button[kind="icon"]:hover {
+            background: rgba(77, 122, 64, 0.1) !important;
+            color: #0a4b4b !important;
+            transform: translateY(-50%) scale(1.1) !important;
+        }
+
+        /* Ensure password input has padding for the button */
+        input[type="password"] {
+            padding-right: 50px !important;
         }
 
         /* Labels - Dark green */
