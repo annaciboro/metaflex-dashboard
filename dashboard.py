@@ -772,6 +772,21 @@ function makeNavSticky() {
 }
 
 function forceButtonStyling() {
+    console.log('🔍 Starting forceButtonStyling()...');
+
+    // Try multiple selectors and log each attempt
+    const selector1 = document.querySelectorAll('[data-testid="stVerticalBlock"] [data-testid="stHorizontalBlock"]:first-child button');
+    console.log('Selector 1 (stVerticalBlock): ' + selector1.length + ' buttons');
+
+    const selector2 = document.querySelectorAll('.st-emotion-cache-5qfegl.e8vg11g2');
+    console.log('Selector 2 (.st-emotion-cache-5qfegl.e8vg11g2): ' + selector2.length + ' buttons');
+
+    const selector3 = document.querySelectorAll('button[kind="secondary"]');
+    console.log('Selector 3 (kind="secondary"): ' + selector3.length + ' buttons');
+
+    const selector4 = document.querySelectorAll('button[data-testid="stBaseButton-secondary"]');
+    console.log('Selector 4 (stBaseButton-secondary): ' + selector4.length + ' buttons');
+
     // Get ALL navigation buttons using multiple selectors
     const navButtons = document.querySelectorAll(
         '[data-testid="stVerticalBlock"] [data-testid="stHorizontalBlock"]:first-child button, ' +
@@ -782,7 +797,7 @@ function forceButtonStyling() {
         'button[data-testid="stBaseButton-secondary"]'
     );
 
-    console.log('Found ' + navButtons.length + ' navigation buttons to style');
+    console.log('📊 TOTAL Found ' + navButtons.length + ' navigation buttons to style');
 
     navButtons.forEach((button) => {
         // Check if button is in navigation (not logout or other buttons)
@@ -841,16 +856,30 @@ function applyAll() {
     forceButtonStyling();
 }
 
-// Run multiple times to catch Streamlit re-renders
+// Run multiple times to catch Streamlit re-renders with MORE aggressive timing
+console.log('Starting button styling timers...');
+setTimeout(applyAll, 10);
 setTimeout(applyAll, 50);
+setTimeout(applyAll, 100);
 setTimeout(applyAll, 200);
 setTimeout(applyAll, 500);
 setTimeout(applyAll, 1000);
 setTimeout(applyAll, 2000);
+setTimeout(applyAll, 3000);
+setTimeout(applyAll, 5000);
 
 // Re-run on any Streamlit update
-const observer = new MutationObserver(applyAll);
+const observer = new MutationObserver(() => {
+    console.log('DOM mutation detected, reapplying styles...');
+    applyAll();
+});
 observer.observe(document.body, { childList: true, subtree: true });
+
+console.log('Button styling observer initialized!');
+
+// Expose applyAll globally for manual debugging
+window.applyMetaFlexStyling = applyAll;
+console.log('✅ Run window.applyMetaFlexStyling() in console to manually apply styling');
 </script>
 """, unsafe_allow_html=True)
 
