@@ -54,101 +54,62 @@ authenticator = stauth.Authenticate(
     config["cookie"]["expiry_days"]
 )
 
-# Custom CSS for high-end MetaFlex SaaS login page
+# MetaFlex styled login page
 if st.session_state.get("authentication_status") is None:
-    # Add huge gradient METAFLEX OPS header with logo as X - LIME GREEN to DARK GREEN
+    # Load logo for the X
     logo_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "logo.png")
-
-    # Convert logo to base64 for embedding
-    import base64
     with open(logo_path, "rb") as f:
         logo_data = base64.b64encode(f.read()).decode()
 
-    # Load favicon
-    favicon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "favicon.png")
-    with open(favicon_path, "rb") as f:
-        favicon_data = base64.b64encode(f.read()).decode()
-
+    # Massive METAFLE[X] OPERATIONS header at top
     st.markdown(f"""
-        <div style="text-align: center; margin-bottom: 56px; margin-top: -20px;">
-            <!-- Favicon above header -->
-            <img src="data:image/png;base64,{favicon_data}" style="
-                width: 80px;
-                height: 80px;
-                margin-bottom: 24px;
-                filter: drop-shadow(0 4px 12px rgba(212, 255, 0, 0.3));
-            " />
-
+        <div style="text-align: center; padding-top: 3rem; margin-bottom: 3rem;">
             <div style="
                 font-size: 64px;
                 font-weight: 900;
                 font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-                margin: 0 0 12px 0;
-                padding: 0;
-                line-height: 1.1;
+                letter-spacing: -0.03em;
                 display: flex;
-                align-items: center;
+                align-items: baseline;
                 justify-content: center;
+                line-height: 1;
             ">
                 <span style="
-                    background: linear-gradient(135deg, #2d5016 0%, #0a4b4b 100%);
+                    background: linear-gradient(135deg, #4d7a40 0%, #0a4b4b 100%);
                     -webkit-background-clip: text;
                     -webkit-text-fill-color: transparent;
                     background-clip: text;
-                    letter-spacing: -0.03em;
                 ">METAFLE</span><img
                     src="data:image/png;base64,{logo_data}"
                     style="
                         height: 52px;
                         width: auto;
-                        margin: 0 4px 0 2px;
+                        margin: 0 6px;
                         display: inline-block;
-                        filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.15));
+                        vertical-align: middle;
+                        transform: translateY(2px);
+                        filter: drop-shadow(0 4px 12px rgba(10, 75, 75, 0.3));
                     "
                 /><span style="
-                    background: linear-gradient(135deg, #2d5016 0%, #0a4b4b 100%);
-                    -webkit-background-clip: text;
-                    -webkit-text-fill-color: transparent;
-                    background-clip: text;
-                    letter-spacing: -0.03em;
-                    margin-left: 18px;
-                ">OPS</span>
+                    margin-left: 8px;
+                    color: #0a4b4b;
+                ">OPERATIONS</span>
             </div>
-            <p style="
+            <div style="
                 font-size: 16px;
-                font-weight: 600;
-                background: linear-gradient(135deg, #d4ff00 0%, #4d7a40 100%);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
-                margin: 0;
-                letter-spacing: 0.5px;
-                font-family: 'Inter', sans-serif;
-            ">Enterprise Operations System</p>
-        </div>
-    """, unsafe_allow_html=True)
-
-    # Add copyright footer
-    st.markdown("""
-        <div style="
-            position: fixed;
-            bottom: 20px;
-            left: 0;
-            right: 0;
-            text-align: center;
-            font-size: 13px;
-            color: #6b7280;
-            font-weight: 500;
-            letter-spacing: 0.3px;
-            z-index: 999;
-        ">
-            2025 SBS Architected
+                font-weight: 800;
+                font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+                color: #4d7a40;
+                letter-spacing: 0.15em;
+                text-transform: uppercase;
+                margin-top: 12px;
+            ">Custom Enterprise System</div>
         </div>
     """, unsafe_allow_html=True)
 
     st.markdown("""
         <style>
-        /* Login page background - Subtle green gradient */
+        /* Login page background - Beautiful green gradient */
         .main, section.main, [data-testid="stAppViewContainer"] {
             background: linear-gradient(135deg,
                 #f9fff0 0%,
@@ -160,28 +121,18 @@ if st.session_state.get("authentication_status") is None:
             min-height: 100vh !important;
         }
 
-        /* Very subtle overlay */
-        .main::before {
-            content: '' !important;
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 100% !important;
-            height: 100% !important;
-            background: radial-gradient(circle at 50% 50%, rgba(212, 255, 0, 0.05) 0%, transparent 60%) !important;
-            pointer-events: none !important;
-            z-index: 0 !important;
-        }
-
-        /* Center the login form */
+        /* Center everything with massive side space */
         .main .block-container {
-            max-width: 520px !important;
-            padding-top: 5rem !important;
+            max-width: 100% !important;
+            padding-top: 8rem !important;
+            padding-left: 25% !important;
+            padding-right: 25% !important;
+            margin: 0 auto !important;
             position: relative !important;
             z-index: 1 !important;
         }
 
-        /* Login container styling - Premium SaaS Glassmorphism */
+        /* Make the form element itself narrow */
         section[data-testid="stForm"] {
             background: rgba(255, 255, 255, 0.95) !important;
             backdrop-filter: blur(20px) !important;
@@ -190,158 +141,60 @@ if st.session_state.get("authentication_status") is None:
             padding: 48px 40px !important;
             box-shadow:
                 0 8px 32px rgba(10, 75, 75, 0.12),
-                0 4px 16px rgba(0, 0, 0, 0.08),
-                inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+                0 4px 16px rgba(0, 0, 0, 0.08) !important;
             border: 1px solid rgba(255, 255, 255, 0.8) !important;
-            background-clip: padding-box !important;
-            position: relative !important;
-            transform: translateY(0) !important;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
         }
 
-        /* Hover effect on login form */
-        section[data-testid="stForm"]:hover {
-            transform: translateY(-2px) !important;
-            box-shadow:
-                0 12px 40px rgba(10, 75, 75, 0.15),
-                0 6px 20px rgba(0, 0, 0, 0.1),
-                inset 0 1px 0 rgba(255, 255, 255, 1) !important;
+        /* Force the form's parent containers to be narrow */
+        section[data-testid="stForm"] > div,
+        section[data-testid="stForm"] form {
+            max-width: 100% !important;
         }
 
-        /* Green gradient border effect - using dark teal from logo */
-        section[data-testid="stForm"]::before {
-            content: '' !important;
-            position: absolute !important;
-            top: 0 !important;
-            left: 0 !important;
-            right: 0 !important;
-            bottom: 0 !important;
-            border-radius: 24px !important;
-            padding: 2px !important;
-            background: linear-gradient(135deg, #d4ff00 0%, #4d7a40 50%, #0a4b4b 100%) !important;
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0) !important;
-            -webkit-mask-composite: xor !important;
-            mask-composite: exclude !important;
-            pointer-events: none !important;
-        }
-
-        /* Lime green accent bar with glow */
-        section[data-testid="stForm"]::after {
-            content: '' !important;
-            position: absolute !important;
-            top: 0 !important;
-            left: 0 !important;
-            bottom: 0 !important;
-            width: 6px !important;
-            background: linear-gradient(180deg, #d4ff00 0%, #b8e600 50%, #4d7a40 100%) !important;
-            border-radius: 24px 0 0 24px !important;
-            pointer-events: none !important;
-            box-shadow: 0 0 16px rgba(212, 255, 0, 0.5), inset 0 0 8px rgba(212, 255, 0, 0.3) !important;
-        }
-
-        /* Hide form title "MetaFlex Login" */
-        section[data-testid="stForm"] h1 {
-            display: none !important;
-        }
-
-        /* Input fields - Enhanced MetaFlex Style with generous padding */
+        /* Input fields */
         input {
             border-radius: 14px !important;
             border: 2px solid rgba(10, 75, 75, 0.15) !important;
-            padding: 20px 40px !important;
+            padding: 18px 24px !important;
             font-size: 15px !important;
-            background: linear-gradient(180deg, #ffffff 0%, #fafffe 100%) !important;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-            font-weight: 500 !important;
-        }
-
-        input:focus {
-            border-color: #d4ff00 !important;
-            box-shadow:
-                0 0 0 4px rgba(212, 255, 0, 0.15),
-                0 4px 12px rgba(10, 75, 75, 0.1) !important;
-            outline: none !important;
-            transform: translateY(-1px) !important;
             background: #ffffff !important;
         }
 
-        /* Login button - LIME to TEAL gradient with glow */
+        input:focus {
+            border-color: #4d7a40 !important;
+            box-shadow: 0 0 0 3px rgba(77, 122, 64, 0.1) !important;
+            outline: none !important;
+        }
+
+        /* Login button */
         button[kind="primary"] {
-            background: linear-gradient(135deg, #d4ff00 0%, #0a4b4b 100%) !important;
-            color: #0a4b4b !important;
+            background: linear-gradient(135deg, #4d7a40 0%, #0a4b4b 100%) !important;
+            color: white !important;
             border: none !important;
             border-radius: 14px !important;
-            padding: 18px 32px !important;
-            font-weight: 800 !important;
+            padding: 16px 32px !important;
+            font-weight: 700 !important;
             font-size: 15px !important;
-            text-transform: uppercase !important;
-            letter-spacing: 1px !important;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-            box-shadow:
-                0 8px 24px rgba(212, 255, 0, 0.3),
-                0 4px 12px rgba(10, 75, 75, 0.2) !important;
             width: 100% !important;
-            position: relative !important;
-            overflow: hidden !important;
-        }
-
-        /* Animated shine effect on button */
-        button[kind="primary"]::before {
-            content: '' !important;
-            position: absolute !important;
-            top: 0 !important;
-            left: -100% !important;
-            width: 100% !important;
-            height: 100% !important;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent) !important;
-            transition: left 0.5s !important;
-        }
-
-        button[kind="primary"]:hover::before {
-            left: 100% !important;
         }
 
         button[kind="primary"]:hover {
-            background: linear-gradient(135deg, #e0ff1a 0%, #0a5555 100%) !important;
-            box-shadow:
-                0 12px 32px rgba(212, 255, 0, 0.4),
-                0 6px 16px rgba(10, 75, 75, 0.3) !important;
-            transform: translateY(-2px) scale(1.01) !important;
+            background: linear-gradient(135deg, #5a8a4d 0%, #0d5757 100%) !important;
+            transform: translateY(-1px) !important;
         }
 
-        button[kind="primary"]:active {
-            transform: translateY(0) scale(0.99) !important;
-        }
-
-        /* Labels - Lime green accent */
+        /* Labels */
         label {
-            background: linear-gradient(135deg, #d4ff00 0%, #2d5016 100%) !important;
-            -webkit-background-clip: text !important;
-            -webkit-text-fill-color: transparent !important;
-            background-clip: text !important;
-            font-weight: 700 !important;
-            font-size: 12px !important;
-            text-transform: uppercase !important;
-            letter-spacing: 1.2px !important;
+            color: #2d5016 !important;
+            font-weight: 600 !important;
+            font-size: 14px !important;
             margin-bottom: 8px !important;
-            display: block !important;
-        }
-
-        /* Hide any default images/emojis */
-        section[data-testid="stForm"] img,
-        .main img[src*="data:image"] {
-            display: none !important;
-        }
-
-        /* Hide info/error icons */
-        .stAlert img {
-            display: none !important;
         }
         </style>
     """, unsafe_allow_html=True)
 
 # Render login form
-authenticator.login(location="main", fields={"Form name": "MetaFlex Login"})
+authenticator.login(location="main", fields={"Form name": "Login"})
 
 # Check authentication status
 if st.session_state.get("authentication_status") is False:
