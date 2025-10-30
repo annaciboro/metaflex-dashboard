@@ -482,7 +482,7 @@ with nav_container:
         st.markdown(f"""
             <div style='display: flex; align-items: center; gap: 0px; margin-top: 8px;'>
                 <span style='
-                    font-size: 0.9rem;
+                    font-size: 1.1rem;
                     font-weight: 700;
                     background: linear-gradient(135deg, #4d7a40 0%, #0a4b4b 100%);
                     -webkit-background-clip: text;
@@ -490,9 +490,9 @@ with nav_container:
                     background-clip: text;
                     letter-spacing: -0.02em;
                 '>MetaFle</span>
-                <img src="data:image/png;base64,{logo_data}" style="width: 14px; height: 14px; margin: 0 0px; display: inline-block; vertical-align: middle;" />
+                <img src="data:image/png;base64,{logo_data}" style="width: 18px; height: 18px; margin: 0 0px; display: inline-block; vertical-align: middle;" />
                 <span style='
-                    font-size: 0.9rem;
+                    font-size: 1.1rem;
                     font-weight: 700;
                     background: linear-gradient(135deg, #4d7a40 0%, #0a4b4b 100%);
                     -webkit-background-clip: text;
@@ -536,37 +536,58 @@ with nav_container:
                 min-width: 300px !important;
             }
 
-            /* Standardize navigation button styling - override Streamlit defaults */
+            /* Standardize navigation button styling - ULTRA AGGRESSIVE override */
             /* Primary button (current page) - teal with white text */
-            div[data-testid="stPopover"] button[kind="primary"] {
+            div[data-testid="stPopover"] button[kind="primary"],
+            div[data-testid="stPopover"] button[type="submit"],
+            .stPopover button[kind="primary"],
+            .stPopover button[type="submit"] {
                 background: linear-gradient(135deg, #0a4b4b 0%, #0d6868 100%) !important;
+                background-color: #0a4b4b !important;
+                background-image: linear-gradient(135deg, #0a4b4b 0%, #0d6868 100%) !important;
                 color: white !important;
                 border: none !important;
+                border-color: transparent !important;
                 font-weight: 600 !important;
                 padding: 12px 20px !important;
                 border-radius: 8px !important;
                 transition: all 0.2s ease !important;
             }
 
-            div[data-testid="stPopover"] button[kind="primary"]:hover {
+            div[data-testid="stPopover"] button[kind="primary"]:hover,
+            div[data-testid="stPopover"] button[type="submit"]:hover,
+            .stPopover button[kind="primary"]:hover,
+            .stPopover button[type="submit"]:hover {
                 background: linear-gradient(135deg, #0d6868 0%, #106a6a 100%) !important;
+                background-color: #0d6868 !important;
+                background-image: linear-gradient(135deg, #0d6868 0%, #106a6a 100%) !important;
                 transform: translateY(-1px) !important;
                 box-shadow: 0 2px 8px rgba(10, 75, 75, 0.2) !important;
             }
 
             /* Secondary button (other pages) - light teal with dark text */
-            div[data-testid="stPopover"] button[kind="secondary"] {
+            div[data-testid="stPopover"] button[kind="secondary"],
+            .stPopover button[kind="secondary"],
+            div[data-testid="stPopover"] button:not([kind="primary"]):not([type="submit"]),
+            .stPopover button:not([kind="primary"]):not([type="submit"]) {
                 background: #f0f9f9 !important;
+                background-color: #f0f9f9 !important;
+                background-image: none !important;
                 color: #0a4b4b !important;
                 border: 1px solid #e0f0f0 !important;
+                border-color: #e0f0f0 !important;
                 font-weight: 500 !important;
                 padding: 12px 20px !important;
                 border-radius: 8px !important;
                 transition: all 0.2s ease !important;
             }
 
-            div[data-testid="stPopover"] button[kind="secondary"]:hover {
+            div[data-testid="stPopover"] button[kind="secondary"]:hover,
+            .stPopover button[kind="secondary"]:hover,
+            div[data-testid="stPopover"] button:not([kind="primary"]):not([type="submit"]):hover,
+            .stPopover button:not([kind="primary"]):not([type="submit"]):hover {
                 background: #e5f5f5 !important;
+                background-color: #e5f5f5 !important;
                 border-color: #0a4b4b !important;
                 transform: translateY(-1px) !important;
             }
