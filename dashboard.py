@@ -466,16 +466,42 @@ else:
     # Regular users only see Overview, My Tasks, Archive, and Logout
     pages_list = ["Overview", "My Tasks", "Archive", "Logout"]
 
+# Load logo for navigation branding
+logo_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "logo.png")
+with open(logo_path, "rb") as f:
+    logo_data = base64.b64encode(f.read()).decode()
+
 nav_container = st.container()
 
 with nav_container:
-    # Simple navigation: Small Logo + Spacer + Large Hamburger Menu
-    cols = st.columns([0.5, 3, 1.5])
+    # Simple navigation: MetaFlex Operations branding + Hamburger Menu
+    cols = st.columns([2, 2.5, 1.5])
 
-    # Logo (tiny - smaller to reduce fuzziness)
+    # MetaFlex Operations - logo as the X
     with cols[0]:
-        if os.path.exists(logo_path):
-            st.image(logo_path, width=14)
+        st.markdown(f"""
+            <div style='display: flex; align-items: center; gap: 0px; margin-top: 8px;'>
+                <span style='
+                    font-size: 0.9rem;
+                    font-weight: 700;
+                    background: linear-gradient(135deg, #4d7a40 0%, #0a4b4b 100%);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                    letter-spacing: -0.02em;
+                '>MetaFle</span>
+                <img src="data:image/png;base64,{logo_data}" style="width: 14px; height: 14px; margin: 0 0px; display: inline-block; vertical-align: middle;" />
+                <span style='
+                    font-size: 0.9rem;
+                    font-weight: 700;
+                    background: linear-gradient(135deg, #4d7a40 0%, #0a4b4b 100%);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                    letter-spacing: -0.02em;
+                '> Operations</span>
+            </div>
+        """, unsafe_allow_html=True)
 
     # Spacer
     with cols[1]:
