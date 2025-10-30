@@ -442,7 +442,7 @@ elif st.session_state.get("authentication_status") is None:
 # INITIALIZE SESSION STATE
 # ============================================
 if 'current_page' not in st.session_state:
-    st.session_state.current_page = "Home"
+    st.session_state.current_page = "Overview"
 
 # ============================================
 # NAVIGATION BAR

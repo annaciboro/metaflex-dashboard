@@ -559,6 +559,13 @@ def render_charts_section(kpis, filtered_df, show_project_chart=True):
             counts = [kpis["open_tasks"], kpis["working_tasks"], kpis["done_tasks"]]
             colors = ['#d17a6f', '#e8b968', '#4d7a40']
 
+            # Calculate percentages
+            total = sum(counts)
+            percentages = [(count / total * 100) if total > 0 else 0 for count in counts]
+
+            # Create text labels with both count and percentage
+            text_labels = [f'{count}<br>({pct:.0f}%)' for count, pct in zip(counts, percentages)]
+
             fig = go.Figure(data=[
                 go.Bar(
                     x=statuses,
@@ -567,17 +574,18 @@ def render_charts_section(kpis, filtered_df, show_project_chart=True):
                         color=colors,
                         line=dict(color='#ffffff', width=2)
                     ),
-                    text=counts,
+                    text=text_labels,
                     textposition='outside',
-                    textfont=dict(size=16, color='#2d5016', family='Inter'),
-                    hovertemplate='<b>%{x}</b><br>Count: %{y}<extra></extra>'
+                    textfont=dict(size=14, color='#2d5016', family='Inter', weight='bold'),
+                    hovertemplate='<b>%{x}</b><br>Count: %{y} (%{customdata:.0f}%)<extra></extra>',
+                    customdata=percentages
                 )
             ])
 
             fig.update_layout(
                 showlegend=False,
-                height=350,
-                margin=dict(l=20, r=20, t=40, b=20),
+                height=380,
+                margin=dict(l=20, r=20, t=50, b=20),
                 plot_bgcolor='rgba(0,0,0,0)',
                 paper_bgcolor='rgba(0,0,0,0)',
                 xaxis=dict(
@@ -589,7 +597,8 @@ def render_charts_section(kpis, filtered_df, show_project_chart=True):
                     showgrid=True,
                     gridcolor='#f3f4f6',
                     title=None,
-                    tickfont=dict(size=12, color='#6b7280')
+                    tickfont=dict(size=12, color='#6b7280'),
+                    range=[0, max(counts) * 1.2]  # Add 20% padding to prevent cutoff
                 )
             )
 
@@ -635,14 +644,33 @@ def render_charts_section(kpis, filtered_df, show_project_chart=True):
                         }
                     })
 
-def render_tasks_table(filtered_df, limit=10):
+def render_tasks_table(filtered_df, limit=10, hide_project_column=False):
     """
     Render tasks table with color-coded progress bars
+
+    Args:
+        filtered_df: DataFrame to display
+        limit: Maximum number of rows to show
+        hide_project_column: If True, don't show the Project column (for project-specific views)
     """
     if not filtered_df.empty:
         # Select and order columns for display using helper function
         display_columns = []
-        for col in ["Transcript ID", "Task", "Person", "Status", "Project", "Due Date", "Progress %"]:
+
+        # Try different variations of Transcript ID column name
+        transcript_col_found = False
+        for transcript_name in ["Transcript ID", "Transcript Number", "Transcript #", "ID", "Transcript"]:
+            if has_column(filtered_df, transcript_name):
+                display_columns.append(get_column(filtered_df, transcript_name))
+                transcript_col_found = True
+                break
+
+        # Add other columns (including Date Assigned, excluding Project if hide_project_column is True)
+        columns_to_add = ["Task", "Person", "Status", "Date Assigned", "Due Date", "Progress %"]
+        if not hide_project_column:
+            columns_to_add.insert(3, "Project")  # Add Project after Status
+
+        for col in columns_to_add:
             if has_column(filtered_df, col):
                 display_columns.append(get_column(filtered_df, col))
 
@@ -687,6 +715,11 @@ def render_tasks_table(filtered_df, limit=10):
                     "Project",
                     width="medium"
                 ),
+                "Date Assigned": st.column_config.TextColumn(
+                    "Date Assigned",
+                    width="small",
+                    help="Date task was assigned"
+                ),
                 "Due Date": st.column_config.TextColumn(
                     "Due Date",
                     width="small"
@@ -730,6 +763,50 @@ def render_tasks_table(filtered_df, limit=10):
                     help="Task completion progress (Red: 0%, Yellow: 1-99%, Green: 100%)",
                     width="medium"
                 )
+
+            # Add MetaFlex green styling to the table
+            st.markdown("""
+                <style>
+                /* MetaFlex green styling for dataframes */
+                div[data-testid="stDataFrame"] {
+                    background: linear-gradient(135deg, #f0f9f4 0%, #f5faf7 100%) !important;
+                    border-radius: 12px !important;
+                    padding: 16px !important;
+                    border: 2px solid #4d7a40 !important;
+                    box-shadow: 0 2px 8px rgba(77, 122, 64, 0.1), 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+                }
+
+                /* Style the table header */
+                div[data-testid="stDataFrame"] thead tr th {
+                    background: linear-gradient(135deg, #4d7a40 0%, #5a8f4a 100%) !important;
+                    color: #ffffff !important;
+                    font-weight: 600 !important;
+                    border-bottom: 2px solid #d4ff00 !important;
+                    padding: 12px 8px !important;
+                }
+
+                /* Alternate row colors with green tint */
+                div[data-testid="stDataFrame"] tbody tr:nth-child(even) {
+                    background-color: rgba(77, 122, 64, 0.05) !important;
+                }
+
+                div[data-testid="stDataFrame"] tbody tr:nth-child(odd) {
+                    background-color: rgba(212, 255, 0, 0.03) !important;
+                }
+
+                /* Hover effect */
+                div[data-testid="stDataFrame"] tbody tr:hover {
+                    background-color: rgba(77, 122, 64, 0.12) !important;
+                    transition: background-color 0.2s ease !important;
+                }
+
+                /* Cell styling */
+                div[data-testid="stDataFrame"] tbody tr td {
+                    border-bottom: 1px solid rgba(77, 122, 64, 0.15) !important;
+                    padding: 10px 8px !important;
+                }
+                </style>
+            """, unsafe_allow_html=True)
 
             # Format the table
             st.dataframe(
@@ -1288,8 +1365,7 @@ def render_executive_dashboard(exec_metrics, df):
                 font-size: 1.15rem;
                 font-weight: 600;
                 color: #1a2424;
-                text-align: left;
-                padding-left: 0;
+                text-align: center;
             '>Tasks by Team Member</h3>
         """, unsafe_allow_html=True)
 
@@ -1500,22 +1576,54 @@ def show_dashboard():
                     # Filter tasks for this project (case-insensitive)
                     project_df = projects_df[projects_df[project_col].str.strip().str.lower() == project_name.lower()].copy()
 
-                    # Premium project heading with subtle divider
+                    # MetaFlex-branded project heading
+                    task_count = len(project_df)
+                    open_count = len(project_df[project_df[status_col].str.lower().str.contains("open|not started", case=False, na=False)])
+
                     st.markdown(f"""
-                        <h3 style='
-                            margin: 0 0 20px 0;
-                            font-size: 1.25rem;
-                            font-weight: 600;
-                            color: #1a2424;
-                            letter-spacing: -0.01em;
-                            padding-bottom: 12px;
-                            border-bottom: 2px solid #f3f4f6;
-                        '>{project_name}</h3>
+                        <div style='
+                            background: linear-gradient(135deg, #f5faf2 0%, #f8fbf8 100%);
+                            border-radius: 12px;
+                            padding: 20px 28px;
+                            margin-bottom: 20px;
+                            border-left: 4px solid #0a4b4b;
+                            border-top: 2px solid rgba(212, 255, 0, 0.2);
+                            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+                        '>
+                            <div style='display: flex; justify-content: space-between; align-items: center;'>
+                                <h3 style='
+                                    margin: 0;
+                                    font-size: 1.35rem;
+                                    font-weight: 700;
+                                    color: #0a4b4b;
+                                    letter-spacing: -0.01em;
+                                '>{project_name}</h3>
+                                <div style='display: flex; gap: 16px;'>
+                                    <span style='
+                                        font-size: 0.85rem;
+                                        font-weight: 600;
+                                        color: #6b7280;
+                                        background: rgba(212, 255, 0, 0.15);
+                                        padding: 4px 12px;
+                                        border-radius: 12px;
+                                    '>{task_count} tasks</span>
+                                    <span style='
+                                        font-size: 0.85rem;
+                                        font-weight: 600;
+                                        color: #d17a6f;
+                                        background: rgba(209, 122, 111, 0.15);
+                                        padding: 4px 12px;
+                                        border-radius: 12px;
+                                    '>{open_count} open</span>
+                                </div>
+                            </div>
+                        </div>
                     """, unsafe_allow_html=True)
 
                     if not project_df.empty:
                         # Render STATIC read-only table for display
-                        render_tasks_table(project_df, limit=len(project_df))
+                        # Hide Project column since we're already showing project-specific tables
+                        render_tasks_table(project_df, limit=len(project_df), hide_project_column=True)
                     else:
                         st.caption(f"No {project_name} tasks found.")
 
