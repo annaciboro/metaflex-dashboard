@@ -910,13 +910,13 @@ def render_editable_task_grid(df, current_user, is_tea=False, key_prefix="", sho
             project_options.extend(unique_projects)
 
         with col1:
-            project_filter = st.selectbox("🔍 Filter by Project", options=project_options, key=f"{key_prefix}_project_filter")
+            project_filter = st.selectbox("Filter by Project", options=project_options, key=f"{key_prefix}_project_filter")
 
         with col2:
-            search_term = st.text_input("🔎 Search Tasks", placeholder="Search by keywords...", key=f"{key_prefix}_search_tasks")
+            search_term = st.text_input("Search Tasks", placeholder="Search by keywords...", key=f"{key_prefix}_search_tasks")
 
         with col3:
-            person_filter = st.selectbox("🔍 Filter by Person", options=person_options, key=f"{key_prefix}_person_filter")
+            person_filter = st.selectbox("Filter by Person", options=person_options, key=f"{key_prefix}_person_filter")
 
         # Apply filters
         if project_filter != "All Projects" and has_column(filtered_df, "Project"):
