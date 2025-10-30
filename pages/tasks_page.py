@@ -94,7 +94,16 @@ def show_tasks():
 
             if donut_fig:
                 st.plotly_chart(donut_fig, use_container_width=True, config={
-                    'displayModeBar': False
+                    'displayModeBar': True,
+                    'displaylogo': False,
+                    'modeBarButtonsToAdd': ['zoom2d', 'pan2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d', 'resetScale2d'],
+                    'toImageButtonOptions': {
+                        'format': 'png',
+                        'filename': 'task_completion_status',
+                        'height': 500,
+                        'width': 700,
+                        'scale': 2
+                    }
                 })
 
         # Add Task Age Analysis chart for all users
@@ -104,7 +113,18 @@ def show_tasks():
             st.markdown("<h3 style='text-align: left; margin: 0 0 20px 0; color: #0a4b4b; font-weight: 600; font-size: 1.1rem; font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif;'>Task Age Analysis</h3>", unsafe_allow_html=True)
             age_fig = create_task_age_analysis(personal_df)
             if age_fig:
-                st.plotly_chart(age_fig, use_container_width=True)
+                st.plotly_chart(age_fig, use_container_width=True, config={
+                    'displayModeBar': True,
+                    'displaylogo': False,
+                    'modeBarButtonsToAdd': ['zoom2d', 'pan2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d', 'resetScale2d'],
+                    'toImageButtonOptions': {
+                        'format': 'png',
+                        'filename': 'task_age_analysis',
+                        'height': 500,
+                        'width': 700,
+                        'scale': 2
+                    }
+                })
 
         st.markdown("<br>", unsafe_allow_html=True)
     else:
@@ -167,7 +187,18 @@ def show_tasks():
         st.markdown("<h4 style='color: #0a4b4b; margin-bottom: 16px;'>Task Age Analysis</h4>", unsafe_allow_html=True)
         age_fig = create_task_age_analysis(personal_df)
         if age_fig:
-            st.plotly_chart(age_fig, use_container_width=True)
+            st.plotly_chart(age_fig, use_container_width=True, config={
+                'displayModeBar': True,
+                'displaylogo': False,
+                'modeBarButtonsToAdd': ['zoom2d', 'pan2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d', 'resetScale2d'],
+                'toImageButtonOptions': {
+                    'format': 'png',
+                    'filename': 'task_age_analysis',
+                    'height': 500,
+                    'width': 700,
+                    'scale': 2
+                }
+            })
 
         st.markdown("<br>", unsafe_allow_html=True)
 
