@@ -38,7 +38,7 @@ def render_page_header(title, subtitle=None):
     st.markdown(f"""
         <h1 style='
             margin: 0 0 {('8px' if subtitle else '24px')} 0;
-            font-size: 1.75rem;
+            font-size: 1.5rem;
             font-weight: 700;
             background: linear-gradient(135deg, #0a4b4b 0%, #0d6868 50%, #7a9900 100%);
             -webkit-background-clip: text;
@@ -1348,7 +1348,7 @@ def render_executive_dashboard(exec_metrics, df):
     st.markdown("""
         <h2 style='
             margin: 0 0 32px 0;
-            font-size: 1.75rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: #0a4b4b;
             letter-spacing: -0.01em;
@@ -1666,7 +1666,7 @@ def show_dashboard():
             '>
                 <h2 style='
                     margin: 0 0 8px 0;
-                    font-size: 1.75rem;
+                    font-size: 1.5rem;
                     font-weight: 700;
                     color: #2d3748;
                     letter-spacing: -0.02em;

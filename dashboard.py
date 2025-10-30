@@ -480,9 +480,9 @@ with nav_container:
     # MetaFlex Operations - logo as the X
     with cols[0]:
         st.markdown(f"""
-            <div style='display: flex; align-items: center; gap: 0px; margin-top: 8px;'>
+            <div style='display: flex; align-items: center; gap: 0px; margin-top: 6px;'>
                 <span style='
-                    font-size: 1.1rem;
+                    font-size: 1.35rem;
                     font-weight: 700;
                     background: linear-gradient(135deg, #4d7a40 0%, #0a4b4b 100%);
                     -webkit-background-clip: text;
@@ -490,9 +490,9 @@ with nav_container:
                     background-clip: text;
                     letter-spacing: -0.02em;
                 '>MetaFle</span>
-                <img src="data:image/png;base64,{logo_data}" style="width: 18px; height: 18px; margin: 0 0px; display: inline-block; vertical-align: middle;" />
+                <img src="data:image/png;base64,{logo_data}" style="width: 22px; height: 22px; margin: 0 0px; display: inline-block; vertical-align: middle;" />
                 <span style='
-                    font-size: 1.1rem;
+                    font-size: 1.35rem;
                     font-weight: 700;
                     background: linear-gradient(135deg, #4d7a40 0%, #0a4b4b 100%);
                     -webkit-background-clip: text;
@@ -512,11 +512,11 @@ with nav_container:
         # Custom styling for large prominent hamburger button
         st.markdown("""
             <style>
-            /* Make hamburger button larger and more prominent */
+            /* Hamburger button styling */
             button[data-testid*="baseButton-header"] {
-                font-size: 1.2rem !important;
+                font-size: 0.95rem !important;
                 font-weight: 600 !important;
-                padding: 12px 24px !important;
+                padding: 8px 16px !important;
                 background: linear-gradient(135deg, #f0f9f9 0%, #ffffff 100%) !important;
                 border: 2px solid #0a4b4b !important;
                 color: #0a4b4b !important;
