@@ -692,6 +692,8 @@ with nav_container:
                 display: flex !important;
                 align-items: center !important;
                 justify-content: center !important;
+                overflow: hidden !important;
+                flex-shrink: 0 !important;
             }}
 
             div[data-testid="stPopover"] > button:focus {{
@@ -771,7 +773,7 @@ with nav_container:
         """, unsafe_allow_html=True)
 
         # Hamburger menu popover
-        with st.popover("☰", use_container_width=True):
+        with st.popover("☰"):
                 for page_name in pages_list:
                     if page_name == "Logout":
                         st.markdown("---")  # Separator before logout
