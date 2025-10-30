@@ -19,11 +19,17 @@ def show_archive():
     is_tea = user_name.lower() == "tea" or user_name.lower() == "tēa" or "tea" in user_name.lower()
     is_jess = "jess" in user_name.lower()
 
-    # Standardized header
-    if is_tea:
-        render_page_header("Archive", "All completed tasks across the organization")
-    else:
-        render_page_header(f"{first_name}'s Archive", "Your completed tasks")
+    # Page header matching MY TASKS / ALL TASKS style
+    st.markdown("""
+        <h2 style='
+            margin: 0 0 32px 0;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #0a4b4b;
+            letter-spacing: -0.01em;
+            text-align: left;
+        '>ARCHIVE</h2>
+    """, unsafe_allow_html=True)
 
     # Load data from Google Sheet
     with st.spinner("Loading archived tasks..."):
