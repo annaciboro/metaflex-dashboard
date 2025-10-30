@@ -475,7 +475,7 @@ with nav_container:
     # Logo (tiny - smaller to reduce fuzziness)
     with cols[0]:
         if os.path.exists(logo_path):
-            st.image(logo_path, width=18)
+            st.image(logo_path, width=14)
 
     # Spacer
     with cols[1]:
@@ -508,6 +508,41 @@ with nav_container:
             /* Make popover larger */
             div[data-testid="stPopover"] > div {
                 min-width: 300px !important;
+            }
+
+            /* Standardize navigation button styling - override Streamlit defaults */
+            /* Primary button (current page) - teal with white text */
+            div[data-testid="stPopover"] button[kind="primary"] {
+                background: linear-gradient(135deg, #0a4b4b 0%, #0d6868 100%) !important;
+                color: white !important;
+                border: none !important;
+                font-weight: 600 !important;
+                padding: 12px 20px !important;
+                border-radius: 8px !important;
+                transition: all 0.2s ease !important;
+            }
+
+            div[data-testid="stPopover"] button[kind="primary"]:hover {
+                background: linear-gradient(135deg, #0d6868 0%, #106a6a 100%) !important;
+                transform: translateY(-1px) !important;
+                box-shadow: 0 2px 8px rgba(10, 75, 75, 0.2) !important;
+            }
+
+            /* Secondary button (other pages) - light teal with dark text */
+            div[data-testid="stPopover"] button[kind="secondary"] {
+                background: #f0f9f9 !important;
+                color: #0a4b4b !important;
+                border: 1px solid #e0f0f0 !important;
+                font-weight: 500 !important;
+                padding: 12px 20px !important;
+                border-radius: 8px !important;
+                transition: all 0.2s ease !important;
+            }
+
+            div[data-testid="stPopover"] button[kind="secondary"]:hover {
+                background: #e5f5f5 !important;
+                border-color: #0a4b4b !important;
+                transform: translateY(-1px) !important;
             }
             </style>
         """, unsafe_allow_html=True)
