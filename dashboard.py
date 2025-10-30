@@ -675,14 +675,20 @@ with nav_container:
                 transform: translateY(-2px) !important;
             }}
 
-            /* Also target the div container */
+            /* Also target the div container - force square shape */
+            div[data-testid="stPopover"],
             div[data-testid="stPopover"] > button {{
                 outline: none !important;
                 border: 2px solid #0a4b4b !important;
                 border-radius: 6px !important;
                 width: 44px !important;
+                min-width: 44px !important;
+                max-width: 44px !important;
                 height: 44px !important;
-                padding: 8px 8px !important;
+                min-height: 44px !important;
+                max-height: 44px !important;
+                padding: 0 !important;
+                margin: 0 !important;
                 display: flex !important;
                 align-items: center !important;
                 justify-content: center !important;
