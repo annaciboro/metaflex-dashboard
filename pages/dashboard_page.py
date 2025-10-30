@@ -1627,6 +1627,33 @@ def show_dashboard():
 
         # Add archive filter with elegant styling
         show_archived_projects = st.checkbox("Include archived", value=False, key="show_archived_projects")
+
+        # Style checkbox with green neon color
+        st.markdown("""
+            <style>
+            /* Target the checkbox for show_archived_projects */
+            div[data-testid="stCheckbox"] label {
+                color: #2d3748 !important;
+            }
+
+            /* Style the checkbox itself - green neon when checked */
+            div[data-testid="stCheckbox"] input[type="checkbox"]:checked + div {
+                background-color: #7a9900 !important;
+                border-color: #7a9900 !important;
+            }
+
+            /* Add glow effect when checked */
+            div[data-testid="stCheckbox"] input[type="checkbox"]:checked + div {
+                box-shadow: 0 0 8px rgba(122, 153, 0, 0.6) !important;
+            }
+
+            /* Style the checkmark icon */
+            div[data-testid="stCheckbox"] input[type="checkbox"]:checked + div svg {
+                fill: #ffffff !important;
+            }
+            </style>
+        """, unsafe_allow_html=True)
+
         st.markdown("<div style='margin-bottom: 32px;'></div>", unsafe_allow_html=True)
 
         # Apply archive filter to dataframe
