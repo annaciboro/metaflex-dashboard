@@ -1233,6 +1233,241 @@ def calculate_executive_metrics(df):
     }
 
 
+def render_project_editable_grid(df, full_df, current_user, is_tea, project_name, key_prefix):
+    """
+    Render editable AgGrid for project-specific task management
+
+    Args:
+        df: Filtered DataFrame for this specific project
+        full_df: Full dataframe (for merging changes back)
+        current_user: Current logged-in user's name
+        is_tea: Whether the current user is Téa Phillips
+        project_name: Name of the current project
+        key_prefix: Unique prefix for widget keys to avoid duplicates
+    """
+    if df.empty:
+        st.info(f"No tasks found for {project_name}")
+        return full_df
+
+    # Add MetaFlex green styling for AgGrid
+    st.markdown("""
+        <style>
+        /* MetaFlex green styling for AgGrid */
+        .ag-theme-streamlit .ag-header {
+            background: linear-gradient(135deg, #4d7a40 0%, #5a8f4a 100%) !important;
+        }
+
+        .ag-theme-streamlit .ag-header-cell {
+            background: transparent !important;
+            color: #ffffff !important;
+            font-weight: 600 !important;
+            border-bottom: 2px solid #d4ff00 !important;
+        }
+
+        .ag-theme-streamlit .ag-row {
+            border-bottom: 1px solid rgba(77, 122, 64, 0.15) !important;
+        }
+
+        .ag-theme-streamlit .ag-row-even {
+            background-color: rgba(77, 122, 64, 0.05) !important;
+        }
+
+        .ag-theme-streamlit .ag-row-odd {
+            background-color: rgba(212, 255, 0, 0.03) !important;
+        }
+
+        .ag-theme-streamlit .ag-row-hover {
+            background-color: rgba(77, 122, 64, 0.12) !important;
+        }
+
+        .ag-theme-streamlit {
+            background: linear-gradient(135deg, #f0f9f4 0%, #f5faf7 100%) !important;
+            border-radius: 12px !important;
+            border: 2px solid #4d7a40 !important;
+            box-shadow: 0 2px 8px rgba(77, 122, 64, 0.1), 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+        }
+
+        /* Highlight Progress Status column */
+        .ag-header-cell.progress-status-header {
+            background-color: #fbbf24 !important;
+            font-weight: bold !important;
+        }
+        .ag-cell[col-id="Progress Status"] {
+            background-color: rgba(251, 191, 36, 0.1) !important;
+            font-weight: 600 !important;
+            cursor: pointer !important;
+        }
+        .ag-cell[col-id="Progress Status"]:hover {
+            background-color: rgba(251, 191, 36, 0.2) !important;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+    # Create a display copy with clean column names
+    clean_data = {}
+    clean_column_mapping = {}
+
+    for col in df.columns:
+        # Remove everything from __ onwards
+        clean_col = re.sub(r'__+.*$', '', str(col))
+        clean_data[clean_col] = df[col].values
+        clean_column_mapping[clean_col] = col
+
+    display_df = pd.DataFrame(clean_data)
+
+    # Transform Progress % to Progress Status
+    if "Progress %" in display_df.columns:
+        def get_progress_status(value):
+            try:
+                val_str = str(value).strip().replace('%', '')
+                if val_str == '' or val_str.lower() == 'nan':
+                    val = 0
+                else:
+                    val = float(val_str)
+            except:
+                val = 0
+
+            if val == 0:
+                return "🟠 Not Started"
+            elif val < 100:
+                return "🟡 In Progress"
+            else:
+                return "🟢 Complete"
+
+        display_df["Progress Status"] = display_df["Progress %"].apply(get_progress_status)
+
+        # Reorder columns to put Progress Status right after Status
+        cols = display_df.columns.tolist()
+        if "Progress Status" in cols and "Status" in cols:
+            cols.remove("Progress Status")
+            status_idx = cols.index("Status")
+            cols.insert(status_idx + 1, "Progress Status")
+            display_df = display_df[cols]
+
+    # Add unique row IDs for AG-Grid tracking
+    display_df = display_df.reset_index(drop=False)
+    display_df = display_df.rename(columns={'index': '_row_id'})
+
+    # Configure AgGrid
+    gb = GridOptionsBuilder.from_dataframe(display_df)
+    gb.configure_pagination(enabled=False)
+    gb.configure_default_column(editable=True, filter=False, sortable=True, resizable=True)
+
+    # Hide internal columns
+    gb.configure_column("_row_id", hide=True)
+    if "Status" in display_df.columns:
+        gb.configure_column("Status", hide=True)
+    if "Project" in display_df.columns:
+        gb.configure_column("Project", hide=True)  # Already shown in project header
+
+    # Configure editable columns
+    if "Task" in display_df.columns:
+        gb.configure_column("Task", editable=True, wrapText=True, autoHeight=True)
+    if "Due Date" in display_df.columns:
+        gb.configure_column("Due Date", editable=True, width=120)
+    if "Date Assigned" in display_df.columns:
+        gb.configure_column("Date Assigned", editable=True, width=120)
+    if "Person" in display_df.columns:
+        gb.configure_column("Person", editable=is_tea, width=150)  # Only Tea can reassign
+    if "Transcript ID" in display_df.columns:
+        gb.configure_column("Transcript ID", editable=False, width=100)
+
+    # Progress Status - editable dropdown
+    if "Progress Status" in display_df.columns:
+        gb.configure_column(
+            "Progress Status",
+            editable=True,
+            cellEditor='agSelectCellEditor',
+            cellEditorParams={'values': ['🟠 Not Started', '🟡 In Progress', '🟢 Complete']},
+            width=180,
+            headerClass='progress-status-header'
+        )
+
+    if "Progress %" in display_df.columns:
+        gb.configure_column("Progress %", hide=True)
+
+    gb.configure_grid_options(getRowNodeId='_row_id')
+    grid_options = gb.build()
+
+    # Render AgGrid
+    response = AgGrid(
+        display_df,
+        gridOptions=grid_options,
+        theme="streamlit",
+        update_mode=GridUpdateMode.MODEL_CHANGED,
+        allow_unsafe_jscode=False,
+        fit_columns_on_grid_load=True,
+        height=min(600, max(300, len(display_df) * 40 + 100)),  # Dynamic height
+    )
+
+    edited_df = pd.DataFrame(response["data"])
+
+    # Remove internal row ID
+    if "_row_id" in edited_df.columns:
+        edited_df = edited_df.drop(columns=["_row_id"])
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    # Check for changes
+    display_df_compare = display_df.drop(columns=["_row_id"]) if "_row_id" in display_df.columns else display_df
+    has_changes = not edited_df.equals(display_df_compare)
+
+    if has_changes:
+        st.info("You have unsaved changes in the grid above.")
+
+    # Send to Google Sheets button
+    if st.button(f"Send to Google Sheets", type="primary", disabled=not has_changes, use_container_width=True, key=f"{key_prefix}_save_button"):
+        with st.spinner("Saving changes to Google Sheets..."):
+            # Convert Progress Status back to Progress %
+            edited_df_to_save = edited_df.copy()
+            completed_tasks_count = 0
+
+            if "Progress Status" in edited_df_to_save.columns:
+                def status_to_percentage(status):
+                    if "🟠" in str(status) or "Not Started" in str(status):
+                        return "0%"
+                    elif "🟡" in str(status) or "In Progress" in str(status):
+                        return "50%"
+                    elif "🟢" in str(status) or "Complete" in str(status):
+                        return "100%"
+                    return "0%"
+
+                if "Progress %" in edited_df_to_save.columns:
+                    edited_df_to_save["Progress %"] = edited_df_to_save["Progress Status"].apply(status_to_percentage)
+
+                # Auto-archive completed tasks
+                if "Status" in edited_df_to_save.columns:
+                    completed_mask = edited_df_to_save["Progress Status"].str.contains("🟢|Complete", case=False, na=False)
+                    completed_tasks_count = completed_mask.sum()
+                    edited_df_to_save.loc[completed_mask, "Status"] = "Done"
+
+                edited_df_to_save = edited_df_to_save.drop(columns=["Progress Status"])
+
+            # Restore column suffixes
+            edited_df_with_suffix = edited_df_to_save.copy()
+            suffix_cols = []
+            for col in edited_df_to_save.columns:
+                if col in clean_column_mapping:
+                    suffix_cols.append(clean_column_mapping[col])
+                else:
+                    suffix_cols.append(col)
+            edited_df_with_suffix.columns = suffix_cols
+
+            success = update_google_sheet(edited_df_with_suffix)
+
+            if success:
+                if completed_tasks_count > 0:
+                    st.success(f"✅ Changes saved! {completed_tasks_count} completed task(s) automatically archived.")
+                else:
+                    st.success("✅ Changes saved successfully to Google Sheets!")
+                st.cache_data.clear()
+                st.balloons()
+                st.rerun()
+            else:
+                st.error("Failed to save changes. Please try again.")
+
+    return full_df
+
 def render_executive_dashboard(exec_metrics, df):
     """
     Render executive dashboard for Tea with enhanced metrics
@@ -1621,9 +1856,22 @@ def show_dashboard():
                     """, unsafe_allow_html=True)
 
                     if not project_df.empty:
-                        # Render STATIC read-only table for display
-                        # Hide Project column since we're already showing project-specific tables
-                        render_tasks_table(project_df, limit=len(project_df), hide_project_column=True)
+                        # Render EDITABLE grid with Google Sheets sync
+                        # Filter the full dataframe to show only this project's tasks for editing
+                        project_filtered_df = df[df[project_col].str.strip().str.lower() == project_name.lower()].copy()
+
+                        # Use unique key_prefix for each project to avoid widget conflicts
+                        updated_df = render_project_editable_grid(
+                            df=project_filtered_df,
+                            full_df=df,
+                            current_user=user_name,
+                            is_tea=is_tea,
+                            project_name=project_name,
+                            key_prefix=f"project_{idx}_{project_name.lower().replace(' ', '_')}"
+                        )
+                        # Update the main dataframe if changes were made
+                        if updated_df is not None:
+                            df = updated_df
                     else:
                         st.caption(f"No {project_name} tasks found.")
 
