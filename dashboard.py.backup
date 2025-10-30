@@ -533,6 +533,269 @@ with nav_container:
                         st.session_state.current_page = page_name
                         st.rerun()
 
+# End of navigation - delete old CSS code below
+            # No extra padding needed - buttons align naturally next to logo
+            extra_padding = ''
+            # Active state gets green gradient underline
+            if is_active:
+                border_bottom_style = '''
+                    border-bottom: 3px solid #d4ff00 !important;
+                    border-image: linear-gradient(90deg, #d4ff00 0%, #c8ff00 100%) 1 !important;
+                    border-image-slice: 1 !important;
+                '''
+            else:
+                border_bottom_style = 'border-bottom: 3px solid transparent !important;'
+
+            st.markdown(f"""
+                <style>
+                /* ULTRA SPECIFIC Target for column {idx + 4} - Override emotion cache */
+                html body div[data-testid="column"]:nth-child({idx + 4}) button.st-emotion-cache-5qfegl.e8vg11g2,
+                html body div[data-testid="column"]:nth-child({idx + 4}) button.st-emotion-cache-5qfegl,
+                html body div[data-testid="column"]:nth-child({idx + 4}) button.e8vg11g2,
+                html body div[data-testid="column"]:nth-child({idx + 4}) button[kind="secondary"],
+                html body div[data-testid="column"]:nth-child({idx + 4}) button[data-testid="stBaseButton-secondary"],
+                html body div[data-testid="column"]:nth-child({idx + 4}) .stButton > button,
+                html body div[data-testid="column"]:nth-child({idx + 4}) button {{
+                    background: transparent !important;
+                    background-color: transparent !important;
+                    background-image: none !important;
+                    color: #2d5016 !important;
+                    border: none !important;
+                    border-top: none !important;
+                    border-left: none !important;
+                    border-right: none !important;
+                    {border_bottom_style}
+                    box-shadow: none !important;
+                    outline: none !important;
+                    padding: 12px 24px !important;
+                    padding-bottom: 9px !important;
+                    {extra_padding}
+                    font-size: 12px !important;
+                    font-weight: 600 !important;
+                    text-transform: uppercase !important;
+                    letter-spacing: 0.05em !important;
+                    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+                    width: 100% !important;
+                    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                    border-radius: 0px !important;
+                    transform: translateY(0) !important;
+                    min-height: auto !important;
+                    line-height: 1.6 !important;
+                }}
+
+                /* Hover state */
+                html body div[data-testid="column"]:nth-child({idx + 4}) button:hover,
+                html body div[data-testid="column"]:nth-child({idx + 4}) button.st-emotion-cache-5qfegl:hover,
+                html body div[data-testid="column"]:nth-child({idx + 4}) button[kind="secondary"]:hover {{
+                    background: transparent !important;
+                    background-color: transparent !important;
+                    background-image: none !important;
+                    color: #2d5016 !important;
+                    border: none !important;
+                    border-top: none !important;
+                    border-left: none !important;
+                    border-right: none !important;
+                    {border_bottom_style}
+                    box-shadow: none !important;
+                    transform: translateY(-2px) !important;
+                    border-radius: 0px !important;
+                }}
+
+                /* Active/click state */
+                html body div[data-testid="column"]:nth-child({idx + 4}) button:active,
+                html body div[data-testid="column"]:nth-child({idx + 4}) button.st-emotion-cache-5qfegl:active {{
+                    background: transparent !important;
+                    background-color: transparent !important;
+                    color: #2d5016 !important;
+                    transform: translateY(0) !important;
+                }}
+
+                /* Force text color on nested elements - TARGET EXACT STREAMLIT CLASSES */
+                html body div[data-testid="column"]:nth-child({idx + 4}) button.st-emotion-cache-5qfegl.e8vg11g2 .st-emotion-cache-12j140x.et2rgd20,
+                html body div[data-testid="column"]:nth-child({idx + 4}) button.st-emotion-cache-5qfegl.e8vg11g2 .st-emotion-cache-12j140x.et2rgd20 p,
+                html body div[data-testid="column"]:nth-child({idx + 4}) button.st-emotion-cache-5qfegl .st-emotion-cache-12j140x,
+                html body div[data-testid="column"]:nth-child({idx + 4}) .st-emotion-cache-12j140x.et2rgd20,
+                html body div[data-testid="column"]:nth-child({idx + 4}) .st-emotion-cache-12j140x.et2rgd20 p,
+                html body div[data-testid="column"]:nth-child({idx + 4}) button *,
+                html body div[data-testid="column"]:nth-child({idx + 4}) button p,
+                html body div[data-testid="column"]:nth-child({idx + 4}) button div,
+                html body div[data-testid="column"]:nth-child({idx + 4}) button.st-emotion-cache-5qfegl p,
+                html body div[data-testid="column"]:nth-child({idx + 4}) button .st-emotion-cache-12j140x,
+                html body div[data-testid="column"]:nth-child({idx + 4}) button .st-emotion-cache-12j140x p,
+                html body div[data-testid="column"]:nth-child({idx + 4}) button[data-testid="stBaseButton-secondary"] p,
+                html body div[data-testid="column"]:nth-child({idx + 4}) div[data-testid="stMarkdownContainer"] p {{
+                    color: #2d5016 !important;
+                    text-transform: uppercase !important;
+                    font-size: 12px !important;
+                    font-weight: 600 !important;
+                    font-variant-caps: normal !important;
+                    letter-spacing: 0.05em !important;
+                }}
+                </style>
+            """, unsafe_allow_html=True)
+
+            if st.button(page_name, key=f"nav_{page_name}", use_container_width=True):
+                st.session_state.current_page = page_name
+                st.rerun()
+
+    # Spacer
+    with cols[len(nav_items_without_logout) + 2]:
+        st.write("")
+
+    # Separator before logout
+    with cols[len(nav_items_without_logout) + 3]:
+        st.markdown("""
+            <div style="height: 56px; display: flex; align-items: center; justify-content: center;">
+                <div style="
+                    width: 1px;
+                    height: 40px;
+                    background: linear-gradient(180deg,
+                        rgba(212, 255, 0, 0.4) 0%,
+                        rgba(10, 75, 75, 0.4) 100%);
+                "></div>
+            </div>
+        """, unsafe_allow_html=True)
+
+    # Logout button - VIBRANT CORAL
+    with cols[len(nav_items_without_logout) + 4]:
+        st.markdown(f"""
+            <style>
+            /* Force column and all parent containers to not wrap */
+            div[data-testid="column"]:last-child,
+            div[data-testid="column"]:last-child > div,
+            div[data-testid="column"]:last-child > div > div,
+            div[data-testid="column"]:last-child .stButton {{
+                min-width: 120px !important;
+                flex-shrink: 0 !important;
+                width: auto !important;
+            }}
+
+            div[data-testid="column"]:last-child button {{
+                background: transparent !important;
+                color: #6b7280 !important;
+                border: none !important;
+                box-shadow: none !important;
+                padding: 8px 16px !important;
+                font-size: 13px !important;
+                font-weight: 600 !important;
+                text-transform: none !important;
+                letter-spacing: normal !important;
+                font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+                width: auto !important;
+                max-width: 120px !important;
+                min-width: 80px !important;
+                white-space: nowrap !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                flex-direction: row !important;
+                transition: all 0.2s ease !important;
+                border-radius: 8px !important;
+            }}
+
+            /* ULTRA AGGRESSIVE - Force text to stay on one line */
+            div[data-testid="column"]:last-child button *,
+            div[data-testid="column"]:last-child button p,
+            div[data-testid="column"]:last-child button div,
+            div[data-testid="column"]:last-child button span,
+            div[data-testid="column"]:last-child button [data-testid="stMarkdownContainer"] {{
+                white-space: nowrap !important;
+                display: inline !important;
+                flex-direction: row !important;
+                writing-mode: horizontal-tb !important;
+                text-orientation: mixed !important;
+            }}
+
+            div[data-testid="column"]:last-child button:hover {{
+                color: #b96860 !important;
+                background: rgba(209, 122, 111, 0.15) !important;
+                border: none !important;
+                transform: translateY(-1px) !important;
+            }}
+            </style>
+        """, unsafe_allow_html=True)
+
+        if st.button("Logout", key="nav_logout"):
+            # ULTIMATE LOGOUT FIX: Use st.components.html for immediate execution
+            # This executes BEFORE Streamlit can interfere
+
+            # Clear authentication-related session state only
+            auth_keys = ['authentication_status', 'name', 'username', 'logout', 'login']
+            for key in auth_keys:
+                if key in st.session_state:
+                    try:
+                        del st.session_state[key]
+                    except:
+                        pass
+
+            # Force authentication status to None explicitly
+            st.session_state.authentication_status = None
+            st.session_state.name = None
+            st.session_state.username = None
+
+            # Call authenticator logout
+            try:
+                authenticator.logout(location='unrendered', key='unique_logout_key')
+            except:
+                pass
+
+            # Use components.html for IMMEDIATE JavaScript execution
+            components.html(
+                """
+                <script>
+                // This executes immediately in an iframe, then redirects parent
+                (function() {
+                    // Clear all cookies in parent window
+                    var cookies = document.cookie.split(";");
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = cookies[i];
+                        var eqPos = cookie.indexOf("=");
+                        var name = eqPos > -1 ? cookie.substr(0, eqPos).trim() : cookie.trim();
+                        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+                        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=" + window.location.hostname;
+                        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=." + window.location.hostname;
+                    }
+
+                    // Clear storage
+                    try { window.localStorage.clear(); } catch(e) {}
+                    try { window.sessionStorage.clear(); } catch(e) {}
+
+                    // Try to access parent window and clear cookies there too
+                    try {
+                        var parentCookies = window.parent.document.cookie.split(";");
+                        for (var i = 0; i < parentCookies.length; i++) {
+                            var cookie = parentCookies[i];
+                            var eqPos = cookie.indexOf("=");
+                            var name = eqPos > -1 ? cookie.substr(0, eqPos).trim() : cookie.trim();
+                            window.parent.document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+                            window.parent.document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=" + window.location.hostname;
+                            window.parent.document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=." + window.location.hostname;
+                        }
+
+                        // Clear parent storage
+                        try { window.parent.localStorage.clear(); } catch(e) {}
+                        try { window.parent.sessionStorage.clear(); } catch(e) {}
+                    } catch(e) {
+                        console.log("Could not access parent:", e);
+                    }
+
+                    // Force redirect after brief delay
+                    setTimeout(function() {
+                        window.top.location.href = window.location.origin + "?logout=1&_=" + Date.now();
+                    }, 100);
+                })();
+                </script>
+                """,
+                height=0,
+                width=0
+            )
+
+            # Also set query param for backup
+            st.query_params["logout"] = "1"
+
+            # Force immediate rerun to show login page
+            st.rerun()
+
 # Vibrant lime green accent bar under navigation - MetaFlex personality
 st.markdown("""
     <div style='
