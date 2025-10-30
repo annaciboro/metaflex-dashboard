@@ -1340,17 +1340,17 @@ def render_executive_dashboard(exec_metrics, df):
     with col1:
         st.markdown(f"""
             <div style='
-                background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+                background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%);
                 padding: 28px 36px;
                 border-radius: 16px;
-                border: 1px solid #bbf7d0;
-                border-left: 4px solid #22c55e;
-                box-shadow: 0 4px 12px rgba(34, 197, 94, 0.12), 0 1px 3px rgba(0, 0, 0, 0.08);
+                border: 1px solid #fecaca;
+                border-left: 4px solid #d17a6f;
+                box-shadow: 0 4px 12px rgba(209, 122, 111, 0.12), 0 1px 3px rgba(0, 0, 0, 0.08);
                 text-align: center;
                 transition: all 0.3s ease;
             '>
                 <p style='margin: 0 0 12px 0; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #9ca3af;'>OPEN TASKS</p>
-                <h2 style='margin: 0; font-size: 2.8rem; font-weight: 700; color: #22c55e; line-height: 1;'>{exec_metrics["total_open"]}</h2>
+                <h2 style='margin: 0; font-size: 2.8rem; font-weight: 700; color: #d17a6f; line-height: 1;'>{exec_metrics["total_open"]}</h2>
             </div>
         """, unsafe_allow_html=True)
 
@@ -1570,7 +1570,10 @@ def show_dashboard():
         margin: 0 0 16px 0;
         font-size: 3rem;
         font-weight: 700;
-        color: #0a4b4b;
+        background: linear-gradient(135deg, #0a4b4b 0%, #0d6868 50%, #7a9900 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
         letter-spacing: -0.02em;
         text-align: center;
     '>Welcome back, {first_name}</h1>

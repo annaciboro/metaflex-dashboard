@@ -472,10 +472,10 @@ with nav_container:
     # Simple navigation: Small Logo + Spacer + Large Hamburger Menu
     cols = st.columns([0.5, 3, 1.5])
 
-    # Logo (smaller)
+    # Logo (tiny)
     with cols[0]:
         if os.path.exists(logo_path):
-            st.image(logo_path, width=35)
+            st.image(logo_path, width=25)
 
     # Spacer
     with cols[1]:
@@ -513,7 +513,7 @@ with nav_container:
         """, unsafe_allow_html=True)
 
         with st.popover(f"☰ {st.session_state.current_page}", use_container_width=True):
-            st.markdown("### 📋 Navigation")
+            st.markdown("### Navigation")
 
             for page_name in pages_list:
                 if page_name == "Logout":
