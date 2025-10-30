@@ -631,31 +631,38 @@ with nav_container:
 
             div[data-testid="column"]:last-child button {{
                 background: transparent !important;
-                color: #d17a6f !important;
+                color: #6b7280 !important;
                 border: none !important;
                 box-shadow: none !important;
-                padding: 12px 24px !important;
-                font-size: 12px !important;
-                font-weight: 700 !important;
-                text-transform: uppercase !important;
-                letter-spacing: 0.08em !important;
+                padding: 8px 16px !important;
+                font-size: 13px !important;
+                font-weight: 600 !important;
+                text-transform: none !important;
+                letter-spacing: normal !important;
                 font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
                 width: auto !important;
-                max-width: none !important;
+                max-width: 120px !important;
+                min-width: 80px !important;
                 white-space: nowrap !important;
-                display: inline-block !important;
-                min-width: fit-content !important;
-                transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
-                border-radius: 24px !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                flex-direction: row !important;
+                transition: all 0.2s ease !important;
+                border-radius: 8px !important;
             }}
 
-            /* Force text to stay on one line */
+            /* ULTRA AGGRESSIVE - Force text to stay on one line */
             div[data-testid="column"]:last-child button *,
             div[data-testid="column"]:last-child button p,
             div[data-testid="column"]:last-child button div,
-            div[data-testid="column"]:last-child button span {{
+            div[data-testid="column"]:last-child button span,
+            div[data-testid="column"]:last-child button [data-testid="stMarkdownContainer"] {{
                 white-space: nowrap !important;
                 display: inline !important;
+                flex-direction: row !important;
+                writing-mode: horizontal-tb !important;
+                text-orientation: mixed !important;
             }}
 
             div[data-testid="column"]:last-child button:hover {{
@@ -748,29 +755,19 @@ with nav_container:
             # Force immediate rerun to show login page
             st.rerun()
 
-# Neon green gradient line under navigation - starts after logo
+# Subtle gradient accent line under navigation - premium SaaS style
 st.markdown("""
     <div style='
         width: 100%;
         max-width: 100vw;
-        margin: 10px 0 0 0;
+        margin: 0;
         padding: 0;
-        display: flex;
-    '>
-        <div style='width: 15%; height: 4px;'></div>
-        <div style='width: 20%; height: 4px;'></div>
-        <div style='
-            width: 65%;
-            height: 4px;
-            background: linear-gradient(90deg,
-                #d4ff00 0%,
-                #b8e600 20%,
-                #7fa830 40%,
-                #4d7a40 60%,
-                #0a4b4b 80%,
-                #0a4b4b 100%);
-        '></div>
-    </div>
+        height: 1px;
+        background: linear-gradient(90deg,
+            #e5e7eb 0%,
+            #d1d5db 50%,
+            #e5e7eb 100%);
+    '></div>
 """, unsafe_allow_html=True)
 
 # Logo styling for navigation bar
