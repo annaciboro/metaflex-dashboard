@@ -35,14 +35,14 @@ st.markdown("""
 header[data-testid="stHeader"] {display: none;}
 footer {visibility: hidden;}
 
-/* Premium Navigation Container */
+/* Premium DARK Navigation Container */
 [data-testid="stHorizontalBlock"]:has(button[kind="primary"]),
 [data-testid="stHorizontalBlock"]:has(button[kind="secondary"]) {
-    background: rgba(255, 255, 255, 0.95);
+    background: linear-gradient(135deg, #0a2f2f 0%, #0d3a3a 100%);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-    border-bottom: 1px solid rgba(95, 140, 140, 0.12);
+    box-shadow: 0 0 20px rgba(212, 255, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.4);
+    border-bottom: 2px solid #2d5016;
     padding: 10px 48px !important;
     position: sticky;
     top: 0;
@@ -50,77 +50,82 @@ footer {visibility: hidden;}
     margin-bottom: 2rem;
 }
 
-/* Style ALL buttons in navigation */
+/* Style ALL buttons in navigation - DARK THEME */
 [data-testid="stHorizontalBlock"] button {
     background: transparent !important;
     border: none !important;
     border-radius: 24px !important;
-    color: #516060 !important;
+    color: #e8f5e9 !important;
     font-size: 14px !important;
     font-weight: 500 !important;
     padding: 10px 20px !important;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
     box-shadow: none !important;
     height: 48px !important;
+    opacity: 0.8;
 }
 
-/* Hover state for navigation buttons */
+/* Hover state for navigation buttons - DARK THEME */
 [data-testid="stHorizontalBlock"] button:hover {
-    color: #5f8c8c !important;
-    background: linear-gradient(135deg, rgba(95, 140, 140, 0.08), rgba(95, 140, 140, 0.12)) !important;
+    color: #d4ff00 !important;
+    background: rgba(212, 255, 0, 0.1) !important;
     transform: translateY(-2px) !important;
-    box-shadow: 0 4px 12px rgba(95, 140, 140, 0.15) !important;
+    box-shadow: 0 4px 12px rgba(212, 255, 0, 0.2) !important;
+    opacity: 1;
 }
 
-/* Active state - primary buttons */
+/* Active state - primary buttons - DARK THEME */
 [data-testid="stHorizontalBlock"] button[kind="primary"] {
-    background: linear-gradient(135deg, #7a9999, #6a8989) !important;
-    color: #ffffff !important;
+    background: linear-gradient(135deg, #2d5016, #3a6520) !important;
+    color: #d4ff00 !important;
     font-weight: 600 !important;
-    box-shadow: 0 2px 8px rgba(95, 140, 140, 0.25) !important;
+    box-shadow: 0 0 15px rgba(212, 255, 0, 0.3) !important;
+    opacity: 1;
 }
 
 [data-testid="stHorizontalBlock"] button[kind="primary"]:hover {
-    background: linear-gradient(135deg, #8aabab, #7a9999) !important;
+    background: linear-gradient(135deg, #3a6520, #4a7c59) !important;
     transform: translateY(-1px) !important;
+    box-shadow: 0 0 20px rgba(212, 255, 0, 0.4) !important;
 }
 
-/* Logo styling */
+/* Logo styling - DARK THEME */
 [data-testid="stImage"] {
     width: 38px !important;
     height: 38px !important;
     border-radius: 8px !important;
-    filter: drop-shadow(0 2px 4px rgba(95, 140, 140, 0.15)) !important;
+    filter: drop-shadow(0 2px 8px rgba(212, 255, 0, 0.3)) !important;
     transition: transform 0.3s ease !important;
 }
 
 [data-testid="stImage"]:hover {
     transform: scale(1.08) rotate(3deg) !important;
     cursor: pointer !important;
+    filter: drop-shadow(0 4px 12px rgba(212, 255, 0, 0.5)) !important;
 }
 
-/* User badge styling */
+/* User badge styling - DARK THEME */
 .user-badge-nav {
-    background: linear-gradient(135deg, #f4f6f6, #eaeded);
+    background: linear-gradient(135deg, rgba(212, 255, 0, 0.15), rgba(212, 255, 0, 0.1));
     border-radius: 20px;
     padding: 10px 18px;
-    border: 1px solid rgba(95, 140, 140, 0.15);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+    border: 2px solid #2d5016;
+    box-shadow: 0 0 10px rgba(212, 255, 0, 0.2);
     font-size: 13px;
     font-weight: 600;
-    color: #2a3a3a;
+    color: #d4ff00;
     text-align: center;
     margin-top: 8px;
 }
 
-/* Logout button special styling */
+/* Logout button special styling - DARK THEME */
 button[data-testid*="logout" i] {
-    color: #e08585 !important;
+    color: #ff6b6b !important;
 }
 
 button[data-testid*="logout" i]:hover {
-    background: rgba(224, 133, 133, 0.1) !important;
-    color: #d66b6b !important;
+    background: rgba(255, 107, 107, 0.15) !important;
+    color: #ff5252 !important;
 }
 
 /* Remove button focus outline */
