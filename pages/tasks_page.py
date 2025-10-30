@@ -24,8 +24,17 @@ def show_tasks():
     is_tea = user_name.lower() == "tea" or user_name.lower() == "tēa" or "tea" in user_name.lower()
     is_jess = "jess" in user_name.lower()
 
-    # Standardized header
-    render_page_header("My Tasks", "View and manage your personal task list")
+    # Page header matching Executive Overview style
+    st.markdown("""
+        <h2 style='
+            margin: 0 0 32px 0;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #0a4b4b;
+            letter-spacing: -0.01em;
+            text-align: left;
+        '>MY TASKS</h2>
+    """, unsafe_allow_html=True)
 
     # Load data from Google Sheet
     with st.spinner("Loading your tasks..."):
@@ -76,6 +85,7 @@ def show_tasks():
         chart_col1, chart_col2 = st.columns(2)
 
         with chart_col1:
+            st.markdown("<h3 style='text-align: left; margin: 0 0 20px 0; color: #0a4b4b; font-weight: 600; font-size: 1.1rem; font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif;'>Task Completion Status</h3>", unsafe_allow_html=True)
             donut_fig = create_team_completion_donut(
                 personal_kpis.get("my_open_tasks", 0),
                 personal_kpis.get("working_tasks", 0),
@@ -309,12 +319,11 @@ def show_tasks():
     if has_column(personal_df, "Transcript ID"):
         display_columns.append(get_column(personal_df, "Transcript ID"))
 
-    # For regular users (Megan, Justin, Jess), exclude the "Person" column since they only see their own tasks
-    # For Tea only, show the "Person" column
+    # Simplified columns for Tea: Task, Date Assigned, Due Date, Notes
     if is_tea:
-        cols_to_display = ["Task", "Status", "Project", "Due Date", "Progress %", "Person", "Date Added"]
+        cols_to_display = ["Task", "Date Assigned", "Due Date", "Notes"]
     else:
-        cols_to_display = ["Task", "Status", "Project", "Due Date", "Progress %", "Date Added"]
+        cols_to_display = ["Task", "Status", "Project", "Date Assigned", "Due Date", "Notes"]
 
     for col in cols_to_display:
         if has_column(personal_df, col):
@@ -354,89 +363,196 @@ def show_tasks():
         # All users can now set status to "Done"
         status_options = ["Open", "Working On It", "Done"]
 
-        column_config = {
-            "Transcript ID": st.column_config.TextColumn(
-                "ID",
-                width="small",
-                help="Transcript/Row ID",
-                disabled=True  # Read-only
-            ),
-            "Task": st.column_config.TextColumn(
-                "Task",
-                width="large",
-                help="Task description (editable)"
-            ),
-            "Status": st.column_config.SelectboxColumn(
-                "Status",
-                width="small",
-                options=status_options,
-                required=True,
-                help="Change task status"
-            ),
-            "Project": st.column_config.TextColumn(
-                "Project",
-                width="medium"
-            ),
-            "Due Date": st.column_config.TextColumn(
-                "Due Date",
-                width="small",
-                help="Enter date as text (e.g., 2025-01-15)"
-            ),
-            "Progress %": st.column_config.NumberColumn(
-                "Progress %",
-                width="small",
-                min_value=0,
-                max_value=100,
-                step=5,
-                format="%d%%"
-            ),
-            "Person": st.column_config.TextColumn(
-                "Assigned To",
-                width="medium",
-                disabled=False  # Allow reassignment
-            ),
-            "Date Added": st.column_config.TextColumn(
-                "Date Added",
-                width="small",
-                help="Format: MM/DD/YYYY",
-                disabled=True  # Read-only
-            )
-        }
+        # Simplified column config for Tea
+        if is_tea:
+            column_config = {
+                "Task": st.column_config.TextColumn(
+                    "Task",
+                    width="large",
+                    help="Task description (editable)"
+                ),
+                "Date Assigned": st.column_config.TextColumn(
+                    "Date Assigned",
+                    width="small",
+                    help="Date task was assigned"
+                ),
+                "Due Date": st.column_config.TextColumn(
+                    "Due Date",
+                    width="small",
+                    help="Enter date as text (e.g., 2025-01-15)"
+                ),
+                "Notes": st.column_config.TextColumn(
+                    "Notes",
+                    width="large",
+                    help="Additional notes or comments"
+                )
+            }
+        else:
+            column_config = {
+                "Transcript ID": st.column_config.TextColumn(
+                    "ID",
+                    width="small",
+                    help="Transcript/Row ID",
+                    disabled=True  # Read-only
+                ),
+                "Task": st.column_config.TextColumn(
+                    "Task",
+                    width="large",
+                    help="Task description (editable)"
+                ),
+                "Status": st.column_config.SelectboxColumn(
+                    "Status",
+                    width="small",
+                    options=status_options,
+                    required=True,
+                    help="Change task status"
+                ),
+                "Project": st.column_config.TextColumn(
+                    "Project",
+                    width="medium"
+                ),
+                "Date Assigned": st.column_config.TextColumn(
+                    "Date Assigned",
+                    width="small",
+                    help="Date task was assigned"
+                ),
+                "Due Date": st.column_config.TextColumn(
+                    "Due Date",
+                    width="small",
+                    help="Enter date as text (e.g., 2025-01-15)"
+                ),
+                "Notes": st.column_config.TextColumn(
+                    "Notes",
+                    width="large",
+                    help="Additional notes or comments"
+                )
+            }
 
-        # Add MetaFlex styling to the data editor table
+        # Add MetaFlex premium light theme styling for tables
         st.markdown("""
             <style>
-            /* MetaFlex table styling */
-            [data-testid="stDataFrameResizable"] {
-                background: linear-gradient(135deg, #f5faf2 0%, #f8fbf8 100%) !important;
-                border: 1px solid #e8eced !important;
-                border-left: 4px solid #0a4b4b !important;
-                border-radius: 8px !important;
-                padding: 8px !important;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02) !important;
+            /* Premium SaaS light theme styling for dataframes AND data_editor */
+            div[data-testid="stDataFrame"],
+            div[data-testid="stDataFrame"] > div,
+            div[data-testid="stDataFrame"] > div > div,
+            div[data-testid="stDataFrame"] iframe,
+            [data-testid="stDataFrame"],
+            div[data-testid="data-editor"],
+            div[data-testid="data-editor"] > div,
+            [data-testid="data-editor"] {
+                background: #ffffff !important;
+                border-radius: 0 0 12px 12px !important;
+                padding: 16px !important;
+                border: 1px solid #e5e7eb !important;
+                border-top: none !important;
+                box-shadow: 0 4px 12px rgba(10, 75, 75, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04) !important;
             }
 
-            /* Table headers */
-            [data-testid="stDataFrameResizable"] thead th {
-                background: linear-gradient(135deg, #f0f5ec 0%, #f5faf2 100%) !important;
-                color: #2d5016 !important;
-                font-weight: 700 !important;
-                border-bottom: 2px solid #0a4b4b !important;
+            /* Target ALL table elements */
+            div[data-testid="stDataFrame"] table,
+            div[data-testid="stDataFrame"] thead,
+            div[data-testid="stDataFrame"] tbody,
+            [data-testid="stDataFrame"] table,
+            div[data-testid="data-editor"] table,
+            div[data-testid="data-editor"] thead,
+            div[data-testid="data-editor"] tbody,
+            table {
+                background: transparent !important;
+            }
+
+            /* Style the table header - premium light theme */
+            div[data-testid="stDataFrame"] thead tr th,
+            div[data-testid="stDataFrame"] th,
+            div[data-testid="data-editor"] thead tr th,
+            div[data-testid="data-editor"] th,
+            [data-testid="stDataFrame"] thead tr th,
+            thead tr th,
+            th {
+                background: #f9fafb !important;
+                color: #374151 !important;
+                font-weight: 600 !important;
+                border-bottom: 1px solid #e5e7eb !important;
                 padding: 12px 8px !important;
+                text-transform: uppercase !important;
+                font-size: 0.7rem !important;
+                letter-spacing: 0.05em !important;
             }
 
-            /* Table cells */
-            [data-testid="stDataFrameResizable"] tbody td {
-                border-bottom: 1px solid #e8eced !important;
-                padding: 10px 8px !important;
-                color: #2d5016 !important;
+            /* Alternate row colors - subtle light gray */
+            div[data-testid="stDataFrame"] tbody tr:nth-child(even),
+            div[data-testid="stDataFrame"] tbody tr:nth-child(even) td,
+            [data-testid="stDataFrame"] tbody tr:nth-child(even),
+            tbody tr:nth-child(even),
+            tbody tr:nth-child(even) td {
+                background: #fafbfc !important;
+                background-color: #fafbfc !important;
             }
 
-            /* Hover effect on rows */
-            [data-testid="stDataFrameResizable"] tbody tr:hover {
-                background: rgba(10, 75, 75, 0.05) !important;
+            div[data-testid="stDataFrame"] tbody tr:nth-child(odd),
+            div[data-testid="stDataFrame"] tbody tr:nth-child(odd) td,
+            [data-testid="stDataFrame"] tbody tr:nth-child(odd),
+            tbody tr:nth-child(odd),
+            tbody tr:nth-child(odd) td {
+                background: #ffffff !important;
+                background-color: #ffffff !important;
+            }
+
+            /* Hover effect - subtle teal accent */
+            div[data-testid="stDataFrame"] tbody tr:hover,
+            div[data-testid="stDataFrame"] tbody tr:hover td,
+            [data-testid="stDataFrame"] tbody tr:hover,
+            div[data-testid="data-editor"] tbody tr:hover,
+            div[data-testid="data-editor"] tbody tr:hover td,
+            tbody tr:hover,
+            tbody tr:hover td {
+                background: rgba(10, 75, 75, 0.04) !important;
+                background-color: rgba(10, 75, 75, 0.04) !important;
+                box-shadow: inset 0 0 0 1px rgba(10, 75, 75, 0.1) !important;
+                transition: all 0.2s ease !important;
+            }
+
+            /* Cell styling - dark gray text on light background */
+            div[data-testid="stDataFrame"] tbody tr td,
+            div[data-testid="stDataFrame"] td,
+            [data-testid="stDataFrame"] tbody tr td,
+            tbody tr td,
+            td {
+                border-bottom: 1px solid #f3f4f6 !important;
+                padding: 12px 8px !important;
+                color: #2d3748 !important;
+            }
+
+            /* Scrollbar styling for light theme */
+            div[data-testid="stDataFrame"] ::-webkit-scrollbar {
+                width: 8px !important;
+                height: 8px !important;
+            }
+
+            div[data-testid="stDataFrame"] ::-webkit-scrollbar-track {
+                background: #f3f4f6 !important;
+                border-radius: 4px !important;
+            }
+
+            div[data-testid="stDataFrame"] ::-webkit-scrollbar-thumb {
+                background: #d1d5db !important;
+                border-radius: 4px !important;
+            }
+
+            div[data-testid="stDataFrame"] ::-webkit-scrollbar-thumb:hover {
+                background: #9ca3af !important;
             }
             </style>
+        """, unsafe_allow_html=True)
+
+        # Premium table header with gradient accent
+        st.markdown("""
+            <div style='
+                background: linear-gradient(135deg, #0a4b4b 0%, #4d7a40 100%);
+                height: 4px;
+                border-radius: 4px 4px 0 0;
+                margin-bottom: -1px;
+                box-shadow: 0 2px 8px rgba(10, 75, 75, 0.3);
+            '></div>
         """, unsafe_allow_html=True)
 
         # Display editable table

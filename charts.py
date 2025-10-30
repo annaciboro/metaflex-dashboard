@@ -170,42 +170,37 @@ def create_task_age_analysis(df):
     labels = list(age_ranges.keys())
     values = list(age_ranges.values())
 
-    # Subtle teal gradient - from very light to medium light
-    colors = ['#c8d9d9', '#90b4b4', '#6d9f9f', '#4d8787']
+    # MetaFlex color palette
+    colors = ['#0a4b4b', '#4d7a40', '#7a9900', '#a8d900']
 
     fig = go.Figure(data=[go.Bar(
         x=labels,
         y=values,
         marker=dict(
             color=colors,
-            line=dict(color=MF_LIGHT['border'], width=2)
+            line=dict(color='#ffffff', width=2)
         ),
         text=values,
         textposition='outside',
-        textfont=dict(size=14, color=MF_LIGHT['text_light'], family='-apple-system, sans-serif'),
+        textfont=dict(size=14, color='#0a4b4b', family='-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', weight='bold'),
         hovertemplate='<b>%{x}</b><br>Tasks: %{y}<extra></extra>'
     )])
 
     fig.update_layout(
-        title=dict(
-            text='<b>Task Age Analysis</b>',
-            x=0.5,
-            xanchor='center',
-            font=dict(size=18, color=MF_LIGHT['text_light'], family='-apple-system, sans-serif')
-        ),
+        title=None,
         height=400,
-        margin=dict(t=60, b=40, l=60, r=60),
+        margin=dict(t=60, b=40, l=80, r=60),
         paper_bgcolor=MF_LIGHT['bg_white'],
         plot_bgcolor=MF_LIGHT['bg_light'],
         xaxis=dict(
             title='',
-            tickfont=dict(size=12, color=MF_LIGHT['text_light'])
+            tickfont=dict(size=13, color='#0a4b4b', family='-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif')
         ),
         yaxis=dict(
             showgrid=True,
-            gridcolor='rgba(229, 231, 235, 0.6)',
-            title=dict(text='Number of Tasks', font=dict(size=12, color=MF_LIGHT['text_light'])),
-            tickfont=dict(size=11, color=MF_LIGHT['text_light'])
+            gridcolor='#f3f4f6',
+            title='',
+            tickfont=dict(size=12, color='#0a4b4b', family='-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif')
         )
     )
 
@@ -376,14 +371,14 @@ def create_team_completion_donut(open_tasks, working_tasks, done_tasks):
 
     # Add center text showing overall progress
     fig.add_annotation(
-        text=f'<b style="font-size: 40px; color: #2d5016; font-weight: 900;">{overall_progress}%</b><br><span style="font-size: 12px; color: #2d5016; font-weight: 600;">OVERALL PROGRESS</span>',
+        text=f'<b style="font-size: 40px; color: #0a4b4b; font-weight: 900;">{overall_progress}%</b><br><span style="font-size: 12px; color: #0a4b4b; font-weight: 600;">OVERALL PROGRESS</span>',
         x=0.5, y=0.5,
-        font=dict(size=16, color='#2d5016', family='-apple-system, sans-serif'),
+        font=dict(size=16, color='#0a4b4b', family='-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'),
         showarrow=False,
         align='center'
     )
 
-    # Compact layout with smaller height
+    # Matching layout with Task Age Analysis chart for alignment
     fig.update_layout(
         showlegend=True,
         legend=dict(
@@ -392,13 +387,13 @@ def create_team_completion_donut(open_tasks, working_tasks, done_tasks):
             y=-0.15,
             xanchor="center",
             x=0.5,
-            font=dict(size=12, color='#2d5016', family='-apple-system, sans-serif', weight=700),
+            font=dict(size=12, color='#0a4b4b', family='-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', weight=600),
             itemsizing='constant'
         ),
-        height=350,
-        margin=dict(t=20, b=80, l=40, r=40),
-        paper_bgcolor='rgba(0,0,0,0)',  # Transparent background
-        plot_bgcolor='rgba(0,0,0,0)',
+        height=400,
+        margin=dict(t=60, b=40, l=40, r=40),
+        paper_bgcolor='#ffffff',  # White background to match Task Age Analysis
+        plot_bgcolor='#ffffff',
         font=dict(family='-apple-system, sans-serif')
     )
 
