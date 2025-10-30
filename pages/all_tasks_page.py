@@ -63,13 +63,13 @@ def show_analytics():
         st.markdown("<h4 style='color: #0a4b4b; margin-bottom: 16px;'>Completion Velocity</h4>", unsafe_allow_html=True)
         velocity_fig = create_task_completion_velocity(exec_metrics)
         if velocity_fig:
-            st.plotly_chart(velocity_fig, width='stretch')
+            st.plotly_chart(velocity_fig, use_container_width=True)
 
     with chart_col2:
         st.markdown("<h4 style='color: #0a4b4b; margin-bottom: 16px;'>Project Health</h4>", unsafe_allow_html=True)
         health_fig = create_project_health_dashboard(exec_metrics)
         if health_fig:
-            st.plotly_chart(health_fig, width='stretch')
+            st.plotly_chart(health_fig, use_container_width=True)
 
     st.markdown("<div style='margin-bottom: 32px;'></div>", unsafe_allow_html=True)
 

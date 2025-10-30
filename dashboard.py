@@ -82,13 +82,14 @@ if st.session_state.get("authentication_status") is None:
                 ">METAFLE</span><img
                     src="data:image/png;base64,{logo_data}"
                     style="
-                        height: 52px;
-                        width: auto;
-                        margin: 0 6px;
+                        height: 48px;
+                        width: 48px;
+                        margin: 0 8px;
                         display: inline-block;
                         vertical-align: middle;
                         transform: translateY(2px);
                         filter: drop-shadow(0 4px 12px rgba(10, 75, 75, 0.3));
+                        object-fit: contain;
                     "
                 /><span style="
                     margin-left: 8px;
@@ -567,69 +568,99 @@ else:
     # Regular users only see Overview, My Tasks, Archive, and Logout
     pages_list = ["Overview", "My Tasks", "Archive", "Logout"]
 
-# Load logo for navigation branding
+# Load logo for branding
 logo_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "logo.png")
 with open(logo_path, "rb") as f:
     logo_data = base64.b64encode(f.read()).decode()
 
+# Prominent METAFLE[X] OPERATIONS header - appears on all pages after authentication
+st.markdown(f"""
+    <div style="text-align: center; padding: 1.5rem 0 0.75rem 0; margin: 0;">
+        <div style="
+            font-size: 72px;
+            font-weight: 900;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            letter-spacing: -0.01em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        ">
+            <span style="
+                background: linear-gradient(180deg, #7a9900 0%, #4d7a40 50%, #0a4b4b 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                font-weight: 950;
+                -webkit-text-stroke: 0.5px rgba(77, 122, 64, 0.3);
+            ">METAFLE</span><img
+                src="data:image/png;base64,{logo_data}"
+                style="
+                    height: 38px;
+                    width: 38px;
+                    margin: 0 10px;
+                    display: inline-block;
+                    vertical-align: middle;
+                    filter: drop-shadow(0 4px 12px rgba(10, 75, 75, 0.4));
+                    object-fit: contain;
+                "
+            /><span style="
+                margin-left: 6px;
+                background: linear-gradient(180deg, #7a9900 0%, #4d7a40 50%, #0a4b4b 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                font-weight: 950;
+                -webkit-text-stroke: 0.5px rgba(77, 122, 64, 0.3);
+            ">OPERATIONS</span>
+        </div>
+        <div style="
+            font-size: 16px;
+            font-weight: 800;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #4d7a40;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-top: 12px;
+        ">Custom Enterprise System</div>
+    </div>
+""", unsafe_allow_html=True)
+
 nav_container = st.container()
 
 with nav_container:
-    # Simple navigation: MetaFlex Operations branding + Hamburger Menu
-    cols = st.columns([2, 2.5, 1.5])
+    # Simple navigation: Just hamburger menu with user name on right
+    cols = st.columns([5, 1])
 
-    # MetaFlex Operations - logo as the X
+    # Empty left column
     with cols[0]:
-        st.markdown(f"""
-            <div style='display: flex; align-items: center; gap: 0px; margin-top: 6px;'>
-                <span style='
-                    font-size: 1.35rem;
-                    font-weight: 700;
-                    background: linear-gradient(135deg, #4d7a40 0%, #0a4b4b 100%);
-                    -webkit-background-clip: text;
-                    -webkit-text-fill-color: transparent;
-                    background-clip: text;
-                    letter-spacing: -0.02em;
-                '>MetaFle</span>
-                <img src="data:image/png;base64,{logo_data}" style="width: 22px; height: 22px; margin: 0 0px; display: inline-block; vertical-align: middle;" />
-                <span style='
-                    font-size: 1.35rem;
-                    font-weight: 700;
-                    background: linear-gradient(135deg, #4d7a40 0%, #0a4b4b 100%);
-                    -webkit-background-clip: text;
-                    -webkit-text-fill-color: transparent;
-                    background-clip: text;
-                    letter-spacing: -0.02em;
-                '> Operations</span>
-            </div>
-        """, unsafe_allow_html=True)
-
-    # Spacer
-    with cols[1]:
         st.write("")
 
-    # Hamburger Menu with current page name
-    with cols[2]:
+    # Hamburger Menu with user name on right
+    with cols[1]:
         # Custom styling for large prominent hamburger button
         st.markdown("""
             <style>
-            /* Hamburger button styling */
+            /* Hamburger button styling - White text on dark gradient */
             button[data-testid*="baseButton-header"] {
-                font-size: 0.95rem !important;
-                font-weight: 600 !important;
-                padding: 8px 16px !important;
-                background: linear-gradient(135deg, #f0f9f9 0%, #ffffff 100%) !important;
-                border: 2px solid #0a4b4b !important;
-                color: #0a4b4b !important;
-                border-radius: 12px !important;
-                box-shadow: 0 2px 8px rgba(10, 75, 75, 0.15) !important;
-                transition: all 0.2s ease !important;
+                font-size: 1rem !important;
+                font-weight: 700 !important;
+                padding: 10px 20px !important;
+                background: rgba(255, 255, 255, 0.15) !important;
+                border: 2px solid rgba(255, 255, 255, 0.3) !important;
+                color: #ffffff !important;
+                border-radius: 10px !important;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+                transition: all 0.3s ease !important;
+                backdrop-filter: blur(10px) !important;
             }
 
             button[data-testid*="baseButton-header"]:hover {
+                background: rgba(255, 255, 255, 0.25) !important;
+                border-color: rgba(212, 255, 0, 0.6) !important;
+                color: #d4ff00 !important;
                 transform: translateY(-2px) !important;
-                box-shadow: 0 4px 12px rgba(10, 75, 75, 0.25) !important;
-                border-color: #7a9900 !important;
+                box-shadow: 0 4px 12px rgba(212, 255, 0, 0.3) !important;
             }
 
             /* Make popover larger */
@@ -666,17 +697,17 @@ with nav_container:
                 box-shadow: 0 2px 8px rgba(10, 75, 75, 0.2) !important;
             }
 
-            /* Secondary button (other pages) - light teal with dark text */
+            /* Secondary button (other pages) - pure white with dark text */
             div[data-testid="stPopover"] button[kind="secondary"],
             .stPopover button[kind="secondary"],
             div[data-testid="stPopover"] button:not([kind="primary"]):not([type="submit"]),
             .stPopover button:not([kind="primary"]):not([type="submit"]) {
-                background: #f0f9f9 !important;
-                background-color: #f0f9f9 !important;
+                background: #ffffff !important;
+                background-color: #ffffff !important;
                 background-image: none !important;
                 color: #0a4b4b !important;
-                border: 1px solid #e0f0f0 !important;
-                border-color: #e0f0f0 !important;
+                border: 1px solid #e5e7eb !important;
+                border-color: #e5e7eb !important;
                 font-weight: 500 !important;
                 padding: 12px 20px !important;
                 border-radius: 8px !important;
@@ -687,42 +718,30 @@ with nav_container:
             .stPopover button[kind="secondary"]:hover,
             div[data-testid="stPopover"] button:not([kind="primary"]):not([type="submit"]):hover,
             .stPopover button:not([kind="primary"]):not([type="submit"]):hover {
-                background: #e5f5f5 !important;
-                background-color: #e5f5f5 !important;
+                background: #f9fafb !important;
+                background-color: #f9fafb !important;
                 border-color: #0a4b4b !important;
                 transform: translateY(-1px) !important;
             }
             </style>
         """, unsafe_allow_html=True)
 
-        with st.popover(f"☰ {st.session_state.current_page}", width='stretch'):
+        # Get first name for greeting
+        first_name = user_name.split()[0] if user_name else "User"
+
+        with st.popover(f"☰ Welcome back, {first_name}", width='stretch'):
             st.markdown("### Navigation")
 
             for page_name in pages_list:
                 if page_name == "Logout":
                     st.markdown("---")  # Separator before logout
-                    if st.button("Logout", key="nav_logout", width='stretch'):
-                        # Clear authentication-related session state
-                        auth_keys = ['authentication_status', 'name', 'username', 'logout', 'login']
-                        for key in auth_keys:
-                            if key in st.session_state:
-                                try:
-                                    del st.session_state[key]
-                                except:
-                                    pass
-
-                        # Force authentication status to None
-                        st.session_state.authentication_status = None
-                        st.session_state.name = None
-                        st.session_state.username = None
-
-                        # Call authenticator logout
-                        try:
-                            authenticator.logout(location='unrendered', key='unique_logout_key')
-                        except:
-                            pass
+                    if st.button("Logout", key="nav_logout", use_container_width=True):
+                        # Clear all session state
+                        for key in list(st.session_state.keys()):
+                            del st.session_state[key]
 
                         # Set query param
+                        st.query_params.clear()
                         st.query_params["logout"] = "1"
 
                         # Force immediate rerun
@@ -732,7 +751,7 @@ with nav_container:
                     is_current = st.session_state.current_page == page_name
                     button_label = f"{'✓ ' if is_current else ''}{page_name}"
 
-                    if st.button(button_label, key=f"nav_{page_name}", width='stretch', type="primary" if is_current else "secondary"):
+                    if st.button(button_label, key=f"nav_{page_name}", use_container_width=True, type="primary" if is_current else "secondary"):
                         st.session_state.current_page = page_name
                         st.rerun()
 
@@ -743,7 +762,7 @@ st.markdown("""
         max-width: 100vw;
         margin: 0;
         padding: 0;
-        height: 3px;
+        height: 4px;
         background: linear-gradient(90deg,
             #d4ff00 0%,
             #b8e600 20%,
@@ -919,12 +938,13 @@ st.markdown("<div style='margin-bottom: 30px;'></div>", unsafe_allow_html=True)
 # ULTRA AGGRESSIVE NAVIGATION BUTTON OVERRIDE - LOAD LAST
 st.markdown("""
 <style>
-/* PREMIUM LIGHT THEME NAVIGATION CONTAINER - Subtle teal gradient for personality */
+/* PREMIUM LIGHT THEME NAVIGATION CONTAINER - Bold gradient with depth */
 html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child {
-    background: linear-gradient(135deg, #f0f9f9 0%, #ffffff 50%, #f8fdf8 100%) !important;
-    box-shadow: 0 2px 8px rgba(10, 75, 75, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06) !important;
+    background: linear-gradient(135deg, #d4ff00 0%, #7a9900 5%, #4d7a40 25%, #0a4b4b 50%, #0a4b4b 100%) !important;
+    box-shadow: 0 4px 16px rgba(10, 75, 75, 0.25), 0 2px 8px rgba(122, 153, 0, 0.15) !important;
     border-bottom: none !important;
-    padding: 10px 48px !important;
+    padding: 16px 48px !important;
+    position: relative !important;
 }
 
 /* FINAL NUCLEAR OVERRIDE FOR NAVIGATION BUTTONS */

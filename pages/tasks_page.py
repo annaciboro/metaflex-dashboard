@@ -82,7 +82,7 @@ def show_tasks():
             )
 
             if donut_fig:
-                st.plotly_chart(donut_fig, width='stretch', config={
+                st.plotly_chart(donut_fig, use_container_width=True, config={
                     'displayModeBar': False
                 })
 
@@ -93,7 +93,7 @@ def show_tasks():
         st.markdown("<h4 style='color: #0a4b4b; margin-bottom: 16px; text-align: center;'>Task Age Analysis</h4>", unsafe_allow_html=True)
         age_fig = create_task_age_analysis(personal_df)
         if age_fig:
-            st.plotly_chart(age_fig, width='stretch')
+            st.plotly_chart(age_fig, use_container_width=True)
 
         st.markdown("<br>", unsafe_allow_html=True)
     else:
@@ -156,7 +156,7 @@ def show_tasks():
         st.markdown("<h4 style='color: #0a4b4b; margin-bottom: 16px;'>Task Age Analysis</h4>", unsafe_allow_html=True)
         age_fig = create_task_age_analysis(personal_df)
         if age_fig:
-            st.plotly_chart(age_fig, width='stretch')
+            st.plotly_chart(age_fig, use_container_width=True)
 
         st.markdown("<br>", unsafe_allow_html=True)
 

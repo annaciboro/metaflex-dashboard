@@ -643,7 +643,7 @@ def render_charts_section(kpis, filtered_df, show_project_chart=True):
                 )
             )
 
-            st.plotly_chart(fig, width='stretch')
+            st.plotly_chart(fig, use_container_width=True)
 
     # Only show "Tasks by Project" chart for Tea and Jess
     if show_project_chart:
@@ -673,7 +673,7 @@ def render_charts_section(kpis, filtered_df, show_project_chart=True):
 
                 project_fig = create_project_breakdown_chart(filtered_df)
                 if project_fig:
-                    st.plotly_chart(project_fig, width='stretch', config={
+                    st.plotly_chart(project_fig, use_container_width=True, config={
                         'displayModeBar': True,
                         'modeBarButtonsToAdd': ['toImage'],
                         'toImageButtonOptions': {
@@ -1363,74 +1363,86 @@ def render_executive_dashboard(exec_metrics, df):
         </style>
     """, unsafe_allow_html=True)
 
-    # Top row: 4 key metrics
+    # Top row: 4 key metrics - High-end MetaFlex style
     col1, sp1, col2, sp2, col3, sp3, col4 = st.columns([1, 0.1, 1, 0.1, 1, 0.1, 1])
 
     with col1:
         st.markdown(f"""
             <div style='
-                background: #fafbfc;
-                padding: 28px 36px;
+                background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
+                padding: 32px 36px;
                 border-radius: 16px;
-                border: 1px solid #e5e7eb;
-                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+                border-left: 4px solid #d17a6f;
+                border-top: 1px solid #e5e7eb;
+                border-right: 1px solid #e5e7eb;
+                border-bottom: 1px solid #e5e7eb;
+                box-shadow: 0 4px 12px rgba(209, 122, 111, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
                 text-align: center;
                 transition: all 0.3s ease;
                 position: relative;
             '>
-                <p style='margin: 0 0 12px 0; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #9ca3af;'>OPEN TASKS</p>
-                <h2 style='margin: 0; font-size: 2.8rem; font-weight: 700; color: #0a4b4b; line-height: 1;'>{exec_metrics["total_open"]}</h2>
+                <p style='margin: 0 0 14px 0; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #d17a6f;'>OPEN TASKS</p>
+                <h2 style='margin: 0; font-size: 2.8rem; font-weight: 700; background: linear-gradient(135deg, #d17a6f 0%, #e89a8f 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1;'>{exec_metrics["total_open"]}</h2>
             </div>
         """, unsafe_allow_html=True)
 
     with col2:
         st.markdown(f"""
             <div style='
-                background: #fafbfc;
-                padding: 28px 36px;
+                background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
+                padding: 32px 36px;
                 border-radius: 16px;
-                border: 1px solid #e5e7eb;
-                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+                border-left: 4px solid #e8b968;
+                border-top: 1px solid #e5e7eb;
+                border-right: 1px solid #e5e7eb;
+                border-bottom: 1px solid #e5e7eb;
+                box-shadow: 0 4px 12px rgba(232, 185, 104, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
                 text-align: center;
                 transition: all 0.3s ease;
                 position: relative;
             '>
-                <p style='margin: 0 0 12px 0; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #9ca3af;'>IN PROGRESS</p>
-                <h2 style='margin: 0; font-size: 2.8rem; font-weight: 700; color: #0a4b4b; line-height: 1;'>{exec_metrics["total_in_progress"]}</h2>
+                <p style='margin: 0 0 14px 0; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #d4a145;'>IN PROGRESS</p>
+                <h2 style='margin: 0; font-size: 2.8rem; font-weight: 700; background: linear-gradient(135deg, #d4a145 0%, #e8b968 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1;'>{exec_metrics["total_in_progress"]}</h2>
             </div>
         """, unsafe_allow_html=True)
 
     with col3:
         st.markdown(f"""
             <div style='
-                background: #fafbfc;
-                padding: 28px 36px;
+                background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
+                padding: 32px 36px;
                 border-radius: 16px;
-                border: 1px solid #e5e7eb;
-                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+                border-left: 4px solid #4d7a40;
+                border-top: 1px solid #e5e7eb;
+                border-right: 1px solid #e5e7eb;
+                border-bottom: 1px solid #e5e7eb;
+                box-shadow: 0 4px 12px rgba(77, 122, 64, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
                 text-align: center;
                 transition: all 0.3s ease;
                 position: relative;
             '>
-                <p style='margin: 0 0 12px 0; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #9ca3af;'>COMPLETE</p>
-                <h2 style='margin: 0; font-size: 2.8rem; font-weight: 700; color: #0a4b4b; line-height: 1;'>{exec_metrics["total_complete"]}</h2>
+                <p style='margin: 0 0 14px 0; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #4d7a40;'>COMPLETE</p>
+                <h2 style='margin: 0; font-size: 2.8rem; font-weight: 700; background: linear-gradient(135deg, #4d7a40 0%, #5d9050 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1;'>{exec_metrics["total_complete"]}</h2>
             </div>
         """, unsafe_allow_html=True)
 
     with col4:
         st.markdown(f"""
             <div style='
-                background: #fafbfc;
-                padding: 28px 36px;
+                background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
+                padding: 32px 36px;
                 border-radius: 16px;
-                border: 1px solid #e5e7eb;
-                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+                border-left: 4px solid #7a9900;
+                border-top: 1px solid #e5e7eb;
+                border-right: 1px solid #e5e7eb;
+                border-bottom: 1px solid #e5e7eb;
+                box-shadow: 0 4px 12px rgba(122, 153, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
                 text-align: center;
                 transition: all 0.3s ease;
                 position: relative;
             '>
-                <p style='margin: 0 0 12px 0; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #9ca3af;'>COMPLETION RATE</p>
-                <h2 style='margin: 0; font-size: 2.8rem; font-weight: 700; color: #0a4b4b; line-height: 1;'>{exec_metrics["completion_rate"]}%</h2>
+                <p style='margin: 0 0 14px 0; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #7a9900;'>COMPLETION RATE</p>
+                <h2 style='margin: 0; font-size: 2.8rem; font-weight: 700; background: linear-gradient(135deg, #7a9900 0%, #8fb310 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1;'>{exec_metrics["completion_rate"]}%</h2>
             </div>
         """, unsafe_allow_html=True)
 
@@ -1465,12 +1477,6 @@ def show_dashboard():
     if not user_name:
         st.warning("Please log in to view the dashboard.")
         st.stop()
-
-    # Get first name for greeting
-    first_name = user_name.split()[0] if user_name else "User"
-
-    # Standardized header
-    render_page_header(f"Welcome back, {first_name}", "Executive Dashboard - Track and manage tasks across all projects")
 
     # Load data from Google Sheet
     with st.spinner("Loading dashboard data..."):
@@ -1528,9 +1534,6 @@ def show_dashboard():
             st.error(f"Cannot filter tasks: No assignee column found. Available columns: {', '.join(df.columns.tolist())}")
             return
         kpis = calculate_kpis(filtered_df, user_name, is_personal=True)
-
-    # Section: Analytics Dashboard
-    st.markdown("<div style='margin-top: 40px;'></div>", unsafe_allow_html=True)
 
     # Render KPIs based on user type
     if is_tea:
