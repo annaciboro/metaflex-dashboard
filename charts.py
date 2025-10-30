@@ -345,8 +345,8 @@ def create_team_completion_donut(open_tasks, working_tasks, done_tasks):
         st.info("No tasks to display in chart.")
         return None
 
-    # Muted coral, amber, forest colors
-    colors = ['#d17a6f', '#e8b968', '#4d7a40']  # Coral (not started), Amber (in progress), Forest (completed)
+    # Sophisticated, subdued colors - muted and elegant
+    colors = ['#c9aea6', '#d4c5a9', '#a8b89f']  # Soft rose, warm beige, sage green
 
     # Create donut chart with percentages on slices
     fig = go.Figure(data=[go.Pie(

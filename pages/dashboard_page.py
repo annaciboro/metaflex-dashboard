@@ -385,7 +385,7 @@ def calculate_kpis(df, user_name, is_personal=False):
 
 def render_kpi_section(kpis, section_label=""):
     """
-    Render KPI metrics in premium dark SaaS-style cards with MetaFlex branding
+    Render KPI metrics in elegant, refined cards with subtle MetaFlex branding
     """
     # Add edge spacers for more breathing room
     edge_spacer_left, col1, spacer1, col2, spacer2, col3, edge_spacer_right = st.columns([0.2, 1, 0.1, 1, 0.1, 1, 0.2])
@@ -393,30 +393,29 @@ def render_kpi_section(kpis, section_label=""):
     with col1:
         st.markdown(f"""
             <div class='kpi-card' style='
-                background: linear-gradient(135deg, #0a2f2f 0%, #0d3a3a 100%);
+                background: linear-gradient(135deg, #fafbfc 0%, #f5f7f9 100%);
                 padding: 32px 48px;
-                border-radius: 16px;
-                border: 3px solid #2d5016;
-                box-shadow: 0 0 20px rgba(212, 255, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.4);
-                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                border-radius: 12px;
+                border-left: 3px solid #0a4b4b;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+                transition: all 0.2s ease;
                 text-align: center;
             '>
                 <p style='
                     margin: 0 0 16px 0;
-                    font-size: 0.75rem;
-                    font-weight: 600;
+                    font-size: 0.7rem;
+                    font-weight: 500;
                     text-transform: uppercase;
-                    letter-spacing: 0.05em;
-                    color: #e8f5e9;
-                    opacity: 0.8;
+                    letter-spacing: 0.1em;
+                    color: #6b7280;
                 '>MY OPEN TASKS</p>
                 <h2 style='
                     margin: 0;
-                    font-size: 3.5rem;
-                    font-weight: 900;
-                    color: #d4ff00;
+                    font-size: 2.75rem;
+                    font-weight: 300;
+                    color: #1f2937;
                     line-height: 1;
-                    text-shadow: 0 0 10px rgba(212, 255, 0, 0.5);
+                    letter-spacing: -0.02em;
                 '>{kpis["my_open_tasks"]}</h2>
             </div>
         """, unsafe_allow_html=True)
@@ -424,30 +423,29 @@ def render_kpi_section(kpis, section_label=""):
     with col2:
         st.markdown(f"""
             <div class='kpi-card' style='
-                background: linear-gradient(135deg, #0a2f2f 0%, #0d3a3a 100%);
+                background: linear-gradient(135deg, #fafbfc 0%, #f5f7f9 100%);
                 padding: 32px 48px;
-                border-radius: 16px;
-                border: 3px solid #2d5016;
-                box-shadow: 0 0 20px rgba(212, 255, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.4);
-                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                border-radius: 12px;
+                border-left: 3px solid #0a4b4b;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+                transition: all 0.2s ease;
                 text-align: center;
             '>
                 <p style='
                     margin: 0 0 16px 0;
-                    font-size: 0.75rem;
-                    font-weight: 600;
+                    font-size: 0.7rem;
+                    font-weight: 500;
                     text-transform: uppercase;
-                    letter-spacing: 0.05em;
-                    color: #e8f5e9;
-                    opacity: 0.8;
+                    letter-spacing: 0.1em;
+                    color: #6b7280;
                 '>TEAM OPEN TASKS</p>
                 <h2 style='
                     margin: 0;
-                    font-size: 3.5rem;
-                    font-weight: 900;
-                    color: #d4ff00;
+                    font-size: 2.75rem;
+                    font-weight: 300;
+                    color: #1f2937;
                     line-height: 1;
-                    text-shadow: 0 0 10px rgba(212, 255, 0, 0.5);
+                    letter-spacing: -0.02em;
                 '>{kpis["team_open_tasks"]}</h2>
             </div>
         """, unsafe_allow_html=True)
@@ -455,37 +453,36 @@ def render_kpi_section(kpis, section_label=""):
     with col3:
         st.markdown(f"""
             <div class='kpi-card' style='
-                background: linear-gradient(135deg, #0a2f2f 0%, #0d3a3a 100%);
+                background: linear-gradient(135deg, #fafbfc 0%, #f5f7f9 100%);
                 padding: 32px 48px;
-                border-radius: 16px;
-                border: 3px solid #2d5016;
-                box-shadow: 0 0 20px rgba(212, 255, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.4);
-                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                border-radius: 12px;
+                border-left: 3px solid #7a9900;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+                transition: all 0.2s ease;
                 text-align: center;
             '>
                 <p style='
                     margin: 0 0 16px 0;
-                    font-size: 0.75rem;
-                    font-weight: 600;
+                    font-size: 0.7rem;
+                    font-weight: 500;
                     text-transform: uppercase;
-                    letter-spacing: 0.05em;
-                    color: #e8f5e9;
-                    opacity: 0.8;
+                    letter-spacing: 0.1em;
+                    color: #6b7280;
                 '>ACTIVE PROJECTS</p>
                 <h2 style='
                     margin: 0;
-                    font-size: 3.5rem;
-                    font-weight: 900;
-                    color: #d4ff00;
+                    font-size: 2.75rem;
+                    font-weight: 300;
+                    color: #1f2937;
                     line-height: 1;
-                    text-shadow: 0 0 10px rgba(212, 255, 0, 0.5);
+                    letter-spacing: -0.02em;
                 '>{kpis["active_projects"]}</h2>
             </div>
         """, unsafe_allow_html=True)
 
 def render_personal_kpi_section(kpis):
     """
-    Render KPI metrics for personal users with dark theme (only My Open Tasks and Active Projects)
+    Render KPI metrics for personal users with elegant light theme (only My Open Tasks and Active Projects)
     """
     # Add edge spacers and only 2 columns
     edge_spacer_left, col1, spacer1, col2, edge_spacer_right = st.columns([0.5, 1, 0.2, 1, 0.5])
@@ -493,30 +490,29 @@ def render_personal_kpi_section(kpis):
     with col1:
         st.markdown(f"""
             <div class='kpi-card' style='
-                background: linear-gradient(135deg, #0a2f2f 0%, #0d3a3a 100%);
+                background: linear-gradient(135deg, #fafbfc 0%, #f5f7f9 100%);
                 padding: 32px 48px;
-                border-radius: 16px;
-                border: 3px solid #2d5016;
-                box-shadow: 0 0 20px rgba(212, 255, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.4);
-                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                border-radius: 12px;
+                border-left: 3px solid #0a4b4b;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+                transition: all 0.2s ease;
                 text-align: center;
             '>
                 <p style='
                     margin: 0 0 16px 0;
-                    font-size: 0.75rem;
-                    font-weight: 600;
+                    font-size: 0.7rem;
+                    font-weight: 500;
                     text-transform: uppercase;
-                    letter-spacing: 0.05em;
-                    color: #e8f5e9;
-                    opacity: 0.8;
+                    letter-spacing: 0.1em;
+                    color: #6b7280;
                 '>MY OPEN TASKS</p>
                 <h2 style='
                     margin: 0;
-                    font-size: 3.5rem;
-                    font-weight: 900;
-                    color: #d4ff00;
+                    font-size: 2.75rem;
+                    font-weight: 300;
+                    color: #1f2937;
                     line-height: 1;
-                    text-shadow: 0 0 10px rgba(212, 255, 0, 0.5);
+                    letter-spacing: -0.02em;
                 '>{kpis["my_open_tasks"]}</h2>
             </div>
         """, unsafe_allow_html=True)
@@ -524,30 +520,29 @@ def render_personal_kpi_section(kpis):
     with col2:
         st.markdown(f"""
             <div class='kpi-card' style='
-                background: linear-gradient(135deg, #0a2f2f 0%, #0d3a3a 100%);
+                background: linear-gradient(135deg, #fafbfc 0%, #f5f7f9 100%);
                 padding: 32px 48px;
-                border-radius: 16px;
-                border: 3px solid #2d5016;
-                box-shadow: 0 0 20px rgba(212, 255, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.4);
-                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                border-radius: 12px;
+                border-left: 3px solid #7a9900;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+                transition: all 0.2s ease;
                 text-align: center;
             '>
                 <p style='
                     margin: 0 0 16px 0;
-                    font-size: 0.75rem;
-                    font-weight: 600;
+                    font-size: 0.7rem;
+                    font-weight: 500;
                     text-transform: uppercase;
-                    letter-spacing: 0.05em;
-                    color: #e8f5e9;
-                    opacity: 0.8;
+                    letter-spacing: 0.1em;
+                    color: #6b7280;
                 '>ACTIVE PROJECTS</p>
                 <h2 style='
                     margin: 0;
-                    font-size: 3.5rem;
-                    font-weight: 900;
-                    color: #d4ff00;
+                    font-size: 2.75rem;
+                    font-weight: 300;
+                    color: #1f2937;
                     line-height: 1;
-                    text-shadow: 0 0 10px rgba(212, 255, 0, 0.5);
+                    letter-spacing: -0.02em;
                 '>{kpis["active_projects"]}</h2>
             </div>
         """, unsafe_allow_html=True)
@@ -685,7 +680,7 @@ def render_charts_section(kpis, filtered_df, show_project_chart=True):
                         }
                     })
 
-def render_tasks_table(filtered_df, limit=10, hide_project_column=False):
+def render_tasks_table(filtered_df, limit=10, hide_project_column=False, show_transcript_checked=False):
     """
     Render tasks table with color-coded progress bars
 
@@ -693,18 +688,20 @@ def render_tasks_table(filtered_df, limit=10, hide_project_column=False):
         filtered_df: DataFrame to display
         limit: Maximum number of rows to show
         hide_project_column: If True, don't show the Project column (for project-specific views)
+        show_transcript_checked: If True, show the Transcript ID column
     """
     if not filtered_df.empty:
         # Select and order columns for display using helper function
         display_columns = []
 
-        # Try different variations of Transcript ID column name
+        # Only add Transcript ID column if "Show Transcript" is checked (passed from parent)
         transcript_col_found = False
-        for transcript_name in ["Transcript ID", "Transcript Number", "Transcript #", "ID", "Transcript"]:
-            if has_column(filtered_df, transcript_name):
-                display_columns.append(get_column(filtered_df, transcript_name))
-                transcript_col_found = True
-                break
+        if show_transcript_checked:
+            for transcript_name in ["Transcript ID", "Transcript Number", "Transcript #", "ID", "Transcript"]:
+                if has_column(filtered_df, transcript_name):
+                    display_columns.append(get_column(filtered_df, transcript_name))
+                    transcript_col_found = True
+                    break
 
         # Add other columns (including Date Assigned, Notes, excluding Project if hide_project_column is True)
         # Note: We'll combine Status and Progress % into a single column, so we'll handle them separately
@@ -773,40 +770,36 @@ def render_tasks_table(filtered_df, limit=10, hide_project_column=False):
                 )
             }
 
-            # Combine Status and Progress % into a single column with automatic color coding
+            # Combine Status and Progress % into a single column with dropdown selector
             if "Status" in clean_table_df.columns and "Progress %" in clean_table_df.columns:
-                # Create combined Status column with color coding based on status
-                def create_status_display(status, progress):
+                # Normalize status values to match dropdown options
+                def normalize_status(status):
                     status_str = str(status).strip().lower()
 
-                    # Determine background color based on status
-                    # Open status = light coral
+                    # Map various status values to our three standard options
                     if any(word in status_str for word in ['open', 'not started', 'to do', 'todo']):
-                        return f"🟥 {status}"  # Light coral indicator
-                    # Working on it / In Progress = pale amber
+                        return "🟥 Open"
                     elif any(word in status_str for word in ['working', 'in progress', 'started', 'ongoing']):
-                        return f"🟨 {status}"  # Pale amber indicator
-                    # Done / Complete = subtle green
+                        return "🟨 In Progress"
                     elif any(word in status_str for word in ['done', 'complete', 'finished', 'closed']):
-                        return f"🟩 {status}"  # Subtle green indicator
+                        return "🟩 Done"
                     else:
-                        # Default - no special color
-                        return f"⬜ {status}"
+                        # Default to Open if status is unrecognized
+                        return "🟥 Open"
 
-                status_displays = []
-                for idx, row in clean_table_df.iterrows():
-                    status = row["Status"] if "Status" in row else ""
-                    progress = row["Progress %"] if "Progress %" in row else 0
-                    status_displays.append(create_status_display(status, progress))
+                # Apply normalization to Status column
+                clean_table_df["Status"] = clean_table_df["Status"].apply(normalize_status)
 
-                clean_table_df["Status"] = status_displays
                 # Remove the Progress % column as it's now combined with Status
                 clean_table_df = clean_table_df.drop(columns=["Progress %"])
 
-                column_config["Status"] = st.column_config.TextColumn(
+                # Configure Status as a dropdown with the three color-coded options
+                column_config["Status"] = st.column_config.SelectboxColumn(
                     "Status",
                     help="Task status (🟥 Open, 🟨 In Progress, 🟩 Done)",
-                    width="medium"
+                    width="medium",
+                    options=["🟥 Open", "🟨 In Progress", "🟩 Done"],
+                    required=True
                 )
             elif "Progress %" in clean_table_df.columns:
                 # Fallback: If only Progress % exists (no Status column)
@@ -976,6 +969,35 @@ def render_tasks_table(filtered_df, limit=10, hide_project_column=False):
                 key=f"project_table_{hash(str(filtered_df.iloc[0].to_dict()) if len(filtered_df) > 0 else 'empty')}"
             )
 
+            # Custom button styling - soft grey with dark teal text, rounded corners, translucent
+            st.markdown("""
+                <style>
+                /* Target all Streamlit buttons more aggressively */
+                div[data-testid="column"] button,
+                div[data-testid="column"] button[kind="primary"],
+                div[data-testid="column"] button[kind="secondary"],
+                .stButton > button,
+                .stDownloadButton > button {
+                    background: rgba(229, 231, 235, 0.7) !important;
+                    color: #0a4b4b !important;
+                    border: 1px solid rgba(10, 75, 75, 0.2) !important;
+                    border-radius: 12px !important;
+                    font-weight: 500 !important;
+                    transition: all 0.2s ease !important;
+                }
+
+                div[data-testid="column"] button:hover,
+                div[data-testid="column"] button[kind="primary"]:hover,
+                div[data-testid="column"] button[kind="secondary"]:hover,
+                .stButton > button:hover,
+                .stDownloadButton > button:hover {
+                    background: rgba(229, 231, 235, 0.9) !important;
+                    border: 1px solid rgba(10, 75, 75, 0.4) !important;
+                    box-shadow: 0 2px 8px rgba(10, 75, 75, 0.15) !important;
+                }
+                </style>
+            """, unsafe_allow_html=True)
+
             # Save and Export buttons - Centered
             _, save_col, export_col, _ = st.columns([1.5, 1, 1, 1.5])
             with save_col:
@@ -991,7 +1013,14 @@ def render_tasks_table(filtered_df, limit=10, hide_project_column=False):
                                     for idx in filtered_df.head(limit).index:
                                         row_num = list(filtered_df.head(limit).index).index(idx)
                                         if row_num < len(edited_df):
-                                            filtered_df.loc[idx, orig_col] = edited_df.iloc[row_num][clean_col]
+                                            value = edited_df.iloc[row_num][clean_col]
+
+                                            # Special handling for Status column: strip emoji prefix
+                                            if clean_col == "Status" and isinstance(value, str):
+                                                # Remove emoji prefix (e.g., "🟥 Open" → "Open")
+                                                value = value.replace("🟥 ", "").replace("🟨 ", "").replace("🟩 ", "").strip()
+
+                                            filtered_df.loc[idx, orig_col] = value
 
                             # Call update function (you'll need to pass the full df and update it)
                             success = update_google_sheet(filtered_df)
@@ -1633,54 +1662,49 @@ def show_dashboard():
             '>BREAKDOWN OF TASKS BY PROJECT</h2>
         """, unsafe_allow_html=True)
 
-        # Add archive filter with elegant styling
-        # Wrap checkbox in a container to ensure clickability
-        st.markdown('<div style="position: relative; z-index: 999;">', unsafe_allow_html=True)
+        # Add archive filter with calm styling
         show_archived_projects = st.checkbox("Include archived", value=False, key="show_archived_projects")
-        st.markdown('</div>', unsafe_allow_html=True)
 
-        # Style checkbox with green neon color
+        # Add "Show Transcript #" checkbox right below
+        show_transcript_global = st.checkbox("Show Transcript #", value=False, key="show_transcript_global")
+
+        # Style checkboxes with calm, subdued dark teal - minimal interference
         st.markdown("""
             <style>
-            /* Ensure checkbox is clickable - very aggressive */
-            div[data-testid="stCheckbox"],
-            div[data-testid="stCheckbox"] *,
-            div[data-testid="stCheckbox"] input,
-            div[data-testid="stCheckbox"] label,
-            div[data-testid="stCheckbox"] label *,
-            div[data-testid="stCheckbox"] div {
-                pointer-events: auto !important;
-                cursor: pointer !important;
-                position: relative !important;
-                z-index: 1000 !important;
+            /* Style checkbox label text - calm and subdued */
+            div[data-testid="stCheckbox"] label p {
+                color: #5a6c7d !important;
+                font-size: 0.9rem !important;
+                font-weight: 400 !important;
             }
 
-            /* Remove ALL background highlighting from checkbox label text */
-            div[data-testid="stCheckbox"] label,
-            div[data-testid="stCheckbox"] label *,
-            div[data-testid="stCheckbox"] label span,
-            div[data-testid="stCheckbox"] label span[data-testid="stMarkdownContainer"],
-            div[data-testid="stCheckbox"] label span[data-testid="stMarkdownContainer"] *,
-            div[data-testid="stCheckbox"] label p,
-            div[data-testid="stCheckbox"] span,
-            div[data-testid="stCheckbox"] p {
-                background: transparent !important;
-                background-color: transparent !important;
-                color: #2d3748 !important;
-                text-shadow: none !important;
-                box-shadow: none !important;
+            /* Unchecked checkbox - soft grey with subtle teal border */
+            div[data-testid="stCheckbox"] input[type="checkbox"] ~ span div svg rect {
+                fill: rgba(229, 231, 235, 0.5) !important;
+                stroke: rgba(10, 75, 75, 0.3) !important;
+                stroke-width: 1.5 !important;
             }
 
-            /* Override Streamlit's default red checkbox color to green when CHECKED */
-            div[data-testid="stCheckbox"] input[type="checkbox"]:checked ~ div svg rect {
-                fill: #7a9900 !important;
-                stroke: #7a9900 !important;
+            /* Checked checkbox - calm dark teal */
+            div[data-testid="stCheckbox"] input[type="checkbox"]:checked ~ span div svg rect {
+                fill: #0a4b4b !important;
+                stroke: #0a4b4b !important;
             }
 
             /* Make checkmark white when checked */
-            div[data-testid="stCheckbox"] input[type="checkbox"]:checked ~ div svg path {
+            div[data-testid="stCheckbox"] input[type="checkbox"]:checked ~ span div svg path {
                 fill: #ffffff !important;
                 stroke: #ffffff !important;
+                stroke-width: 2 !important;
+            }
+
+            /* Hover effect - subtle */
+            div[data-testid="stCheckbox"]:hover input[type="checkbox"] ~ span div svg rect {
+                stroke: rgba(10, 75, 75, 0.5) !important;
+            }
+
+            div[data-testid="stCheckbox"]:hover input[type="checkbox"]:checked ~ span div svg rect {
+                fill: #0d5a5a !important;
             }
             </style>
         """, unsafe_allow_html=True)
@@ -1798,7 +1822,7 @@ def show_dashboard():
                     if not project_df.empty:
                         # Render STATIC read-only table for display
                         # Hide Project column since we're already showing project-specific tables
-                        render_tasks_table(project_df, limit=len(project_df), hide_project_column=True)
+                        render_tasks_table(project_df, limit=len(project_df), hide_project_column=True, show_transcript_checked=show_transcript_global)
 
                     # Elegant spacing between project sections
                     if idx < len(unique_projects) - 1:  # Don't add extra space after last project
