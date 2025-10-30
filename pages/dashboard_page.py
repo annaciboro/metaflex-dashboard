@@ -1127,22 +1127,15 @@ def render_editable_task_grid(df, current_user, is_tea=False, key_prefix="", sho
     filtered_df = visible_df.copy()
 
     if key_prefix == "":
-        # Add archive filter checkbox
-        show_archived = st.checkbox("Show archived tasks (Status: Done)", value=False, key=f"{key_prefix}_show_archived")
-
-        # Apply archive filter
-        if not show_archived and has_column(filtered_df, "Status"):
-            status_col = get_column(filtered_df, "Status")
-            filtered_df = filtered_df[~filtered_df[status_col].str.strip().str.lower().isin(['done', 'complete', 'completed'])]
-
+        # NOTE: Archive filtering is now handled in all_tasks_page.py
+        # Removed duplicate checkbox to avoid double checkboxes
         st.markdown("<br>", unsafe_allow_html=True)
 
         # Add filter dropdowns and search box in 3-column layout
-        col1, col2, col3 = st.columns(3)
+        col1, col2, col3 = st.columns([2, 2, 1])
 
-        # Build project and person filter options
+        # Build project filter options
         project_options = ["All Projects"]
-        person_options = ["All People", "Téa", "Jess", "Justin", "Megan"]
 
         if has_column(filtered_df, "Project"):
             project_col = get_column(filtered_df, "Project")
@@ -1156,16 +1149,22 @@ def render_editable_task_grid(df, current_user, is_tea=False, key_prefix="", sho
             search_term = st.text_input("🔎 Search Tasks", placeholder="Search by keywords...", key=f"{key_prefix}_search_tasks")
 
         with col3:
-            person_filter = st.selectbox("🔍 Filter by Person", options=person_options, key=f"{key_prefix}_person_filter")
+            st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
+            clear_filters = st.button("Clear Filters", key=f"{key_prefix}_clear_filters")
+
+        # Handle clear filters
+        if clear_filters:
+            st.session_state[f"{key_prefix}_project_filter"] = "All Projects"
+            st.session_state[f"{key_prefix}_search_tasks"] = ""
+            st.rerun()
+
+        # Check if filters are active
+        filters_active = project_filter != "All Projects" or (search_term and search_term.strip() != "")
 
         # Apply filters
         if project_filter != "All Projects" and has_column(filtered_df, "Project"):
             project_col = get_column(filtered_df, "Project")
             filtered_df = filtered_df[filtered_df[project_col] == project_filter]
-
-        if person_filter != "All People" and has_column(filtered_df, "Person"):
-            person_col = get_column(filtered_df, "Person")
-            filtered_df = filtered_df[filtered_df[person_col].str.contains(person_filter, case=False, na=False)]
 
         # Apply keyword search
         if search_term:
@@ -1174,6 +1173,31 @@ def render_editable_task_grid(df, current_user, is_tea=False, key_prefix="", sho
                 axis=1
             )
             filtered_df = filtered_df[search_mask]
+
+        # Show filter indicator if filters are active
+        if filters_active:
+            active_filters = []
+            if project_filter != "All Projects":
+                active_filters.append(f"Project: {project_filter}")
+            if search_term and search_term.strip() != "":
+                active_filters.append(f"Search: '{search_term}'")
+
+            filter_text = " • ".join(active_filters)
+            st.markdown(f"""
+                <div style='
+                    background: linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 100%);
+                    border-left: 4px solid #0a4b4b;
+                    padding: 12px 16px;
+                    border-radius: 8px;
+                    margin: 16px 0;
+                    font-size: 0.9rem;
+                    color: #0a4b4b;
+                    font-weight: 600;
+                    box-shadow: 0 2px 4px rgba(10, 75, 75, 0.1);
+                '>
+                    🔍 Active Filters: {filter_text} • Showing {len(filtered_df)} of {len(visible_df)} tasks
+                </div>
+            """, unsafe_allow_html=True)
 
         st.markdown("<br>", unsafe_allow_html=True)
 

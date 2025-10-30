@@ -36,6 +36,17 @@ def show_tasks():
         '>MY TASKS</h2>
     """, unsafe_allow_html=True)
 
+    # Add control checkboxes in a row
+    ctrl_col1, ctrl_col2, ctrl_col3 = st.columns([1, 1, 3])
+
+    with ctrl_col1:
+        show_archived = st.checkbox("Show Archived", value=False, key="show_archived_my_tasks")
+
+    with ctrl_col2:
+        show_transcript_id = st.checkbox("Show Transcript #", value=False, key="show_transcript_my_tasks")
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
     # Load data from Google Sheet
     with st.spinner("Loading your tasks..."):
         df = load_google_sheet()
@@ -63,8 +74,8 @@ def show_tasks():
     else:
         personal_df = pd.DataFrame()
 
-    # Filter to show only OPEN tasks (exclude Done/Complete/Closed)
-    if has_column(personal_df, "Status"):
+    # Filter to show only OPEN tasks (exclude Done/Complete/Closed) unless "Show Archived" is checked
+    if has_column(personal_df, "Status") and not show_archived:
         status_col = get_column(personal_df, "Status")
         personal_df = personal_df[~personal_df[status_col].str.lower().isin(['done', 'complete', 'completed', 'closed'])]
 
@@ -272,6 +283,7 @@ def show_tasks():
                 new_date_added = st.text_input("Date Added", value=datetime.date.today().strftime("%m/%d/%Y"), help="Format: MM/DD/YYYY")
                 # All users can set status to "Done"
                 new_status = st.selectbox("Status", ["Open", "Working On It", "Done"])
+                new_priority = st.selectbox("Priority", ["High", "Medium", "Low"], index=1)  # Default to Medium
                 new_due_date = st.text_input("Due Date", help="Format: MM/DD/YYYY")
 
             st.markdown("<br>", unsafe_allow_html=True)
@@ -320,16 +332,21 @@ def show_tasks():
                     sheet_id = "1U_9CEbWHWMQVS2C20O0fpOG5gVxoYjB7BmppKlTHIzc"
                     sheet = client.open_by_key(sheet_id).worksheet("Otter_Tasks")
 
-                    # Append new row with all fields including Transcript ID and Date Added
+                    # Append new row with all fields including Transcript ID, Date Added, and Priority
+                    # Column order: Transcript, Date Assigned, Person, Task, Project, Status, Due Date, Notes, Progress %, (empty cols), Priority (col 14)
+                    # For append_row, we need to specify values up to column 14
                     new_row = [
-                        new_transcript_id,
-                        new_task,
-                        user_name,
-                        new_status,
-                        new_project,
-                        new_due_date,
-                        new_progress,
-                        new_date_added
+                        new_transcript_id,      # Col 1: Transcript
+                        new_date_added,         # Col 2: Date Assigned
+                        user_name,              # Col 3: Person
+                        new_task,               # Col 4: Task
+                        new_project,            # Col 5: Project
+                        new_status,             # Col 6: Status
+                        new_due_date,           # Col 7: Due Date
+                        "",                     # Col 8: Notes (empty)
+                        new_progress,           # Col 9: Progress %
+                        "", "", "", "",         # Cols 10-13: Empty
+                        new_priority            # Col 14: Priority
                     ]
                     sheet.append_row(new_row)
 
@@ -346,19 +363,27 @@ def show_tasks():
     # Create a clean display DataFrame with all tasks - including row IDs
     display_columns = []
 
-    # Add Transcript ID if it exists
-    if has_column(personal_df, "Transcript ID"):
+    # Add Transcript ID if it exists and checkbox is checked
+    if show_transcript_id and has_column(personal_df, "Transcript ID"):
         display_columns.append(get_column(personal_df, "Transcript ID"))
 
-    # Simplified columns for Tea: Task, Date Assigned, Due Date, Notes
+    # Simplified columns for Tea: Task, Date Assigned, Due Date, Notes, Priority
     if is_tea:
-        cols_to_display = ["Task", "Date Assigned", "Due Date", "Notes"]
+        cols_to_display = ["Task", "Priority", "Date Assigned", "Due Date", "Notes"]
     else:
-        cols_to_display = ["Task", "Status", "Project", "Date Assigned", "Due Date", "Notes"]
+        cols_to_display = ["Task", "Status", "Priority", "Project", "Date Assigned", "Due Date", "Notes"]
+
+    # Add Priority column if it doesn't exist in the dataframe
+    if not has_column(personal_df, "Priority"):
+        # Add Priority column with default value "Medium"
+        personal_df["Priority"] = "Medium"
 
     for col in cols_to_display:
         if has_column(personal_df, col):
             display_columns.append(get_column(personal_df, col))
+        elif col == "Priority" and not is_tea:
+            # Add Priority column even if it doesn't exist in the sheet
+            display_columns.append("Priority")
 
     if display_columns:
         table_df = personal_df[display_columns].copy()
@@ -402,6 +427,13 @@ def show_tasks():
                     width="large",
                     help="Task description (editable)"
                 ),
+                "Priority": st.column_config.SelectboxColumn(
+                    "Priority",
+                    width="small",
+                    options=["High", "Medium", "Low"],
+                    required=True,
+                    help="Set task priority"
+                ),
                 "Date Assigned": st.column_config.TextColumn(
                     "Date Assigned",
                     width="small",
@@ -420,12 +452,6 @@ def show_tasks():
             }
         else:
             column_config = {
-                "Transcript ID": st.column_config.TextColumn(
-                    "ID",
-                    width="small",
-                    help="Transcript/Row ID",
-                    disabled=True  # Read-only
-                ),
                 "Task": st.column_config.TextColumn(
                     "Task",
                     width="large",
@@ -437,6 +463,13 @@ def show_tasks():
                     options=status_options,
                     required=True,
                     help="Change task status"
+                ),
+                "Priority": st.column_config.SelectboxColumn(
+                    "Priority",
+                    width="small",
+                    options=["High", "Medium", "Low"],
+                    required=True,
+                    help="Set task priority"
                 ),
                 "Project": st.column_config.TextColumn(
                     "Project",
@@ -459,9 +492,41 @@ def show_tasks():
                 )
             }
 
+            # Add Transcript ID column config only if checkbox is checked
+            if show_transcript_id:
+                column_config["Transcript ID"] = st.column_config.TextColumn(
+                    "ID",
+                    width="small",
+                    help="Transcript/Row ID",
+                    disabled=True  # Read-only
+                )
+
         # Add MetaFlex premium light theme styling for tables
         st.markdown("""
             <style>
+            /* Priority column color coding - per your specifications */
+            [data-testid="stDataFrame"] div[data-testid="column-Priority"] {
+                font-weight: 600 !important;
+            }
+
+            /* High priority - neon green */
+            [data-testid="stDataFrame"] div[data-testid="column-Priority"]:has(div:contains("High")) {
+                background-color: #39ff14 !important;
+                color: #064e3b !important;
+            }
+
+            /* Medium priority - medium green */
+            [data-testid="stDataFrame"] div[data-testid="column-Priority"]:has(div:contains("Medium")) {
+                background-color: #4ade80 !important;
+                color: #ffffff !important;
+            }
+
+            /* Low priority - dark teal */
+            [data-testid="stDataFrame"] div[data-testid="column-Priority"]:has(div:contains("Low")) {
+                background-color: #0a4b4b !important;
+                color: #ffffff !important;
+            }
+
             /* Premium SaaS light theme styling for dataframes AND data_editor */
             div[data-testid="stDataFrame"],
             div[data-testid="stDataFrame"] > div,
@@ -614,23 +679,38 @@ def show_tasks():
 
                 # Update changed rows
                 changes_made = False
+
+                # Column mapping to Google Sheets
+                # Based on sheet structure: Transcript, Date Assigned, Person, Task, Project, Status, Due Date, Notes, Progress %, Priority (col 14)
+                column_mapping = {
+                    "Transcript ID": 1,
+                    "Date Assigned": 2,
+                    "Person": 3,
+                    "Task": 4,
+                    "Project": 5,
+                    "Status": 6,
+                    "Due Date": 7,
+                    "Notes": 8,
+                    "Progress %": 9,
+                    "Priority": 14
+                }
+
                 for idx, row in edited_df.iterrows():
                     # Check if row was modified
                     if idx < len(clean_table_df):
                         original_row = clean_table_df.iloc[idx]
                         if not row.equals(original_row):
-                            # Find the row in Google Sheets by Transcript ID if available
-                            if "Transcript ID" in row and pd.notna(row["Transcript ID"]):
-                                # Update specific row by ID
-                                row_num = idx + 2  # +2 for header and 0-indexing
+                            # Find the row in Google Sheets
+                            row_num = idx + 2  # +2 for header and 0-indexing
 
-                                # Update each column
-                                for col_idx, col_name in enumerate(edited_df.columns):
-                                    if col_name != "Transcript ID":
-                                        cell_value = row[col_name]
-                                        sheet.update_cell(row_num, col_idx + 1, str(cell_value))
+                            # Update each column based on mapping
+                            for col_name in edited_df.columns:
+                                if col_name in column_mapping and col_name != "Transcript ID":
+                                    cell_value = row[col_name]
+                                    sheet_col = column_mapping[col_name]
+                                    sheet.update_cell(row_num, sheet_col, str(cell_value))
 
-                                changes_made = True
+                            changes_made = True
 
                 if changes_made:
                     st.success("✅ Changes saved successfully!")

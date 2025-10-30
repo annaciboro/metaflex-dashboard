@@ -477,3 +477,95 @@ def create_project_breakdown_chart(df):
     )
 
     return fig
+
+
+def create_tasks_by_user_chart(df):
+    """
+    Tasks by User chart - Premium horizontal bar chart showing task distribution by user
+    For Tea's view on All Tasks page
+    """
+    if df.empty:
+        st.info("No task data available.")
+        return None
+
+    # Find the assignee column
+    assignee_col = None
+    if has_column(df, "Assigned To"):
+        assignee_col = get_column(df, "Assigned To")
+    elif has_column(df, "Person"):
+        assignee_col = get_column(df, "Person")
+    elif has_column(df, "assignee"):
+        assignee_col = get_column(df, "assignee")
+
+    if not assignee_col:
+        st.info("No assignee data available.")
+        return None
+
+    # Count tasks by user
+    user_counts = df[assignee_col].str.strip().value_counts()
+
+    if user_counts.empty:
+        st.info("No user data to display.")
+        return None
+
+    # Sort by count descending for visual appeal
+    user_counts = user_counts.sort_values(ascending=True)  # Ascending for horizontal bar (bottom to top)
+
+    users = user_counts.index.tolist()
+    counts = user_counts.values
+
+    # Premium color palette - sophisticated teals and greens
+    user_colors = [
+        '#4d8787',  # Darker teal
+        '#6d9f9f',  # Medium teal
+        '#90b4b4',  # Light teal
+        '#a8c957',  # Muted lime
+        '#7a9900',  # Olive lime
+        '#4d7a40',  # Dark green
+    ]
+
+    # Assign colors cycling through the palette
+    bar_colors = [user_colors[i % len(user_colors)] for i in range(len(counts))]
+
+    # Create horizontal bar chart
+    fig = go.Figure(data=[go.Bar(
+        y=users,
+        x=counts,
+        orientation='h',
+        marker=dict(
+            color=bar_colors,
+            line=dict(color=MF_LIGHT['border'], width=1),
+            cornerradius=8
+        ),
+        text=[f'{count}' for count in counts],
+        textposition='outside',
+        textfont=dict(size=13, color=MF_LIGHT['text_dark'], family='-apple-system, sans-serif', weight=500),
+        hovertemplate='<b>%{y}</b><br>Tasks: %{x}<extra></extra>',
+        width=0.6
+    )])
+
+    fig.update_layout(
+        title=dict(
+            text='<b>Tasks by User</b>',
+            x=0.5,
+            xanchor='center',
+            font=dict(size=18, color=MF_LIGHT['text_dark'], family='-apple-system, sans-serif')
+        ),
+        height=400,
+        margin=dict(t=60, b=40, l=140, r=80),
+        paper_bgcolor=MF_LIGHT['bg_white'],
+        plot_bgcolor=MF_LIGHT['bg_light'],
+        xaxis=dict(
+            showgrid=True,
+            gridcolor='rgba(229, 231, 235, 0.6)',
+            title=dict(text='Number of Tasks', font=dict(size=12, color=MF_LIGHT['text_medium'])),
+            tickfont=dict(size=11, color=MF_LIGHT['text_medium']),
+            range=[0, max(counts) * 1.2]
+        ),
+        yaxis=dict(
+            title='',
+            tickfont=dict(size=12, color=MF_LIGHT['text_dark'])
+        )
+    )
+
+    return fig
