@@ -187,8 +187,8 @@ def create_task_age_analysis(df):
         ),
         height=400,
         margin=dict(t=60, b=40, l=60, r=60),
-        paper_bgcolor=MF_LIGHT['bg_dark'],
-        plot_bgcolor=MF_LIGHT['bg_surface'],
+        paper_bgcolor=MF_LIGHT['bg_white'],
+        plot_bgcolor=MF_LIGHT['bg_light'],
         xaxis=dict(
             title='',
             tickfont=dict(size=12, color=MF_LIGHT['text_light'])
@@ -237,8 +237,8 @@ def create_task_completion_velocity(exec_metrics):
         ),
         height=400,
         margin=dict(t=60, b=40, l=60, r=60),
-        paper_bgcolor=MF_LIGHT['bg_dark'],
-        plot_bgcolor=MF_LIGHT['bg_surface'],
+        paper_bgcolor=MF_LIGHT['bg_white'],
+        plot_bgcolor=MF_LIGHT['bg_light'],
         xaxis=dict(
             title='',
             tickfont=dict(size=12, color=MF_LIGHT['text_light']),
@@ -314,8 +314,8 @@ def create_project_health_dashboard(exec_metrics):
         ),
         height=400,
         margin=dict(t=60, b=40, l=140, r=60),
-        paper_bgcolor=MF_LIGHT['bg_dark'],
-        plot_bgcolor=MF_LIGHT['bg_surface'],
+        paper_bgcolor=MF_LIGHT['bg_white'],
+        plot_bgcolor=MF_LIGHT['bg_light'],
         xaxis=dict(
             showgrid=True,
             gridcolor='rgba(229, 231, 235, 0.6)',

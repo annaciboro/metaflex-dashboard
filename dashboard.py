@@ -518,7 +518,7 @@ with nav_container:
             for page_name in pages_list:
                 if page_name == "Logout":
                     st.markdown("---")  # Separator before logout
-                    if st.button("🚪 Logout", key="nav_logout", use_container_width=True):
+                    if st.button("Logout", key="nav_logout", use_container_width=True):
                         # Clear authentication-related session state
                         auth_keys = ['authentication_status', 'name', 'username', 'logout', 'login']
                         for key in auth_keys:
