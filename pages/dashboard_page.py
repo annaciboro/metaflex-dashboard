@@ -1249,56 +1249,93 @@ def render_project_editable_grid(df, full_df, current_user, is_tea, project_name
         st.info(f"No tasks found for {project_name}")
         return full_df
 
-    # Add MetaFlex green styling for AgGrid
+    # Add ENHANCED MetaFlex green styling for AgGrid - BEAUTIFUL!
     st.markdown("""
         <style>
-        /* MetaFlex green styling for AgGrid */
+        /* MetaFlex green styling for AgGrid - BEAUTIFUL THEME */
+        .ag-theme-streamlit {
+            background: linear-gradient(135deg, #f0f9f4 0%, #f5faf7 100%) !important;
+            border-radius: 12px !important;
+            border: 2px solid #4d7a40 !important;
+            box-shadow: 0 4px 12px rgba(77, 122, 64, 0.15), 0 2px 6px rgba(0, 0, 0, 0.08) !important;
+            padding: 4px !important;
+        }
+
+        /* Header with beautiful green gradient */
         .ag-theme-streamlit .ag-header {
             background: linear-gradient(135deg, #4d7a40 0%, #5a8f4a 100%) !important;
+            border-radius: 8px 8px 0 0 !important;
         }
 
         .ag-theme-streamlit .ag-header-cell {
             background: transparent !important;
             color: #ffffff !important;
-            font-weight: 600 !important;
-            border-bottom: 2px solid #d4ff00 !important;
+            font-weight: 700 !important;
+            font-size: 0.9rem !important;
+            border-bottom: 3px solid #d4ff00 !important;
+            padding: 12px 8px !important;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
         }
 
+        .ag-theme-streamlit .ag-header-cell-text {
+            color: #ffffff !important;
+        }
+
+        /* Body rows with alternating green tints */
         .ag-theme-streamlit .ag-row {
-            border-bottom: 1px solid rgba(77, 122, 64, 0.15) !important;
+            border-bottom: 1px solid rgba(77, 122, 64, 0.12) !important;
+            transition: all 0.2s ease !important;
         }
 
         .ag-theme-streamlit .ag-row-even {
-            background-color: rgba(77, 122, 64, 0.05) !important;
+            background-color: rgba(77, 122, 64, 0.08) !important;
         }
 
         .ag-theme-streamlit .ag-row-odd {
-            background-color: rgba(212, 255, 0, 0.03) !important;
+            background-color: rgba(212, 255, 0, 0.06) !important;
         }
 
         .ag-theme-streamlit .ag-row-hover {
-            background-color: rgba(77, 122, 64, 0.12) !important;
+            background-color: rgba(77, 122, 64, 0.18) !important;
+            transform: translateY(-1px) !important;
+            box-shadow: 0 2px 4px rgba(77, 122, 64, 0.1) !important;
         }
 
-        .ag-theme-streamlit {
-            background: linear-gradient(135deg, #f0f9f4 0%, #f5faf7 100%) !important;
+        /* Cell styling */
+        .ag-theme-streamlit .ag-cell {
+            border-right: 1px solid rgba(77, 122, 64, 0.08) !important;
+            padding: 10px 8px !important;
+            font-size: 0.9rem !important;
+            line-height: 1.4 !important;
+        }
+
+        /* Root element styling */
+        .ag-theme-streamlit .ag-root-wrapper {
             border-radius: 12px !important;
-            border: 2px solid #4d7a40 !important;
-            box-shadow: 0 2px 8px rgba(77, 122, 64, 0.1), 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+            overflow: hidden !important;
         }
 
         /* Highlight Progress Status column */
         .ag-header-cell.progress-status-header {
-            background-color: #fbbf24 !important;
-            font-weight: bold !important;
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%) !important;
+            font-weight: 800 !important;
         }
+
         .ag-cell[col-id="Progress Status"] {
-            background-color: rgba(251, 191, 36, 0.1) !important;
-            font-weight: 600 !important;
+            background-color: rgba(251, 191, 36, 0.12) !important;
+            font-weight: 700 !important;
             cursor: pointer !important;
+            font-size: 0.95rem !important;
         }
+
         .ag-cell[col-id="Progress Status"]:hover {
-            background-color: rgba(251, 191, 36, 0.2) !important;
+            background-color: rgba(251, 191, 36, 0.25) !important;
+        }
+
+        /* Make editable cells more obvious */
+        .ag-theme-streamlit .ag-cell-inline-editing {
+            background-color: rgba(212, 255, 0, 0.3) !important;
+            border: 2px solid #4d7a40 !important;
         }
         </style>
     """, unsafe_allow_html=True)
@@ -1369,6 +1406,7 @@ def render_project_editable_grid(df, full_df, current_user, is_tea, project_name
         gb.configure_column("Date Assigned", editable=True, width=120)
     if "Person" in display_df.columns:
         gb.configure_column("Person", editable=is_tea, width=150)  # Only Tea can reassign
+
     if "Transcript ID" in display_df.columns:
         gb.configure_column("Transcript ID", editable=False, width=100)
 
@@ -1415,56 +1453,93 @@ def render_project_editable_grid(df, full_df, current_user, is_tea, project_name
     if has_changes:
         st.info("You have unsaved changes in the grid above.")
 
-    # Send to Google Sheets button
-    if st.button(f"Send to Google Sheets", type="primary", disabled=not has_changes, use_container_width=True, key=f"{key_prefix}_save_button"):
-        with st.spinner("Saving changes to Google Sheets..."):
-            # Convert Progress Status back to Progress %
-            edited_df_to_save = edited_df.copy()
-            completed_tasks_count = 0
+    # Add MetaFlex styling for the button
+    st.markdown("""
+        <style>
+        /* MetaFlex green button styling */
+        div[data-testid="stButton"] button[kind="primary"] {
+            background: linear-gradient(135deg, #4d7a40 0%, #5a8f4a 100%) !important;
+            color: #ffffff !important;
+            border: 2px solid #d4ff00 !important;
+            border-radius: 8px !important;
+            font-weight: 600 !important;
+            padding: 10px 24px !important;
+            font-size: 0.95rem !important;
+            box-shadow: 0 2px 6px rgba(77, 122, 64, 0.2) !important;
+            transition: all 0.2s ease !important;
+            max-width: 300px !important;
+            margin: 0 auto !important;
+        }
 
-            if "Progress Status" in edited_df_to_save.columns:
-                def status_to_percentage(status):
-                    if "🟠" in str(status) or "Not Started" in str(status):
+        div[data-testid="stButton"] button[kind="primary"]:hover {
+            background: linear-gradient(135deg, #5a8f4a 0%, #6ba055 100%) !important;
+            border-color: #e0ff33 !important;
+            box-shadow: 0 4px 12px rgba(77, 122, 64, 0.3) !important;
+            transform: translateY(-2px) !important;
+        }
+
+        div[data-testid="stButton"] button[kind="primary"]:disabled {
+            background: #cccccc !important;
+            border-color: #999999 !important;
+            color: #666666 !important;
+            cursor: not-allowed !important;
+            opacity: 0.5 !important;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+    # Send to Google Sheets button - smaller and centered
+    col1, col2, col3 = st.columns([1, 1, 1])
+    with col2:
+        if st.button(f"💾 Save to Sheets", type="primary", disabled=not has_changes, key=f"{key_prefix}_save_button"):
+            with st.spinner("Saving changes to Google Sheets..."):
+                # Convert Progress Status back to Progress %
+                edited_df_to_save = edited_df.copy()
+                completed_tasks_count = 0
+
+                if "Progress Status" in edited_df_to_save.columns:
+                    def status_to_percentage(status):
+                        if "🟠" in str(status) or "Not Started" in str(status):
+                            return "0%"
+                        elif "🟡" in str(status) or "In Progress" in str(status):
+                            return "50%"
+                        elif "🟢" in str(status) or "Complete" in str(status):
+                            return "100%"
                         return "0%"
-                    elif "🟡" in str(status) or "In Progress" in str(status):
-                        return "50%"
-                    elif "🟢" in str(status) or "Complete" in str(status):
-                        return "100%"
-                    return "0%"
 
-                if "Progress %" in edited_df_to_save.columns:
-                    edited_df_to_save["Progress %"] = edited_df_to_save["Progress Status"].apply(status_to_percentage)
+                    if "Progress %" in edited_df_to_save.columns:
+                        edited_df_to_save["Progress %"] = edited_df_to_save["Progress Status"].apply(status_to_percentage)
 
-                # Auto-archive completed tasks
-                if "Status" in edited_df_to_save.columns:
-                    completed_mask = edited_df_to_save["Progress Status"].str.contains("🟢|Complete", case=False, na=False)
-                    completed_tasks_count = completed_mask.sum()
-                    edited_df_to_save.loc[completed_mask, "Status"] = "Done"
+                    # Auto-archive completed tasks
+                    if "Status" in edited_df_to_save.columns:
+                        completed_mask = edited_df_to_save["Progress Status"].str.contains("🟢|Complete", case=False, na=False)
+                        completed_tasks_count = completed_mask.sum()
+                        edited_df_to_save.loc[completed_mask, "Status"] = "Done"
 
-                edited_df_to_save = edited_df_to_save.drop(columns=["Progress Status"])
+                    edited_df_to_save = edited_df_to_save.drop(columns=["Progress Status"])
 
-            # Restore column suffixes
-            edited_df_with_suffix = edited_df_to_save.copy()
-            suffix_cols = []
-            for col in edited_df_to_save.columns:
-                if col in clean_column_mapping:
-                    suffix_cols.append(clean_column_mapping[col])
+                # Restore column suffixes
+                edited_df_with_suffix = edited_df_to_save.copy()
+                suffix_cols = []
+                for col in edited_df_to_save.columns:
+                    if col in clean_column_mapping:
+                        suffix_cols.append(clean_column_mapping[col])
+                    else:
+                        suffix_cols.append(col)
+                edited_df_with_suffix.columns = suffix_cols
+
+                success = update_google_sheet(edited_df_with_suffix)
+
+                if success:
+                    if completed_tasks_count > 0:
+                        st.success(f"✅ Changes saved! {completed_tasks_count} completed task(s) automatically archived.")
+                    else:
+                        st.success("✅ Changes saved successfully to Google Sheets!")
+                    st.cache_data.clear()
+                    st.balloons()
+                    st.rerun()
                 else:
-                    suffix_cols.append(col)
-            edited_df_with_suffix.columns = suffix_cols
-
-            success = update_google_sheet(edited_df_with_suffix)
-
-            if success:
-                if completed_tasks_count > 0:
-                    st.success(f"✅ Changes saved! {completed_tasks_count} completed task(s) automatically archived.")
-                else:
-                    st.success("✅ Changes saved successfully to Google Sheets!")
-                st.cache_data.clear()
-                st.balloons()
-                st.rerun()
-            else:
-                st.error("Failed to save changes. Please try again.")
+                    st.error("Failed to save changes. Please try again.")
 
     return full_df
 
