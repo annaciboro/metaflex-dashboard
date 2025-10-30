@@ -9,7 +9,8 @@ from .dashboard_page import (
     render_kpi_section,
     render_charts_section,
     render_tasks_table,
-    render_page_header
+    render_page_header,
+    render_editable_task_grid
 )
 
 def show_tasks():
@@ -44,7 +45,6 @@ def show_tasks():
         st.warning("No data available. Please check your Google Sheet connection.")
         return
 
-    # Add control checkboxes at the top
     # Style checkboxes to match header styling
     st.markdown("""
         <style>
@@ -75,16 +75,6 @@ def show_tasks():
         </style>
     """, unsafe_allow_html=True)
 
-    ctrl_col1, ctrl_col2, ctrl_col3 = st.columns([1, 1, 3])
-
-    with ctrl_col1:
-        show_archived = st.checkbox("Show Archived", value=False, key="show_archived_my_tasks")
-
-    with ctrl_col2:
-        show_transcript_id = st.checkbox("Show Transcript #", value=False, key="show_transcript_my_tasks")
-
-    st.markdown("<br>", unsafe_allow_html=True)
-
     # Filter for user's tasks based on assignee column
     assignee_col = None
     if has_column(df, "Assigned To"):
@@ -103,11 +93,6 @@ def show_tasks():
             personal_df = df[df[assignee_col].str.lower().str.contains(user_name.lower(), na=False)].copy()
     else:
         personal_df = pd.DataFrame()
-
-    # Filter to show only OPEN tasks (exclude Done/Complete/Closed) unless "Show Archived" is checked
-    if has_column(personal_df, "Status") and not show_archived:
-        status_col = get_column(personal_df, "Status")
-        personal_df = personal_df[~personal_df[status_col].str.lower().isin(['done', 'complete', 'completed', 'closed'])]
 
     if personal_df.empty:
         st.info(f"No open tasks assigned to {first_name}.")
@@ -417,6 +402,22 @@ def show_tasks():
             if cancel:
                 st.session_state.show_add_task_form = False
                 st.rerun()
+
+    # Add control checkboxes right above the table
+    ctrl_col1, ctrl_col2, ctrl_col3 = st.columns([1, 1, 3])
+
+    with ctrl_col1:
+        show_archived = st.checkbox("Show Archived", value=False, key="show_archived_my_tasks")
+
+    with ctrl_col2:
+        show_transcript_id = st.checkbox("Show Transcript #", value=False, key="show_transcript_my_tasks")
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    # Filter to show only OPEN tasks (exclude Done/Complete/Closed) unless "Show Archived" is checked
+    if has_column(personal_df, "Status") and not show_archived:
+        status_col = get_column(personal_df, "Status")
+        personal_df = personal_df[~personal_df[status_col].str.lower().isin(['done', 'complete', 'completed', 'closed'])]
 
     # Use the same AgGrid table as All Tasks page, but filtered for individual user
     # Pass show_transcript_id via session state
