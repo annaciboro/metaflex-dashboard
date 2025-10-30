@@ -647,7 +647,8 @@ with nav_container:
             button[data-testid*="baseButton-header"]:active,
             button[data-testid*="baseButton-header"]:focus-visible {{
                 background: transparent !important;
-                border: none !important;
+                border: 2px solid #2d5a3d !important;
+                border-radius: 6px !important;
                 outline: none !important;
                 outline-width: 0 !important;
                 outline-style: none !important;
@@ -661,23 +662,24 @@ with nav_container:
             }}
 
             button[data-testid*="baseButton-header"]:hover {{
-                background: transparent !important;
+                background: rgba(45, 90, 61, 0.05) !important;
                 color: #7a9900 !important;
-                border: none !important;
+                border: 2px solid #4d7a40 !important;
                 outline: none !important;
-                box-shadow: none !important;
+                box-shadow: 0 0 8px rgba(45, 90, 61, 0.3) !important;
             }}
 
             /* Also target the div container */
             div[data-testid="stPopover"] > button {{
                 outline: none !important;
-                border: none !important;
+                border: 2px solid #2d5a3d !important;
+                border-radius: 6px !important;
             }}
 
             div[data-testid="stPopover"] > button:focus {{
                 outline: none !important;
-                border: none !important;
-                box-shadow: none !important;
+                border: 2px solid #2d5a3d !important;
+                box-shadow: 0 0 8px rgba(45, 90, 61, 0.3) !important;
             }}
 
             /* Make popover larger */
