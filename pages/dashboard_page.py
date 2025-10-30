@@ -1726,144 +1726,47 @@ def show_dashboard():
 
                     completion_rate = int((complete_count / task_count * 100)) if task_count > 0 else 0
 
-                    # Premium light themed project header
+                    # Clean project header with metrics - single card
                     st.markdown(f"""
                         <div style='
                             background: #ffffff;
-                            border-radius: 12px 12px 0 0;
-                            padding: 20px 28px;
+                            border-radius: 12px;
+                            padding: 24px 32px 28px 32px;
                             border: 1px solid #e5e7eb;
-                            border-bottom: none;
                             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-                            text-align: center;
+                            margin-bottom: 16px;
                         '>
                             <h3 style='
-                                margin: 0;
+                                margin: 0 0 20px 0;
                                 font-size: 1.5rem;
                                 font-weight: 700;
                                 color: #2d3748;
                                 letter-spacing: -0.01em;
+                                text-align: center;
+                                padding-bottom: 16px;
+                                border-bottom: 1px solid #f3f4f6;
                             '>{project_name}</h3>
+
+                            <div style='display: flex; gap: 20px; justify-content: space-around;'>
+                                <div style='text-align: center;'>
+                                    <p style='margin: 0 0 8px 0; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #9ca3af;'>TOTAL</p>
+                                    <h2 style='margin: 0; font-size: 1.8rem; font-weight: 700; color: #0a4b4b;'>{task_count}</h2>
+                                </div>
+                                <div style='text-align: center;'>
+                                    <p style='margin: 0 0 8px 0; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #9ca3af;'>OPEN</p>
+                                    <h2 style='margin: 0; font-size: 1.8rem; font-weight: 700; color: #d17a6f;'>{open_count}</h2>
+                                </div>
+                                <div style='text-align: center;'>
+                                    <p style='margin: 0 0 8px 0; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #9ca3af;'>IN PROGRESS</p>
+                                    <h2 style='margin: 0; font-size: 1.8rem; font-weight: 700; color: #e8b968;'>{in_progress_count}</h2>
+                                </div>
+                                <div style='text-align: center;'>
+                                    <p style='margin: 0 0 8px 0; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #9ca3af;'>COMPLETE</p>
+                                    <h2 style='margin: 0; font-size: 1.8rem; font-weight: 700; color: #4d7a40;'>{completion_rate}%</h2>
+                                </div>
+                            </div>
                         </div>
                     """, unsafe_allow_html=True)
-
-                    # KPI cards using Streamlit columns (proven pattern)
-                    kpi_col1, kpi_col2, kpi_col3, kpi_col4 = st.columns(4)
-
-                    with kpi_col1:
-                        st.markdown(f"""
-                            <div style='
-                                background: #ffffff;
-                                border: 1px solid #e5e7eb;
-                                border-right: none;
-                                border-bottom: 1px solid #e5e7eb;
-                                padding: 20px 16px;
-                                text-align: center;
-                                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-                            '>
-                                <p style='
-                                    margin: 0 0 8px 0;
-                                    font-size: 0.7rem;
-                                    font-weight: 600;
-                                    text-transform: uppercase;
-                                    letter-spacing: 0.05em;
-                                    color: #6b7280;
-                                '>TOTAL TASKS</p>
-                                <h2 style='
-                                    margin: 0;
-                                    font-size: 2rem;
-                                    font-weight: 700;
-                                    color: #0a4b4b;
-                                '>{task_count}</h2>
-                            </div>
-                        """, unsafe_allow_html=True)
-
-                    with kpi_col2:
-                        st.markdown(f"""
-                            <div style='
-                                background: #ffffff;
-                                border: 1px solid #e5e7eb;
-                                border-left: none;
-                                border-right: none;
-                                border-bottom: 1px solid #e5e7eb;
-                                padding: 20px 16px;
-                                text-align: center;
-                                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-                            '>
-                                <p style='
-                                    margin: 0 0 8px 0;
-                                    font-size: 0.7rem;
-                                    font-weight: 600;
-                                    text-transform: uppercase;
-                                    letter-spacing: 0.05em;
-                                    color: #6b7280;
-                                '>OPEN TASKS</p>
-                                <h2 style='
-                                    margin: 0;
-                                    font-size: 2rem;
-                                    font-weight: 700;
-                                    color: #d17a6f;
-                                '>{open_count}</h2>
-                            </div>
-                        """, unsafe_allow_html=True)
-
-                    with kpi_col3:
-                        st.markdown(f"""
-                            <div style='
-                                background: #ffffff;
-                                border: 1px solid #e5e7eb;
-                                border-left: none;
-                                border-right: none;
-                                border-bottom: 1px solid #e5e7eb;
-                                padding: 20px 16px;
-                                text-align: center;
-                                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-                            '>
-                                <p style='
-                                    margin: 0 0 8px 0;
-                                    font-size: 0.7rem;
-                                    font-weight: 600;
-                                    text-transform: uppercase;
-                                    letter-spacing: 0.05em;
-                                    color: #6b7280;
-                                '>IN PROGRESS TASKS</p>
-                                <h2 style='
-                                    margin: 0;
-                                    font-size: 2rem;
-                                    font-weight: 700;
-                                    color: #e8b968;
-                                '>{in_progress_count}</h2>
-                            </div>
-                        """, unsafe_allow_html=True)
-
-                    with kpi_col4:
-                        st.markdown(f"""
-                            <div style='
-                                background: #ffffff;
-                                border: 1px solid #e5e7eb;
-                                border-left: none;
-                                border-bottom: 1px solid #e5e7eb;
-                                border-radius: 0 0 12px 12px;
-                                padding: 20px 16px;
-                                text-align: center;
-                                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-                            '>
-                                <p style='
-                                    margin: 0 0 8px 0;
-                                    font-size: 0.7rem;
-                                    font-weight: 600;
-                                    text-transform: uppercase;
-                                    letter-spacing: 0.05em;
-                                    color: #6b7280;
-                                '>COMPLETE TASKS</p>
-                                <h2 style='
-                                    margin: 0;
-                                    font-size: 2rem;
-                                    font-weight: 700;
-                                    color: #4d7a40;
-                                '>{completion_rate}%</h2>
-                            </div>
-                        """, unsafe_allow_html=True)
 
                     # Spacing after KPI cards
                     st.markdown("<div style='margin-bottom: 20px;'></div>", unsafe_allow_html=True)
