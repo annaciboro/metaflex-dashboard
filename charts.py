@@ -87,8 +87,7 @@ def create_team_performance_metrics(exec_metrics):
         xaxis=dict(
             showgrid=True,
             gridcolor='rgba(212, 255, 0, 0.1)',
-            title='Completion Rate (%)',
-            titlefont=dict(size=12, color=MF_DARK['text_light']),
+            title=dict(text='Completion Rate (%)', font=dict(size=12, color=MF_DARK['text_light'])),
             tickfont=dict(size=11, color=MF_DARK['text_light']),
             range=[0, 110]
         ),
@@ -162,8 +161,7 @@ def create_task_age_analysis(df):
         yaxis=dict(
             showgrid=True,
             gridcolor='rgba(212, 255, 0, 0.1)',
-            title='Number of Tasks',
-            titlefont=dict(size=12, color=MF_DARK['text_light']),
+            title=dict(text='Number of Tasks', font=dict(size=12, color=MF_DARK['text_light'])),
             tickfont=dict(size=11, color=MF_DARK['text_light'])
         )
     )
@@ -214,8 +212,7 @@ def create_task_completion_velocity(exec_metrics):
         yaxis=dict(
             showgrid=True,
             gridcolor='rgba(212, 255, 0, 0.1)',
-            title='Tasks Completed',
-            titlefont=dict(size=12, color=MF_DARK['text_light']),
+            title=dict(text='Tasks Completed', font=dict(size=12, color=MF_DARK['text_light'])),
             tickfont=dict(size=11, color=MF_DARK['text_light'])
         )
     )
@@ -287,8 +284,7 @@ def create_project_health_dashboard(exec_metrics):
         xaxis=dict(
             showgrid=True,
             gridcolor='rgba(212, 255, 0, 0.1)',
-            title='Health Score (%)',
-            titlefont=dict(size=12, color=MF_DARK['text_light']),
+            title=dict(text='Health Score (%)', font=dict(size=12, color=MF_DARK['text_light'])),
             tickfont=dict(size=11, color=MF_DARK['text_light']),
             range=[0, 110]
         ),
