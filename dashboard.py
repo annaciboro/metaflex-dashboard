@@ -756,18 +756,22 @@ with nav_container:
             # Force immediate rerun to show login page
             st.rerun()
 
-# Subtle gradient accent line under navigation - premium SaaS style
+# Vibrant lime green accent bar under navigation - MetaFlex personality
 st.markdown("""
     <div style='
         width: 100%;
         max-width: 100vw;
         margin: 0;
         padding: 0;
-        height: 1px;
+        height: 3px;
         background: linear-gradient(90deg,
-            #e5e7eb 0%,
-            #d1d5db 50%,
-            #e5e7eb 100%);
+            #d4ff00 0%,
+            #b8e600 20%,
+            #7fa830 40%,
+            #4d7a40 60%,
+            #0a4b4b 80%,
+            #0a4b4b 100%);
+        box-shadow: 0 2px 8px rgba(212, 255, 0, 0.3);
     '></div>
 """, unsafe_allow_html=True)
 
@@ -935,11 +939,11 @@ st.markdown("<div style='margin-bottom: 30px;'></div>", unsafe_allow_html=True)
 # ULTRA AGGRESSIVE NAVIGATION BUTTON OVERRIDE - LOAD LAST
 st.markdown("""
 <style>
-/* PREMIUM LIGHT THEME NAVIGATION CONTAINER */
+/* PREMIUM LIGHT THEME NAVIGATION CONTAINER - Subtle teal gradient for personality */
 html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child {
-    background: #ffffff !important;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04) !important;
-    border-bottom: 1px solid #e5e7eb !important;
+    background: linear-gradient(135deg, #f0f9f9 0%, #ffffff 50%, #f8fdf8 100%) !important;
+    box-shadow: 0 2px 8px rgba(10, 75, 75, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06) !important;
+    border-bottom: none !important;
     padding: 10px 48px !important;
 }
 
