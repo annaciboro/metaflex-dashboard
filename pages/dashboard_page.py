@@ -1631,39 +1631,30 @@ def show_dashboard():
         # Style checkbox with green neon color
         st.markdown("""
             <style>
-            /* Remove glow from checkbox label text */
+            /* Remove ALL background highlighting from checkbox label text */
             div[data-testid="stCheckbox"] label,
+            div[data-testid="stCheckbox"] label *,
             div[data-testid="stCheckbox"] label span,
             div[data-testid="stCheckbox"] label span[data-testid="stMarkdownContainer"],
-            div[data-testid="stCheckbox"] label p {
+            div[data-testid="stCheckbox"] label span[data-testid="stMarkdownContainer"] *,
+            div[data-testid="stCheckbox"] label p,
+            div[data-testid="stCheckbox"] span,
+            div[data-testid="stCheckbox"] p {
+                background: transparent !important;
+                background-color: transparent !important;
                 color: #2d3748 !important;
                 text-shadow: none !important;
                 box-shadow: none !important;
             }
 
-            /* Target the SVG background rectangle directly */
-            div[data-testid="stCheckbox"] svg rect,
-            [data-testid="stCheckbox"] svg rect {
+            /* Override Streamlit's default red checkbox color to green when CHECKED */
+            div[data-testid="stCheckbox"] input[type="checkbox"]:checked ~ div svg rect {
                 fill: #7a9900 !important;
                 stroke: #7a9900 !important;
             }
 
-            /* Style the checkbox box itself - green neon when checked */
-            div[data-testid="stCheckbox"] input[type="checkbox"]:checked + div,
-            div[data-testid="stCheckbox"] input[type="checkbox"]:checked + div > div,
-            div[data-testid="stCheckbox"] input[type="checkbox"]:checked ~ div,
-            section[data-testid="stCheckbox"] input[type="checkbox"]:checked + div,
-            [data-testid="stCheckbox"] [role="checkbox"][aria-checked="true"] {
-                background-color: #7a9900 !important;
-                background: #7a9900 !important;
-                border-color: #7a9900 !important;
-                box-shadow: none !important;
-            }
-
-            /* Target the SVG checkmark icon path to be white */
-            div[data-testid="stCheckbox"] input[type="checkbox"]:checked + div svg path,
-            div[data-testid="stCheckbox"] input[type="checkbox"]:checked + div > div svg path,
-            [data-testid="stCheckbox"] [role="checkbox"][aria-checked="true"] svg path {
+            /* Make checkmark white when checked */
+            div[data-testid="stCheckbox"] input[type="checkbox"]:checked ~ div svg path {
                 fill: #ffffff !important;
                 stroke: #ffffff !important;
             }
