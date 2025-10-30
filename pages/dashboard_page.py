@@ -614,7 +614,7 @@ def render_charts_section(kpis, filtered_df, show_project_chart=True):
                 )
             )
 
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width='stretch')
 
     # Only show "Tasks by Project" chart for Tea and Jess
     if show_project_chart:
@@ -644,7 +644,7 @@ def render_charts_section(kpis, filtered_df, show_project_chart=True):
 
                 project_fig = create_project_breakdown_chart(filtered_df)
                 if project_fig:
-                    st.plotly_chart(project_fig, use_container_width=True, config={
+                    st.plotly_chart(project_fig, width='stretch', config={
                         'displayModeBar': True,
                         'modeBarButtonsToAdd': ['toImage'],
                         'toImageButtonOptions': {
@@ -890,7 +890,7 @@ def render_tasks_table(filtered_df, limit=10, hide_project_column=False):
             # Format the table
             st.dataframe(
                 clean_table_df,
-                use_container_width=True,
+                width='stretch',
                 hide_index=True,
                 column_config=column_config
             )
@@ -1145,7 +1145,7 @@ def render_editable_task_grid(df, current_user, is_tea=False, key_prefix="", sho
     # No custom CSS needed - all styling handled by metaflex_premium.css
 
     # Create single "Send to Google Sheets" button
-    if st.button("Send to Google Sheets", type="primary", disabled=not has_changes, use_container_width=True, key=f"{key_prefix}_save_button"):
+    if st.button("Send to Google Sheets", type="primary", disabled=not has_changes, width='stretch', key=f"{key_prefix}_save_button"):
         # Check for completed tasks that will be auto-archived
         completed_tasks_count = 0
         if "Progress Status" in edited_df.columns:
@@ -1453,7 +1453,7 @@ def render_executive_dashboard(exec_metrics, df):
                 yaxis=dict(showgrid=False, title=None),
                 coloraxis_showscale=False
             )
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width='stretch')
         else:
             st.info("No open tasks by project")
 
@@ -1510,7 +1510,7 @@ def render_executive_dashboard(exec_metrics, df):
                 )
             )
 
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width='stretch')
         else:
             st.info("No team member data")
 
@@ -1538,13 +1538,13 @@ def render_executive_dashboard(exec_metrics, df):
             st.markdown("<h4 style='color: #0a4b4b; margin-bottom: 16px;'>Project Overview</h4>", unsafe_allow_html=True)
             fig = create_project_tasks_overview_chart(exec_metrics)
             if fig:
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width='stretch')
 
         with col2:
             st.markdown("<h4 style='color: #0a4b4b; margin-bottom: 16px;'>Task Age Analysis</h4>", unsafe_allow_html=True)
             fig = create_task_age_analysis(df)
             if fig:
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width='stretch')
 
         st.markdown("<div style='margin: 40px 0;'></div>", unsafe_allow_html=True)
 
@@ -1555,13 +1555,13 @@ def render_executive_dashboard(exec_metrics, df):
             st.markdown("<h4 style='color: #0a4b4b; margin-bottom: 16px;'>Completion Velocity</h4>", unsafe_allow_html=True)
             fig = create_task_completion_velocity(exec_metrics)
             if fig:
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width='stretch')
 
         with col4:
             st.markdown("<h4 style='color: #0a4b4b; margin-bottom: 16px;'>Project Health</h4>", unsafe_allow_html=True)
             fig = create_project_health_dashboard(exec_metrics)
             if fig:
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width='stretch')
 
 
 def show_dashboard():

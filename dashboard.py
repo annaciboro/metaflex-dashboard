@@ -512,13 +512,13 @@ with nav_container:
             </style>
         """, unsafe_allow_html=True)
 
-        with st.popover(f"☰ {st.session_state.current_page}", use_container_width=True):
+        with st.popover(f"☰ {st.session_state.current_page}", width='stretch'):
             st.markdown("### Navigation")
 
             for page_name in pages_list:
                 if page_name == "Logout":
                     st.markdown("---")  # Separator before logout
-                    if st.button("Logout", key="nav_logout", use_container_width=True):
+                    if st.button("Logout", key="nav_logout", width='stretch'):
                         # Clear authentication-related session state
                         auth_keys = ['authentication_status', 'name', 'username', 'logout', 'login']
                         for key in auth_keys:
@@ -549,7 +549,7 @@ with nav_container:
                     is_current = st.session_state.current_page == page_name
                     button_label = f"{'✓ ' if is_current else ''}{page_name}"
 
-                    if st.button(button_label, key=f"nav_{page_name}", use_container_width=True, type="primary" if is_current else "secondary"):
+                    if st.button(button_label, key=f"nav_{page_name}", width='stretch', type="primary" if is_current else "secondary"):
                         st.session_state.current_page = page_name
                         st.rerun()
 
