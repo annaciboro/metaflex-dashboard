@@ -469,31 +469,51 @@ else:
 nav_container = st.container()
 
 with nav_container:
-    # Simple navigation: Logo, Current Page Title, Hamburger Menu
-    cols = st.columns([0.8, 3, 0.8])
+    # Simple navigation: Small Logo + Spacer + Large Hamburger Menu
+    cols = st.columns([0.5, 3, 1.5])
 
-    # Logo
+    # Logo (smaller)
     with cols[0]:
         if os.path.exists(logo_path):
-            st.image(logo_path, width=50)
+            st.image(logo_path, width=35)
 
-    # Current Page Title
+    # Spacer
     with cols[1]:
-        st.markdown(f"""
-            <h1 style='
-                margin: 0;
-                padding: 12px 0;
-                font-size: 1.5rem;
-                font-weight: 700;
-                color: #0a4b4b;
-                letter-spacing: -0.02em;
-            '>{st.session_state.current_page}</h1>
+        st.write("")
+
+    # Hamburger Menu with current page name
+    with cols[2]:
+        # Custom styling for large prominent hamburger button
+        st.markdown("""
+            <style>
+            /* Make hamburger button larger and more prominent */
+            button[data-testid*="baseButton-header"] {
+                font-size: 1.2rem !important;
+                font-weight: 600 !important;
+                padding: 12px 24px !important;
+                background: linear-gradient(135deg, #f0f9f9 0%, #ffffff 100%) !important;
+                border: 2px solid #0a4b4b !important;
+                color: #0a4b4b !important;
+                border-radius: 12px !important;
+                box-shadow: 0 2px 8px rgba(10, 75, 75, 0.15) !important;
+                transition: all 0.2s ease !important;
+            }
+
+            button[data-testid*="baseButton-header"]:hover {
+                transform: translateY(-2px) !important;
+                box-shadow: 0 4px 12px rgba(10, 75, 75, 0.25) !important;
+                border-color: #7a9900 !important;
+            }
+
+            /* Make popover larger */
+            div[data-testid="stPopover"] > div {
+                min-width: 300px !important;
+            }
+            </style>
         """, unsafe_allow_html=True)
 
-    # Hamburger Menu
-    with cols[2]:
-        with st.popover("☰", use_container_width=True):
-            st.markdown("### Navigation")
+        with st.popover(f"☰ {st.session_state.current_page}", use_container_width=True):
+            st.markdown("### 📋 Navigation")
 
             for page_name in pages_list:
                 if page_name == "Logout":
