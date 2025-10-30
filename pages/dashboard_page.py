@@ -1690,14 +1690,16 @@ def show_dashboard():
 
                     completion_rate = int((complete_count / task_count * 100)) if task_count > 0 else 0
 
-                    # Premium project header - Left aligned
-                    st.markdown(f"""<h2 style='
+                    # Project header - Subdued styling
+                    st.markdown(f"""<h3 style='
                         text-align: left;
-                        font-size: 1.75rem;
-                        font-weight: 700;
-                        color: #0a4b4b;
-                        margin: 32px 0 24px 0;
-                    '>{project_name}</h2>""", unsafe_allow_html=True)
+                        font-size: 1.1rem;
+                        font-weight: 500;
+                        color: #6b7280;
+                        margin: 24px 0 16px 0;
+                        text-transform: uppercase;
+                        letter-spacing: 0.05em;
+                    '>{project_name}</h3>""", unsafe_allow_html=True)
 
                     # Premium KPI cards using Streamlit columns
                     kpi_col1, kpi_col2, kpi_col3, kpi_col4 = st.columns(4)
