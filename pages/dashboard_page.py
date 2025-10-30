@@ -1627,45 +1627,138 @@ def show_dashboard():
                     # Filter tasks for this project (case-insensitive)
                     project_df = projects_df[projects_df[project_col].str.strip().str.lower() == project_name.lower()].copy()
 
-                    # MetaFlex-branded project heading
+                    # Calculate project KPIs
                     task_count = len(project_df)
-                    open_count = len(project_df[project_df[status_col].str.lower().str.contains("open|not started", case=False, na=False)])
+                    open_count = 0
+                    in_progress_count = 0
+                    complete_count = 0
 
+                    if status_col:
+                        open_count = len(project_df[project_df[status_col].str.lower().str.contains("open|not started", case=False, na=False)])
+                        in_progress_count = len(project_df[project_df[status_col].str.lower().str.contains("in progress|working", case=False, na=False)])
+                        complete_count = len(project_df[project_df[status_col].str.lower().str.contains("done|complete", case=False, na=False)])
+
+                    completion_rate = int((complete_count / task_count * 100)) if task_count > 0 else 0
+
+                    # Dark themed project KPI cards
                     st.markdown(f"""
                         <div style='
-                            background: linear-gradient(135deg, #f5faf2 0%, #f8fbf8 100%);
+                            background: linear-gradient(135deg, #0a2f2f 0%, #0d3a3a 100%);
                             border-radius: 12px;
-                            padding: 20px 28px;
-                            margin-bottom: 20px;
-                            border-left: 4px solid #0a4b4b;
-                            border-top: 2px solid rgba(212, 255, 0, 0.2);
-                            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+                            padding: 24px 28px;
+                            margin-bottom: 24px;
+                            border: 3px solid #2d5016;
+                            box-shadow: 0 0 20px rgba(212, 255, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.4);
                         '>
-                            <div style='display: flex; justify-content: space-between; align-items: center;'>
-                                <h3 style='
-                                    margin: 0;
-                                    font-size: 1.35rem;
-                                    font-weight: 700;
-                                    color: #0a4b4b;
-                                    letter-spacing: -0.01em;
-                                '>{project_name}</h3>
-                                <div style='display: flex; gap: 16px;'>
-                                    <span style='
-                                        font-size: 0.85rem;
+                            <h3 style='
+                                margin: 0 0 20px 0;
+                                font-size: 1.5rem;
+                                font-weight: 700;
+                                color: #d4ff00;
+                                letter-spacing: -0.01em;
+                                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+                            '>{project_name}</h3>
+
+                            <div style='display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 20px;'>
+                                <!-- Total Tasks -->
+                                <div style='
+                                    background: rgba(212, 255, 0, 0.1);
+                                    border: 2px solid #2d5016;
+                                    border-radius: 8px;
+                                    padding: 16px;
+                                    text-align: center;
+                                '>
+                                    <p style='
+                                        margin: 0 0 8px 0;
+                                        font-size: 0.75rem;
                                         font-weight: 600;
-                                        color: #6b7280;
-                                        background: rgba(212, 255, 0, 0.15);
-                                        padding: 4px 12px;
-                                        border-radius: 12px;
-                                    '>{task_count} tasks</span>
-                                    <span style='
-                                        font-size: 0.85rem;
+                                        text-transform: uppercase;
+                                        letter-spacing: 0.05em;
+                                        color: #e8f5e9;
+                                        opacity: 0.8;
+                                    '>TOTAL</p>
+                                    <h2 style='
+                                        margin: 0;
+                                        font-size: 2rem;
+                                        font-weight: 900;
+                                        color: #d4ff00;
+                                        text-shadow: 0 0 10px rgba(212, 255, 0, 0.5);
+                                    '>{task_count}</h2>
+                                </div>
+
+                                <!-- Open Tasks -->
+                                <div style='
+                                    background: rgba(209, 122, 111, 0.15);
+                                    border: 2px solid #d17a6f;
+                                    border-radius: 8px;
+                                    padding: 16px;
+                                    text-align: center;
+                                '>
+                                    <p style='
+                                        margin: 0 0 8px 0;
+                                        font-size: 0.75rem;
                                         font-weight: 600;
+                                        text-transform: uppercase;
+                                        letter-spacing: 0.05em;
+                                        color: #e8f5e9;
+                                        opacity: 0.8;
+                                    '>OPEN</p>
+                                    <h2 style='
+                                        margin: 0;
+                                        font-size: 2rem;
+                                        font-weight: 900;
                                         color: #d17a6f;
-                                        background: rgba(209, 122, 111, 0.15);
-                                        padding: 4px 12px;
-                                        border-radius: 12px;
-                                    '>{open_count} open</span>
+                                    '>{open_count}</h2>
+                                </div>
+
+                                <!-- In Progress -->
+                                <div style='
+                                    background: rgba(232, 185, 104, 0.15);
+                                    border: 2px solid #e8b968;
+                                    border-radius: 8px;
+                                    padding: 16px;
+                                    text-align: center;
+                                '>
+                                    <p style='
+                                        margin: 0 0 8px 0;
+                                        font-size: 0.75rem;
+                                        font-weight: 600;
+                                        text-transform: uppercase;
+                                        letter-spacing: 0.05em;
+                                        color: #e8f5e9;
+                                        opacity: 0.8;
+                                    '>IN PROGRESS</p>
+                                    <h2 style='
+                                        margin: 0;
+                                        font-size: 2rem;
+                                        font-weight: 900;
+                                        color: #e8b968;
+                                    '>{in_progress_count}</h2>
+                                </div>
+
+                                <!-- Completion Rate -->
+                                <div style='
+                                    background: rgba(77, 122, 64, 0.2);
+                                    border: 2px solid #4d7a40;
+                                    border-radius: 8px;
+                                    padding: 16px;
+                                    text-align: center;
+                                '>
+                                    <p style='
+                                        margin: 0 0 8px 0;
+                                        font-size: 0.75rem;
+                                        font-weight: 600;
+                                        text-transform: uppercase;
+                                        letter-spacing: 0.05em;
+                                        color: #e8f5e9;
+                                        opacity: 0.8;
+                                    '>COMPLETE</p>
+                                    <h2 style='
+                                        margin: 0;
+                                        font-size: 2rem;
+                                        font-weight: 900;
+                                        color: #4d7a40;
+                                    '>{completion_rate}%</h2>
                                 </div>
                             </div>
                         </div>
