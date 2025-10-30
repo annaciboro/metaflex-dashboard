@@ -251,6 +251,36 @@ def show_tasks():
     st.markdown("<br>", unsafe_allow_html=True)
 
     # Add control checkboxes in a row - below search bar
+    # Style checkboxes to match header styling
+    st.markdown("""
+        <style>
+        /* Checkbox label styling to match headers */
+        div[data-testid="stCheckbox"] label p {
+            color: #0a4b4b !important;
+            font-size: 0.95rem !important;
+            font-weight: 600 !important;
+            letter-spacing: 0.02em !important;
+        }
+
+        /* Checkbox styling - teal theme */
+        div[data-testid="stCheckbox"] input[type="checkbox"] ~ span div svg rect {
+            fill: rgba(229, 231, 235, 0.5) !important;
+            stroke: rgba(10, 75, 75, 0.4) !important;
+            stroke-width: 1.5 !important;
+        }
+
+        div[data-testid="stCheckbox"] input[type="checkbox"]:checked ~ span div svg rect {
+            fill: #0a4b4b !important;
+            stroke: #0a4b4b !important;
+        }
+
+        div[data-testid="stCheckbox"] input[type="checkbox"]:checked ~ span div svg path {
+            fill: #ffffff !important;
+            stroke: #ffffff !important;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
     ctrl_col1, ctrl_col2, ctrl_col3 = st.columns([1, 1, 3])
 
     with ctrl_col1:
