@@ -43,13 +43,27 @@ def create_team_performance_metrics(exec_metrics):
     Team Performance Metrics with dark theme
     Shows completion rate per team member
     """
+    # Ensure all 4 team members are shown
+    all_team_members = ["Téa", "Jess", "Megan", "Justin"]
     person_data = []
-    for person, metrics in exec_metrics["tasks_by_person"].items():
-        total = metrics["total"]
-        complete = metrics["complete"]
-        completion_rate = int((complete / total * 100)) if total > 0 else 0
+
+    for team_member in all_team_members:
+        # Look for this person in exec_metrics (case-insensitive)
+        metrics = None
+        for person, person_metrics in exec_metrics["tasks_by_person"].items():
+            if team_member.lower() in person.lower() or person.lower() in team_member.lower():
+                metrics = person_metrics
+                break
+
+        if metrics:
+            total = metrics["total"]
+            complete = metrics["complete"]
+            completion_rate = int((complete / total * 100)) if total > 0 else 0
+        else:
+            completion_rate = 0
+
         person_data.append({
-            "Team Member": person,
+            "Team Member": team_member,
             "Completion Rate": completion_rate
         })
 
