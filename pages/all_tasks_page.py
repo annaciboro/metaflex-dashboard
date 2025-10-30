@@ -60,13 +60,11 @@ def show_analytics():
     chart_col1, chart_spacer, chart_col2 = st.columns([1, 0.1, 1])
 
     with chart_col1:
-        st.markdown("<h4 style='color: #0a4b4b; margin-bottom: 16px;'>Completion Velocity</h4>", unsafe_allow_html=True)
         velocity_fig = create_task_completion_velocity(exec_metrics)
         if velocity_fig:
             st.plotly_chart(velocity_fig, use_container_width=True)
 
     with chart_col2:
-        st.markdown("<h4 style='color: #0a4b4b; margin-bottom: 16px;'>Project Health</h4>", unsafe_allow_html=True)
         health_fig = create_project_health_dashboard(exec_metrics)
         if health_fig:
             st.plotly_chart(health_fig, use_container_width=True)
