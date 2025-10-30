@@ -75,9 +75,59 @@ def show_tasks():
     # Calculate personal KPIs from filtered data (only open tasks)
     personal_kpis = calculate_kpis(personal_df, user_name, is_personal=True)
 
-    # Charts removed from My Tasks page per user request
-    # For Tea only, show KPIs below
-    if is_tea:
+    # For regular users (Megan, Justin, Jess), show chart above everything
+    # For Tea only, show all KPIs and charts below
+    if not is_tea:
+        # Show Task Completion Status donut chart at the top for regular users
+        from charts import create_team_completion_donut
+
+        # Create columns for both charts to display side by side
+        chart_col1, chart_col2 = st.columns(2)
+
+        with chart_col1:
+            # Removed header text per user request
+            donut_fig = create_team_completion_donut(
+                personal_kpis.get("my_open_tasks", 0),
+                personal_kpis.get("working_tasks", 0),
+                personal_kpis.get("done_tasks", 0)
+            )
+
+            if donut_fig:
+                st.plotly_chart(donut_fig, use_container_width=True, config={
+                    'displayModeBar': True,
+                    'displaylogo': False,
+                    'modeBarButtonsToAdd': ['zoom2d', 'pan2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d', 'resetScale2d'],
+                    'toImageButtonOptions': {
+                        'format': 'png',
+                        'filename': 'task_completion_status',
+                        'height': 500,
+                        'width': 700,
+                        'scale': 2
+                    }
+                })
+
+        # Add Task Age Analysis chart for all users
+        from charts import create_task_age_analysis
+
+        with chart_col2:
+            # Removed header text per user request
+            age_fig = create_task_age_analysis(personal_df)
+            if age_fig:
+                st.plotly_chart(age_fig, use_container_width=True, key="task_age_chart", config={
+                    'displayModeBar': True,
+                    'displaylogo': False,
+                    'modeBarButtonsToAdd': ['zoom2d', 'pan2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d', 'resetScale2d'],
+                    'toImageButtonOptions': {
+                        'format': 'png',
+                        'filename': 'task_age_analysis',
+                        'height': 500,
+                        'width': 700,
+                        'scale': 2
+                    }
+                })
+
+        st.markdown("<br>", unsafe_allow_html=True)
+    else:
         # Tea sees full KPI metrics
         my_open_tasks = len(personal_df)
 
@@ -132,7 +182,24 @@ def show_tasks():
 
         st.markdown("<br>", unsafe_allow_html=True)
 
-        # Chart removed from My Tasks page per user request
+        # Add Task Age Analysis chart for Tea (header removed per user request)
+        from charts import create_task_age_analysis
+        age_fig = create_task_age_analysis(personal_df)
+        if age_fig:
+            st.plotly_chart(age_fig, use_container_width=True, key="tea_task_age_chart", config={
+                'displayModeBar': True,
+                'displaylogo': False,
+                'modeBarButtonsToAdd': ['zoom2d', 'pan2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d', 'resetScale2d'],
+                'toImageButtonOptions': {
+                    'format': 'png',
+                    'filename': 'task_age_analysis',
+                    'height': 500,
+                    'width': 700,
+                    'scale': 2
+                }
+            })
+
+        st.markdown("<br>", unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
 
