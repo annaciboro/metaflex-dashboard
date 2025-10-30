@@ -472,7 +472,8 @@ with nav_container:
     nav_items_without_logout = [p for p in pages_list if p != "Logout"]
 
     # Create columns for navigation - white space on left, logo, spacer, then nav buttons
-    cols = st.columns([0.15, 0.2, 0.05] + [1]*len(nav_items_without_logout) + [0.3, 0.05, 1.5])
+    # Give more space to nav buttons by reducing spacers
+    cols = st.columns([0.08, 0.12, 0.03] + [1]*len(nav_items_without_logout) + [0.15, 0.03, 1])
 
     # White space column (left side padding)
     with cols[0]:

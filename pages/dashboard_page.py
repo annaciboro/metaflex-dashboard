@@ -1648,26 +1648,24 @@ def show_dashboard():
 
         st.markdown("""
             <div style='
-                background: linear-gradient(135deg, #0a2f2f 0%, #0d3a3a 100%);
-                border-radius: 16px;
-                padding: 32px;
-                border: 3px solid #2d5016;
-                box-shadow: 0 0 20px rgba(212, 255, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.4);
+                background: #ffffff;
+                border-radius: 12px;
+                padding: 32px 40px;
+                border: 1px solid #e5e7eb;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
                 margin-bottom: 32px;
             '>
                 <h2 style='
                     margin: 0 0 8px 0;
                     font-size: 1.75rem;
                     font-weight: 700;
-                    color: #d4ff00;
+                    color: #2d3748;
                     letter-spacing: -0.02em;
-                    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
                 '>Breakdown of Tasks by Project</h2>
                 <p style='
                     margin: 0;
-                    color: #e8f5e9;
+                    color: #6b7280;
                     font-size: 0.95rem;
-                    opacity: 0.9;
                 '>Track and manage tasks across all active projects</p>
             </div>
         """, unsafe_allow_html=True)
@@ -1713,24 +1711,23 @@ def show_dashboard():
 
                     completion_rate = int((complete_count / task_count * 100)) if task_count > 0 else 0
 
-                    # Dark themed project header
+                    # Premium light themed project header
                     st.markdown(f"""
                         <div style='
-                            background: linear-gradient(135deg, #0a2f2f 0%, #0d3a3a 100%);
+                            background: #ffffff;
                             border-radius: 12px 12px 0 0;
                             padding: 20px 28px;
-                            border: 3px solid #2d5016;
+                            border: 1px solid #e5e7eb;
                             border-bottom: none;
-                            box-shadow: 0 0 20px rgba(212, 255, 0, 0.2);
+                            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
                             text-align: center;
                         '>
                             <h3 style='
                                 margin: 0;
                                 font-size: 1.5rem;
                                 font-weight: 700;
-                                color: #d4ff00;
+                                color: #2d3748;
                                 letter-spacing: -0.01em;
-                                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
                             '>{project_name}</h3>
                         </div>
                     """, unsafe_allow_html=True)
@@ -1741,13 +1738,13 @@ def show_dashboard():
                     with kpi_col1:
                         st.markdown(f"""
                             <div style='
-                                background: linear-gradient(135deg, #0a2f2f 0%, #0d3a3a 100%);
-                                border-left: 3px solid #2d5016;
-                                border-right: 1px solid #2d5016;
-                                border-bottom: 3px solid #2d5016;
+                                background: #ffffff;
+                                border: 1px solid #e5e7eb;
+                                border-right: none;
+                                border-bottom: 1px solid #e5e7eb;
                                 padding: 20px 16px;
                                 text-align: center;
-                                box-shadow: 0 0 20px rgba(212, 255, 0, 0.2);
+                                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
                             '>
                                 <p style='
                                     margin: 0 0 8px 0;
@@ -1755,15 +1752,13 @@ def show_dashboard():
                                     font-weight: 600;
                                     text-transform: uppercase;
                                     letter-spacing: 0.05em;
-                                    color: #e8f5e9;
-                                    opacity: 0.8;
+                                    color: #6b7280;
                                 '>TOTAL TASKS</p>
                                 <h2 style='
                                     margin: 0;
                                     font-size: 2rem;
-                                    font-weight: 900;
-                                    color: #d4ff00;
-                                    text-shadow: 0 0 10px rgba(212, 255, 0, 0.5);
+                                    font-weight: 700;
+                                    color: #0a4b4b;
                                 '>{task_count}</h2>
                             </div>
                         """, unsafe_allow_html=True)
@@ -1771,13 +1766,14 @@ def show_dashboard():
                     with kpi_col2:
                         st.markdown(f"""
                             <div style='
-                                background: linear-gradient(135deg, #0a2f2f 0%, #0d3a3a 100%);
-                                border-left: 1px solid #2d5016;
-                                border-right: 1px solid #2d5016;
-                                border-bottom: 3px solid #2d5016;
+                                background: #ffffff;
+                                border: 1px solid #e5e7eb;
+                                border-left: none;
+                                border-right: none;
+                                border-bottom: 1px solid #e5e7eb;
                                 padding: 20px 16px;
                                 text-align: center;
-                                box-shadow: 0 0 20px rgba(212, 255, 0, 0.2);
+                                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
                             '>
                                 <p style='
                                     margin: 0 0 8px 0;
@@ -1785,13 +1781,12 @@ def show_dashboard():
                                     font-weight: 600;
                                     text-transform: uppercase;
                                     letter-spacing: 0.05em;
-                                    color: #e8f5e9;
-                                    opacity: 0.8;
+                                    color: #6b7280;
                                 '>OPEN TASKS</p>
                                 <h2 style='
                                     margin: 0;
                                     font-size: 2rem;
-                                    font-weight: 900;
+                                    font-weight: 700;
                                     color: #d17a6f;
                                 '>{open_count}</h2>
                             </div>
@@ -1800,13 +1795,14 @@ def show_dashboard():
                     with kpi_col3:
                         st.markdown(f"""
                             <div style='
-                                background: linear-gradient(135deg, #0a2f2f 0%, #0d3a3a 100%);
-                                border-left: 1px solid #2d5016;
-                                border-right: 1px solid #2d5016;
-                                border-bottom: 3px solid #2d5016;
+                                background: #ffffff;
+                                border: 1px solid #e5e7eb;
+                                border-left: none;
+                                border-right: none;
+                                border-bottom: 1px solid #e5e7eb;
                                 padding: 20px 16px;
                                 text-align: center;
-                                box-shadow: 0 0 20px rgba(212, 255, 0, 0.2);
+                                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
                             '>
                                 <p style='
                                     margin: 0 0 8px 0;
@@ -1814,13 +1810,12 @@ def show_dashboard():
                                     font-weight: 600;
                                     text-transform: uppercase;
                                     letter-spacing: 0.05em;
-                                    color: #e8f5e9;
-                                    opacity: 0.8;
+                                    color: #6b7280;
                                 '>IN PROGRESS TASKS</p>
                                 <h2 style='
                                     margin: 0;
                                     font-size: 2rem;
-                                    font-weight: 900;
+                                    font-weight: 700;
                                     color: #e8b968;
                                 '>{in_progress_count}</h2>
                             </div>
@@ -1829,14 +1824,14 @@ def show_dashboard():
                     with kpi_col4:
                         st.markdown(f"""
                             <div style='
-                                background: linear-gradient(135deg, #0a2f2f 0%, #0d3a3a 100%);
-                                border-left: 1px solid #2d5016;
-                                border-right: 3px solid #2d5016;
-                                border-bottom: 3px solid #2d5016;
+                                background: #ffffff;
+                                border: 1px solid #e5e7eb;
+                                border-left: none;
+                                border-bottom: 1px solid #e5e7eb;
                                 border-radius: 0 0 12px 12px;
                                 padding: 20px 16px;
                                 text-align: center;
-                                box-shadow: 0 0 20px rgba(212, 255, 0, 0.2);
+                                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
                             '>
                                 <p style='
                                     margin: 0 0 8px 0;
@@ -1844,13 +1839,12 @@ def show_dashboard():
                                     font-weight: 600;
                                     text-transform: uppercase;
                                     letter-spacing: 0.05em;
-                                    color: #e8f5e9;
-                                    opacity: 0.8;
+                                    color: #6b7280;
                                 '>COMPLETE TASKS</p>
                                 <h2 style='
                                     margin: 0;
                                     font-size: 2rem;
-                                    font-weight: 900;
+                                    font-weight: 700;
                                     color: #4d7a40;
                                 '>{completion_rate}%</h2>
                             </div>
