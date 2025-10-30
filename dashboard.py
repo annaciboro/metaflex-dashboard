@@ -648,47 +648,48 @@ with nav_container:
             button[data-testid*="baseButton-header"]:focus-visible {{
                 background: transparent !important;
                 border: 2px solid #0a4b4b !important;
-                border-radius: 6px !important;
+                border-radius: 8px !important;
                 outline: none !important;
                 outline-width: 0 !important;
                 outline-style: none !important;
                 outline-color: transparent !important;
-                padding: 8px 8px !important;
-                width: 44px !important;
-                height: 44px !important;
+                padding: 10px 16px !important;
+                width: 56px !important;
+                height: 56px !important;
                 box-shadow: none !important;
                 transition: all 0.3s ease !important;
                 cursor: pointer !important;
-                font-size: 1.5rem !important;
-                color: #0a4b4b !important;
+                font-size: 1.75rem !important;
+                color: #7a9900 !important;
                 display: flex !important;
                 align-items: center !important;
                 justify-content: center !important;
             }}
 
             button[data-testid*="baseButton-header"]:hover {{
-                background: rgba(10, 75, 75, 0.05) !important;
-                color: #0d6868 !important;
-                border: 2px solid #0d6868 !important;
+                background: rgba(122, 153, 0, 0.08) !important;
+                color: #a8d900 !important;
+                border: 2px solid #7a9900 !important;
                 outline: none !important;
-                box-shadow: 0 2px 8px rgba(10, 75, 75, 0.2) !important;
+                box-shadow: 0 2px 8px rgba(122, 153, 0, 0.25) !important;
                 transform: translateY(-2px) !important;
             }}
 
-            /* Also target the div container - force square shape */
+            /* Also target the div container - position to right edge */
             div[data-testid="stPopover"],
             div[data-testid="stPopover"] > button {{
                 outline: none !important;
                 border: 2px solid #0a4b4b !important;
-                border-radius: 6px !important;
-                width: 44px !important;
-                min-width: 44px !important;
-                max-width: 44px !important;
-                height: 44px !important;
-                min-height: 44px !important;
-                max-height: 44px !important;
+                border-radius: 8px !important;
+                width: 56px !important;
+                min-width: 56px !important;
+                max-width: 56px !important;
+                height: 56px !important;
+                min-height: 56px !important;
+                max-height: 56px !important;
                 padding: 0 !important;
                 margin: 0 !important;
+                margin-left: auto !important;
                 display: flex !important;
                 align-items: center !important;
                 justify-content: center !important;

@@ -1631,6 +1631,14 @@ def show_dashboard():
         # Style checkbox with green neon color
         st.markdown("""
             <style>
+            /* Ensure checkbox is clickable */
+            div[data-testid="stCheckbox"],
+            div[data-testid="stCheckbox"] *,
+            div[data-testid="stCheckbox"] input {
+                pointer-events: auto !important;
+                cursor: pointer !important;
+            }
+
             /* Remove ALL background highlighting from checkbox label text */
             div[data-testid="stCheckbox"] label,
             div[data-testid="stCheckbox"] label *,
