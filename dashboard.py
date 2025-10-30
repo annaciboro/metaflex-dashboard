@@ -489,19 +489,19 @@ st.markdown("""
         padding: 8px 16px !important;
     }
 
-    /* ALL PRIMARY BUTTONS - MetaFlex Green Gradient (including "Save to Google Sheets") */
+    /* ALL PRIMARY BUTTONS - Subtle MetaFlex Teal */
     button[kind="primary"],
     button[data-testid="baseButton-primary"],
     .stButton > button[kind="primary"],
     div[data-testid="stButton"] > button[type="submit"] {
-        background: linear-gradient(135deg, #0a4b4b 0%, #4d7a40 50%, #7a9900 100%) !important;
+        background: #0a4b4b !important;
         background-color: #0a4b4b !important;
         border: none !important;
         color: #ffffff !important;
-        font-weight: 600 !important;
+        font-weight: 500 !important;
         padding: 10px 24px !important;
         border-radius: 8px !important;
-        box-shadow: 0 2px 8px rgba(10, 75, 75, 0.2) !important;
+        box-shadow: 0 1px 3px rgba(10, 75, 75, 0.15) !important;
         transition: all 0.3s ease !important;
     }
 
@@ -509,8 +509,8 @@ st.markdown("""
     button[data-testid="baseButton-primary"]:hover,
     .stButton > button[kind="primary"]:hover,
     div[data-testid="stButton"] > button[type="submit"]:hover {
-        background: linear-gradient(135deg, #4d7a40 0%, #7a9900 50%, #a8d900 100%) !important;
-        box-shadow: 0 4px 12px rgba(77, 122, 64, 0.3) !important;
+        background: #0d6868 !important;
+        box-shadow: 0 2px 6px rgba(10, 75, 75, 0.2) !important;
         transform: translateY(-1px) !important;
     }
 
@@ -566,31 +566,30 @@ st.markdown("""
         font-size: 0.9rem !important;
     }
 
-    /* MetaFlex Dark Teal Scrollbars */
+    /* Zen Minimal Scrollbars */
     ::-webkit-scrollbar {
-        width: 12px;
-        height: 12px;
+        width: 6px;
+        height: 6px;
     }
 
     ::-webkit-scrollbar-track {
-        background: #f1f5f9;
-        border-radius: 10px;
+        background: transparent;
     }
 
     ::-webkit-scrollbar-thumb {
-        background: linear-gradient(135deg, #0d6868 0%, #0a4b4b 100%);
-        border-radius: 10px;
-        border: 2px solid #f1f5f9;
+        background: #e8eaed;
+        border-radius: 3px;
+        transition: background 0.3s ease;
     }
 
     ::-webkit-scrollbar-thumb:hover {
-        background: linear-gradient(135deg, #0a4b4b 0%, #083838 100%);
+        background: #cbd5e0;
     }
 
     /* Firefox scrollbar styling */
     * {
         scrollbar-width: thin;
-        scrollbar-color: #0d6868 #f1f5f9;
+        scrollbar-color: #e8eaed transparent;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -770,21 +769,22 @@ with nav_container:
                 box-shadow: 0 2px 8px rgba(10, 75, 75, 0.2) !important;
             }}
 
-            /* Secondary button (other pages) - pure white with dark text */
+            /* Secondary button (other pages) - soft grey with dark teal border and text */
             div[data-testid="stPopover"] button[kind="secondary"],
             .stPopover button[kind="secondary"],
             div[data-testid="stPopover"] button:not([kind="primary"]):not([type="submit"]),
             .stPopover button:not([kind="primary"]):not([type="submit"]) {{
-                background: #ffffff !important;
-                background-color: #ffffff !important;
+                background: #f5f7f8 !important;
+                background-color: #f5f7f8 !important;
                 background-image: none !important;
                 color: #0a4b4b !important;
-                border: 1px solid #e5e7eb !important;
-                border-color: #e5e7eb !important;
-                font-weight: 700 !important;
+                border: 1.5px solid #0a4b4b !important;
+                border-color: #0a4b4b !important;
+                font-weight: 500 !important;
                 padding: 12px 20px !important;
-                border-radius: 8px !important;
-                transition: all 0.2s ease !important;
+                border-radius: 10px !important;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                box-shadow: 0 1px 3px rgba(10, 75, 75, 0.08) !important;
             }}
 
             div[data-testid="stPopover"] button[kind="secondary"]:hover,
@@ -794,8 +794,10 @@ with nav_container:
                 background: #ffffff !important;
                 background-color: #ffffff !important;
                 border-color: #0a4b4b !important;
-                border-width: 2px !important;
-                transform: translateY(-1px) !important;
+                border-width: 1.5px !important;
+                color: #0a4b4b !important;
+                transform: translateY(-2px) !important;
+                box-shadow: 0 3px 10px rgba(10, 75, 75, 0.15) !important;
             }}
             </style>
         """, unsafe_allow_html=True)

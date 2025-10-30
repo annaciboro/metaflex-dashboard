@@ -117,35 +117,37 @@ input, textarea {
 }
 
 /* ==============================================
-   CUSTOM SCROLLBAR - METAFLEX BRANDING
+   CUSTOM SCROLLBAR - METAFLEX TRANSLUCENT DARK TEAL
    ============================================== */
 
-/* Custom scrollbar for WebKit browsers (Chrome, Safari, Edge) */
+/* Custom scrollbar for WebKit browsers (Chrome, Safari, Edge) - Translucent dark teal */
 ::-webkit-scrollbar {
-    width: 14px;
-    height: 14px;
+    width: 10px;
+    height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-    background: #e8eaed;
+    background: rgba(10, 75, 75, 0.08);
+    border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #d4ff00;
+    background: rgba(10, 75, 75, 0.4);
+    border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #d4ff00;
+    background: rgba(10, 75, 75, 0.6);
 }
 
 ::-webkit-scrollbar-thumb:active {
-    background: #d4ff00;
+    background: rgba(10, 75, 75, 0.7);
 }
 
-/* Firefox scrollbar styling */
+/* Firefox scrollbar styling - Translucent dark teal */
 * {
     scrollbar-width: thin;
-    scrollbar-color: #d4ff00 #e8eaed;
+    scrollbar-color: rgba(10, 75, 75, 0.4) rgba(10, 75, 75, 0.08);
 }
 
 /* Premium Navigation Bar - Exact match to HTML design */
