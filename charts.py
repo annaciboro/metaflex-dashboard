@@ -369,11 +369,11 @@ def create_team_completion_donut(open_tasks, working_tasks, done_tasks):
     # Calculate overall progress
     overall_progress = int((working_tasks + done_tasks) / total_tasks * 100) if total_tasks > 0 else 0
 
-    # Add center text showing overall progress
+    # Add center text showing overall progress - refined and elegant
     fig.add_annotation(
-        text=f'<b style="font-size: 40px; color: #0a4b4b; font-weight: 900;">{overall_progress}%</b><br><span style="font-size: 12px; color: #0a4b4b; font-weight: 600;">OVERALL PROGRESS</span>',
+        text=f'<b style="font-size: 36px; color: #1f2937; font-weight: 300;">{overall_progress}%</b><br><span style="font-size: 11px; color: #6b7280; font-weight: 500; letter-spacing: 0.1em;">OVERALL PROGRESS</span>',
         x=0.5, y=0.5,
-        font=dict(size=16, color='#0a4b4b', family='-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'),
+        font=dict(size=16, color='#1f2937', family='-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'),
         showarrow=False,
         align='center'
     )
@@ -422,18 +422,18 @@ def create_project_breakdown_chart(df):
     projects = [p.title() for p in project_counts.index]
     counts = project_counts.values
 
-    # MetaFlex color palette - teal, forest green, lime shades
-    metaflex_colors = [
-        '#0a4b4b',  # Dark teal
-        '#0d6868',  # Medium teal
-        '#2d5a3d',  # Dark forest green
-        '#4d7a40',  # Medium forest green
-        '#7a9900',  # Lime green
-        '#a8d900',  # Light lime
+    # Sophisticated, subdued color palette - elegant and refined
+    subdued_colors = [
+        '#8b9d9f',  # Muted teal-grey
+        '#a8b89f',  # Sage green
+        '#9ba8a3',  # Soft green-grey
+        '#b5b8a8',  # Warm beige-grey
+        '#98a89b',  # Muted moss
+        '#a5b0a6',  # Light grey-green
     ]
 
-    # Assign colors cycling through the MetaFlex palette
-    bar_colors = [metaflex_colors[i % len(metaflex_colors)] for i in range(len(counts))]
+    # Assign colors cycling through the subdued palette
+    bar_colors = [subdued_colors[i % len(subdued_colors)] for i in range(len(counts))]
 
     # Create horizontal bar chart with rounded corners
     fig = go.Figure(data=[go.Bar(
@@ -445,9 +445,9 @@ def create_project_breakdown_chart(df):
             line=dict(color=MF_LIGHT['border'], width=1),  # Subtle border
             cornerradius=8  # Rounded corners for modern look
         ),
-        text=[f'<b>{count}</b>' for count in counts],
+        text=[f'{count}' for count in counts],
         textposition='outside',
-        textfont=dict(size=14, color='#0a4b4b', family='-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', weight='bold'),
+        textfont=dict(size=13, color='#1f2937', family='-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', weight=500),
         hovertemplate='<b>%{y}</b><br>Tasks: %{x}<extra></extra>',
         width=0.6  # Slimmer bars for premium look
     )])
