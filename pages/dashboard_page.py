@@ -1432,17 +1432,17 @@ def render_executive_dashboard(exec_metrics, df):
 
     # Import the new dark theme chart functions
     from charts import (
-        create_team_performance_metrics,
+        create_project_tasks_overview_chart,
         create_task_age_analysis,
         create_task_completion_velocity,
         create_project_health_dashboard
     )
 
-    # Row 1: Team Performance and Task Age
+    # Row 1: Project Tasks Overview and Task Age
     col1, sp1, col2 = st.columns([1, 0.1, 1])
 
     with col1:
-        fig = create_team_performance_metrics(exec_metrics)
+        fig = create_project_tasks_overview_chart(exec_metrics)
         if fig:
             st.plotly_chart(fig, use_container_width=True)
 
@@ -1640,129 +1640,150 @@ def show_dashboard():
 
                     completion_rate = int((complete_count / task_count * 100)) if task_count > 0 else 0
 
-                    # Dark themed project KPI cards
+                    # Dark themed project header
                     st.markdown(f"""
                         <div style='
                             background: linear-gradient(135deg, #0a2f2f 0%, #0d3a3a 100%);
-                            border-radius: 12px;
-                            padding: 24px 28px;
-                            margin-bottom: 24px;
+                            border-radius: 12px 12px 0 0;
+                            padding: 20px 28px;
                             border: 3px solid #2d5016;
-                            box-shadow: 0 0 20px rgba(212, 255, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.4);
+                            border-bottom: none;
+                            box-shadow: 0 0 20px rgba(212, 255, 0, 0.2);
                         '>
                             <h3 style='
-                                margin: 0 0 20px 0;
+                                margin: 0;
                                 font-size: 1.5rem;
                                 font-weight: 700;
                                 color: #d4ff00;
                                 letter-spacing: -0.01em;
                                 text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
                             '>{project_name}</h3>
-
-                            <div style='display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 20px;'>
-                                <!-- Total Tasks -->
-                                <div style='
-                                    background: rgba(212, 255, 0, 0.1);
-                                    border: 2px solid #2d5016;
-                                    border-radius: 8px;
-                                    padding: 16px;
-                                    text-align: center;
-                                '>
-                                    <p style='
-                                        margin: 0 0 8px 0;
-                                        font-size: 0.75rem;
-                                        font-weight: 600;
-                                        text-transform: uppercase;
-                                        letter-spacing: 0.05em;
-                                        color: #e8f5e9;
-                                        opacity: 0.8;
-                                    '>TOTAL</p>
-                                    <h2 style='
-                                        margin: 0;
-                                        font-size: 2rem;
-                                        font-weight: 900;
-                                        color: #d4ff00;
-                                        text-shadow: 0 0 10px rgba(212, 255, 0, 0.5);
-                                    '>{task_count}</h2>
-                                </div>
-
-                                <!-- Open Tasks -->
-                                <div style='
-                                    background: rgba(209, 122, 111, 0.15);
-                                    border: 2px solid #d17a6f;
-                                    border-radius: 8px;
-                                    padding: 16px;
-                                    text-align: center;
-                                '>
-                                    <p style='
-                                        margin: 0 0 8px 0;
-                                        font-size: 0.75rem;
-                                        font-weight: 600;
-                                        text-transform: uppercase;
-                                        letter-spacing: 0.05em;
-                                        color: #e8f5e9;
-                                        opacity: 0.8;
-                                    '>OPEN</p>
-                                    <h2 style='
-                                        margin: 0;
-                                        font-size: 2rem;
-                                        font-weight: 900;
-                                        color: #d17a6f;
-                                    '>{open_count}</h2>
-                                </div>
-
-                                <!-- In Progress -->
-                                <div style='
-                                    background: rgba(232, 185, 104, 0.15);
-                                    border: 2px solid #e8b968;
-                                    border-radius: 8px;
-                                    padding: 16px;
-                                    text-align: center;
-                                '>
-                                    <p style='
-                                        margin: 0 0 8px 0;
-                                        font-size: 0.75rem;
-                                        font-weight: 600;
-                                        text-transform: uppercase;
-                                        letter-spacing: 0.05em;
-                                        color: #e8f5e9;
-                                        opacity: 0.8;
-                                    '>IN PROGRESS</p>
-                                    <h2 style='
-                                        margin: 0;
-                                        font-size: 2rem;
-                                        font-weight: 900;
-                                        color: #e8b968;
-                                    '>{in_progress_count}</h2>
-                                </div>
-
-                                <!-- Completion Rate -->
-                                <div style='
-                                    background: rgba(77, 122, 64, 0.2);
-                                    border: 2px solid #4d7a40;
-                                    border-radius: 8px;
-                                    padding: 16px;
-                                    text-align: center;
-                                '>
-                                    <p style='
-                                        margin: 0 0 8px 0;
-                                        font-size: 0.75rem;
-                                        font-weight: 600;
-                                        text-transform: uppercase;
-                                        letter-spacing: 0.05em;
-                                        color: #e8f5e9;
-                                        opacity: 0.8;
-                                    '>COMPLETE</p>
-                                    <h2 style='
-                                        margin: 0;
-                                        font-size: 2rem;
-                                        font-weight: 900;
-                                        color: #4d7a40;
-                                    '>{completion_rate}%</h2>
-                                </div>
-                            </div>
                         </div>
                     """, unsafe_allow_html=True)
+
+                    # KPI cards using Streamlit columns (proven pattern)
+                    kpi_col1, kpi_col2, kpi_col3, kpi_col4 = st.columns(4)
+
+                    with kpi_col1:
+                        st.markdown(f"""
+                            <div style='
+                                background: linear-gradient(135deg, #0a2f2f 0%, #0d3a3a 100%);
+                                border-left: 3px solid #2d5016;
+                                border-right: 1px solid #2d5016;
+                                border-bottom: 3px solid #2d5016;
+                                padding: 20px 16px;
+                                text-align: center;
+                                box-shadow: 0 0 20px rgba(212, 255, 0, 0.2);
+                            '>
+                                <p style='
+                                    margin: 0 0 8px 0;
+                                    font-size: 0.7rem;
+                                    font-weight: 600;
+                                    text-transform: uppercase;
+                                    letter-spacing: 0.05em;
+                                    color: #e8f5e9;
+                                    opacity: 0.8;
+                                '>TOTAL</p>
+                                <h2 style='
+                                    margin: 0;
+                                    font-size: 2rem;
+                                    font-weight: 900;
+                                    color: #d4ff00;
+                                    text-shadow: 0 0 10px rgba(212, 255, 0, 0.5);
+                                '>{task_count}</h2>
+                            </div>
+                        """, unsafe_allow_html=True)
+
+                    with kpi_col2:
+                        st.markdown(f"""
+                            <div style='
+                                background: linear-gradient(135deg, #0a2f2f 0%, #0d3a3a 100%);
+                                border-left: 1px solid #2d5016;
+                                border-right: 1px solid #2d5016;
+                                border-bottom: 3px solid #2d5016;
+                                padding: 20px 16px;
+                                text-align: center;
+                                box-shadow: 0 0 20px rgba(212, 255, 0, 0.2);
+                            '>
+                                <p style='
+                                    margin: 0 0 8px 0;
+                                    font-size: 0.7rem;
+                                    font-weight: 600;
+                                    text-transform: uppercase;
+                                    letter-spacing: 0.05em;
+                                    color: #e8f5e9;
+                                    opacity: 0.8;
+                                '>OPEN</p>
+                                <h2 style='
+                                    margin: 0;
+                                    font-size: 2rem;
+                                    font-weight: 900;
+                                    color: #d17a6f;
+                                '>{open_count}</h2>
+                            </div>
+                        """, unsafe_allow_html=True)
+
+                    with kpi_col3:
+                        st.markdown(f"""
+                            <div style='
+                                background: linear-gradient(135deg, #0a2f2f 0%, #0d3a3a 100%);
+                                border-left: 1px solid #2d5016;
+                                border-right: 1px solid #2d5016;
+                                border-bottom: 3px solid #2d5016;
+                                padding: 20px 16px;
+                                text-align: center;
+                                box-shadow: 0 0 20px rgba(212, 255, 0, 0.2);
+                            '>
+                                <p style='
+                                    margin: 0 0 8px 0;
+                                    font-size: 0.7rem;
+                                    font-weight: 600;
+                                    text-transform: uppercase;
+                                    letter-spacing: 0.05em;
+                                    color: #e8f5e9;
+                                    opacity: 0.8;
+                                '>IN PROGRESS</p>
+                                <h2 style='
+                                    margin: 0;
+                                    font-size: 2rem;
+                                    font-weight: 900;
+                                    color: #e8b968;
+                                '>{in_progress_count}</h2>
+                            </div>
+                        """, unsafe_allow_html=True)
+
+                    with kpi_col4:
+                        st.markdown(f"""
+                            <div style='
+                                background: linear-gradient(135deg, #0a2f2f 0%, #0d3a3a 100%);
+                                border-left: 1px solid #2d5016;
+                                border-right: 3px solid #2d5016;
+                                border-bottom: 3px solid #2d5016;
+                                border-radius: 0 0 12px 12px;
+                                padding: 20px 16px;
+                                text-align: center;
+                                box-shadow: 0 0 20px rgba(212, 255, 0, 0.2);
+                            '>
+                                <p style='
+                                    margin: 0 0 8px 0;
+                                    font-size: 0.7rem;
+                                    font-weight: 600;
+                                    text-transform: uppercase;
+                                    letter-spacing: 0.05em;
+                                    color: #e8f5e9;
+                                    opacity: 0.8;
+                                '>COMPLETE</p>
+                                <h2 style='
+                                    margin: 0;
+                                    font-size: 2rem;
+                                    font-weight: 900;
+                                    color: #4d7a40;
+                                '>{completion_rate}%</h2>
+                            </div>
+                        """, unsafe_allow_html=True)
+
+                    # Spacing after KPI cards
+                    st.markdown("<div style='margin-bottom: 20px;'></div>", unsafe_allow_html=True)
 
                     if not project_df.empty:
                         # Render STATIC read-only table for display

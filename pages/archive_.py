@@ -77,7 +77,7 @@ def show_archive():
     st.markdown("<br>", unsafe_allow_html=True)
 
     # Add search functionality
-    search_term = st.text_input("Search archived tasks", placeholder="Search by keywords...", key="search_archive")
+    search_term = st.text_input("🔍 Search archived tasks", placeholder="Search by keywords...", key="search_archive")
 
     if search_term:
         # Search across all columns

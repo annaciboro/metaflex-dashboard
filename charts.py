@@ -38,76 +38,95 @@ def has_column(df, col_name):
     return any(col.startswith(f"{col_name}___") for col in df.columns)
 
 
-def create_team_performance_metrics(exec_metrics):
+def create_project_tasks_overview_chart(exec_metrics):
     """
-    Team Performance Metrics with dark theme
-    Shows completion rate per team member
+    Combined Project Tasks Overview with dark theme
+    Shows both total tasks and open tasks per project in grouped bars
     """
-    # Ensure all 4 team members are shown
-    all_team_members = ["Téa", "Jess", "Megan", "Justin"]
-    person_data = []
-
-    for team_member in all_team_members:
-        # Look for this person in exec_metrics (case-insensitive)
-        metrics = None
-        for person, person_metrics in exec_metrics["tasks_by_person"].items():
-            if team_member.lower() in person.lower() or person.lower() in team_member.lower():
-                metrics = person_metrics
-                break
-
-        if metrics:
-            total = metrics["total"]
-            complete = metrics["complete"]
-            completion_rate = int((complete / total * 100)) if total > 0 else 0
-        else:
-            completion_rate = 0
-
-        person_data.append({
-            "Team Member": team_member,
-            "Completion Rate": completion_rate
+    project_data = []
+    for project, metrics in exec_metrics["tasks_by_project"].items():
+        project_data.append({
+            "Project": project,
+            "Total Tasks": metrics["total"],
+            "Open Tasks": metrics["open"]
         })
 
-    if not person_data:
-        st.info("No team performance data available.")
+    if not project_data:
+        st.info("No project data available.")
         return None
 
-    person_df = pd.DataFrame(person_data).sort_values("Completion Rate", ascending=True)
+    project_df = pd.DataFrame(project_data).sort_values("Total Tasks", ascending=True)
 
-    fig = go.Figure(data=[go.Bar(
-        y=person_df["Team Member"],
-        x=person_df["Completion Rate"],
+    # Create grouped bar chart
+    fig = go.Figure()
+
+    # Total Tasks bar (lime)
+    fig.add_trace(go.Bar(
+        y=project_df["Project"],
+        x=project_df["Total Tasks"],
+        name='Total Tasks',
         orientation='h',
         marker=dict(
             color=MF_DARK['accent_lime'],
             line=dict(color=MF_DARK['border'], width=2)
         ),
-        text=[f"{rate}%" for rate in person_df["Completion Rate"]],
+        text=project_df["Total Tasks"],
         textposition='outside',
-        textfont=dict(size=14, color=MF_DARK['text_light'], family='-apple-system, sans-serif'),
-        hovertemplate='<b>%{y}</b><br>Completion: %{x}%<extra></extra>'
-    )])
+        textfont=dict(size=13, color=MF_DARK['text_light'], family='-apple-system, sans-serif'),
+        hovertemplate='<b>%{y}</b><br>Total Tasks: %{x}<extra></extra>'
+    ))
+
+    # Open Tasks bar (coral)
+    fig.add_trace(go.Bar(
+        y=project_df["Project"],
+        x=project_df["Open Tasks"],
+        name='Open Tasks',
+        orientation='h',
+        marker=dict(
+            color='#d17a6f',  # Coral color for open tasks
+            line=dict(color=MF_DARK['border'], width=2)
+        ),
+        text=project_df["Open Tasks"],
+        textposition='outside',
+        textfont=dict(size=13, color=MF_DARK['text_light'], family='-apple-system, sans-serif'),
+        hovertemplate='<b>%{y}</b><br>Open Tasks: %{x}<extra></extra>'
+    ))
+
+    max_value = project_df["Total Tasks"].max() if len(project_df) > 0 else 10
 
     fig.update_layout(
         title=dict(
-            text='<b>Team Performance Metrics</b>',
+            text='<b>Project Tasks Overview</b>',
             x=0.5,
             xanchor='center',
             font=dict(size=18, color=MF_DARK['text_light'], family='-apple-system, sans-serif')
         ),
         height=400,
-        margin=dict(t=60, b=40, l=120, r=60),
+        margin=dict(t=60, b=40, l=140, r=80),
         paper_bgcolor=MF_DARK['bg_dark'],
         plot_bgcolor=MF_DARK['bg_surface'],
+        barmode='group',  # Group bars side by side
+        bargap=0.15,
+        bargroupgap=0.1,
         xaxis=dict(
             showgrid=True,
             gridcolor='rgba(212, 255, 0, 0.1)',
-            title=dict(text='Completion Rate (%)', font=dict(size=12, color=MF_DARK['text_light'])),
+            title=dict(text='Number of Tasks', font=dict(size=12, color=MF_DARK['text_light'])),
             tickfont=dict(size=11, color=MF_DARK['text_light']),
-            range=[0, 110]
+            range=[0, max_value * 1.2]
         ),
         yaxis=dict(
             title='',
             tickfont=dict(size=12, color=MF_DARK['text_light'])
+        ),
+        legend=dict(
+            orientation="h",
+            yanchor="top",
+            y=-0.15,
+            xanchor="center",
+            x=0.5,
+            font=dict(size=12, color=MF_DARK['text_light'], family='-apple-system, sans-serif'),
+            bgcolor='rgba(0,0,0,0)'
         )
     )
 
