@@ -5,7 +5,8 @@ from .dashboard_page import (
     load_google_sheet,
     get_column,
     has_column,
-    render_tasks_table
+    render_tasks_table,
+    render_page_header
 )
 
 def show_archive():
@@ -18,9 +19,11 @@ def show_archive():
     is_tea = user_name.lower() == "tea" or user_name.lower() == "tēa" or "tea" in user_name.lower()
     is_jess = "jess" in user_name.lower()
 
-    st.markdown(f"### {first_name}'s Archive")
-    st.caption("All completed tasks")
-    st.markdown("<br>", unsafe_allow_html=True)
+    # Standardized header
+    if is_tea:
+        render_page_header("Archive", "All completed tasks across the organization")
+    else:
+        render_page_header(f"{first_name}'s Archive", "Your completed tasks")
 
     # Load data from Google Sheet
     with st.spinner("Loading archived tasks..."):
@@ -30,9 +33,9 @@ def show_archive():
         st.warning("No data available. Please check your Google Sheet connection.")
         return
 
-    # Filter by user if not Tea or Jess
-    if not is_tea and not is_jess:
-        # Try different possible column names for assignee
+    # Filter by user if not Tea (Tea sees ALL archived tasks)
+    if not is_tea:
+        # Everyone else sees only their own archived tasks
         assignee_col = None
         if has_column(df, "Assigned To"):
             assignee_col = get_column(df, "Assigned To")
@@ -46,18 +49,6 @@ def show_archive():
         else:
             st.error(f"Cannot filter tasks: No assignee column found. Available columns: {', '.join(df.columns.tolist())}")
             return
-    elif is_jess:
-        # Jess sees her, Megan's, and Justin's archived tasks
-        assignee_col = None
-        if has_column(df, "Assigned To"):
-            assignee_col = get_column(df, "Assigned To")
-        elif has_column(df, "assignee"):
-            assignee_col = get_column(df, "assignee")
-        elif has_column(df, "Person"):
-            assignee_col = get_column(df, "Person")
-
-        if assignee_col:
-            df = df[df[assignee_col].str.lower().str.contains('jess|megan|justin', na=False, regex=True)].copy()
 
     # Filter for done tasks only
     if has_column(df, "Status"):

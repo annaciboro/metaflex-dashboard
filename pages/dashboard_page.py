@@ -30,6 +30,35 @@ def has_column(df, col_name):
         return True
     return any(col.startswith(f"{col_name}___") for col in df.columns)
 
+def render_page_header(title, subtitle=None):
+    """
+    Standardized page header with teal gradient title
+    Used across all pages for consistency
+    """
+    st.markdown(f"""
+        <h1 style='
+            margin: 0 0 {('8px' if subtitle else '24px')} 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #0a4b4b 0%, #0d6868 50%, #7a9900 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+            text-align: center;
+        '>{title}</h1>
+    """, unsafe_allow_html=True)
+
+    if subtitle:
+        st.markdown(f"""
+            <p style='
+                margin: 0 0 24px 0;
+                text-align: center;
+                color: #6b7280;
+                font-size: 0.95rem;
+            '>{subtitle}</p>
+        """, unsafe_allow_html=True)
+
 # Access scope mapping
 ACCESS_SCOPE = {
     "Téa Phillips": "all",
@@ -1545,19 +1574,8 @@ def show_dashboard():
     # Get first name for greeting
     first_name = user_name.split()[0] if user_name else "User"
 
-    st.markdown(f"""
-    <h1 style='
-        margin: 0 0 16px 0;
-        font-size: 3rem;
-        font-weight: 700;
-        background: linear-gradient(135deg, #0a4b4b 0%, #0d6868 50%, #7a9900 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        letter-spacing: -0.02em;
-        text-align: center;
-    '>Welcome back, {first_name}</h1>
-""", unsafe_allow_html=True)
+    # Standardized header
+    render_page_header(f"Welcome back, {first_name}", "Executive Dashboard - Track and manage tasks across all projects")
 
     # Load data from Google Sheet
     with st.spinner("Loading dashboard data..."):

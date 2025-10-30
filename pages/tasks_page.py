@@ -8,7 +8,8 @@ from .dashboard_page import (
     calculate_kpis,
     render_kpi_section,
     render_charts_section,
-    render_tasks_table
+    render_tasks_table,
+    render_page_header
 )
 
 def show_tasks():
@@ -23,9 +24,8 @@ def show_tasks():
     is_tea = user_name.lower() == "tea" or user_name.lower() == "tēa" or "tea" in user_name.lower()
     is_jess = "jess" in user_name.lower()
 
-    # Everyone sees "My Tasks" - this is a personal tasks page
-    st.markdown("### My Tasks")
-    st.markdown("<br>", unsafe_allow_html=True)
+    # Standardized header
+    render_page_header("My Tasks", "View and manage your personal task list")
 
     # Load data from Google Sheet
     with st.spinner("Loading your tasks..."):

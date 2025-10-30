@@ -5,7 +5,8 @@ from .dashboard_page import (
     load_google_sheet,
     get_column,
     has_column,
-    render_editable_task_grid
+    render_editable_task_grid,
+    render_page_header
 )
 
 def show_analytics():
@@ -39,19 +40,11 @@ def show_analytics():
         if assignee_col:
             df = df[df[assignee_col].str.lower().str.contains('jess|megan|justin', na=False, regex=True)].copy()
 
-    # Single clean header with title and task count on same row
-    header_col1, header_col2 = st.columns([3, 1])
-
-    with header_col1:
-        if is_jess:
-            st.markdown('<h1 style="font-family: \'Marcellus\', serif; font-size: 42px; font-weight: 600; color: #1a2424; margin: 0; letter-spacing: -0.02em;">Team Task Management</h1>', unsafe_allow_html=True)
-            st.markdown('<p style="font-family: \'Inter\', sans-serif; font-size: 15px; color: #6a7878; margin-top: 8px; margin-bottom: 0; line-height: 1.6;">Manage tasks for Jess, Megan, and Justin</p>', unsafe_allow_html=True)
-        else:
-            st.markdown('<h1 style="font-family: \'Marcellus\', serif; font-size: 42px; font-weight: 600; color: #1a2424; margin: 0; letter-spacing: -0.02em;">All Task Management</h1>', unsafe_allow_html=True)
-            st.markdown('<p style="font-family: \'Inter\', sans-serif; font-size: 15px; color: #6a7878; margin-top: 8px; margin-bottom: 0; line-height: 1.6;">Edit fields directly, then sync to Google Sheets</p>', unsafe_allow_html=True)
-
-    with header_col2:
-        st.markdown(f'<p style="font-family: \'Inter\', sans-serif; font-size: 16px; color: #2a3a3a; font-weight: 600; text-align: right; margin-top: 8px;">Total Tasks: {len(df)}</p>', unsafe_allow_html=True)
+    # Standardized header
+    if is_jess:
+        render_page_header("Team Task Management", f"Manage tasks for Jess, Megan, and Justin • {len(df)} total tasks")
+    else:
+        render_page_header("All Task Management", f"Edit fields directly, then sync to Google Sheets • {len(df)} total tasks")
 
     # Uniform spacing after header
     st.markdown("<div style='margin-bottom: 32px;'></div>", unsafe_allow_html=True)
