@@ -647,39 +647,57 @@ with nav_container:
             button[data-testid*="baseButton-header"]:active,
             button[data-testid*="baseButton-header"]:focus-visible {{
                 background: transparent !important;
-                border: 2px solid #2d5a3d !important;
+                border: 2px solid #0a4b4b !important;
                 border-radius: 6px !important;
                 outline: none !important;
                 outline-width: 0 !important;
                 outline-style: none !important;
                 outline-color: transparent !important;
-                padding: 4px 8px !important;
+                padding: 8px 8px !important;
+                width: 44px !important;
+                height: 44px !important;
                 box-shadow: none !important;
                 transition: all 0.3s ease !important;
                 cursor: pointer !important;
                 font-size: 1.5rem !important;
                 color: #0a4b4b !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
             }}
 
             button[data-testid*="baseButton-header"]:hover {{
-                background: rgba(45, 90, 61, 0.05) !important;
-                color: #7a9900 !important;
-                border: 2px solid #4d7a40 !important;
+                background: rgba(10, 75, 75, 0.05) !important;
+                color: #0d6868 !important;
+                border: 2px solid #0d6868 !important;
                 outline: none !important;
-                box-shadow: 0 0 8px rgba(45, 90, 61, 0.3) !important;
+                box-shadow: 0 2px 8px rgba(10, 75, 75, 0.2) !important;
+                transform: translateY(-2px) !important;
             }}
 
             /* Also target the div container */
             div[data-testid="stPopover"] > button {{
                 outline: none !important;
-                border: 2px solid #2d5a3d !important;
+                border: 2px solid #0a4b4b !important;
                 border-radius: 6px !important;
+                width: 44px !important;
+                height: 44px !important;
+                padding: 8px 8px !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
             }}
 
             div[data-testid="stPopover"] > button:focus {{
                 outline: none !important;
-                border: 2px solid #2d5a3d !important;
-                box-shadow: 0 0 8px rgba(45, 90, 61, 0.3) !important;
+                border: 2px solid #0a4b4b !important;
+                box-shadow: none !important;
+            }}
+
+            div[data-testid="stPopover"] > button:hover {{
+                border: 2px solid #0d6868 !important;
+                box-shadow: 0 2px 8px rgba(10, 75, 75, 0.2) !important;
+                transform: translateY(-2px) !important;
             }}
 
             /* Make popover larger */
