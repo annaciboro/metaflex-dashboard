@@ -38,7 +38,7 @@ def render_page_header(title, subtitle=None):
     st.markdown(f"""
         <h1 style='
             margin: 0 0 {('8px' if subtitle else '24px')} 0;
-            font-size: 2.5rem;
+            font-size: 1.75rem;
             font-weight: 700;
             background: linear-gradient(135deg, #0a4b4b 0%, #0d6868 50%, #7a9900 100%);
             -webkit-background-clip: text;
@@ -1378,7 +1378,6 @@ def render_executive_dashboard(exec_metrics, df):
                 transition: all 0.3s ease;
                 position: relative;
             '>
-                <div style='position: absolute; top: 12px; right: 12px; width: 8px; height: 8px; background: #d4ff00; border-radius: 50%; box-shadow: 0 0 8px rgba(212, 255, 0, 0.4);'></div>
                 <p style='margin: 0 0 12px 0; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #9ca3af;'>OPEN TASKS</p>
                 <h2 style='margin: 0; font-size: 2.8rem; font-weight: 700; color: #0a4b4b; line-height: 1;'>{exec_metrics["total_open"]}</h2>
             </div>
@@ -1396,7 +1395,6 @@ def render_executive_dashboard(exec_metrics, df):
                 transition: all 0.3s ease;
                 position: relative;
             '>
-                <div style='position: absolute; top: 12px; right: 12px; width: 8px; height: 8px; background: #d4ff00; border-radius: 50%; box-shadow: 0 0 8px rgba(212, 255, 0, 0.4);'></div>
                 <p style='margin: 0 0 12px 0; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #9ca3af;'>IN PROGRESS</p>
                 <h2 style='margin: 0; font-size: 2.8rem; font-weight: 700; color: #0a4b4b; line-height: 1;'>{exec_metrics["total_in_progress"]}</h2>
             </div>
@@ -1414,7 +1412,6 @@ def render_executive_dashboard(exec_metrics, df):
                 transition: all 0.3s ease;
                 position: relative;
             '>
-                <div style='position: absolute; top: 12px; right: 12px; width: 8px; height: 8px; background: #d4ff00; border-radius: 50%; box-shadow: 0 0 8px rgba(212, 255, 0, 0.4);'></div>
                 <p style='margin: 0 0 12px 0; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #9ca3af;'>COMPLETE</p>
                 <h2 style='margin: 0; font-size: 2.8rem; font-weight: 700; color: #0a4b4b; line-height: 1;'>{exec_metrics["total_complete"]}</h2>
             </div>
@@ -1432,7 +1429,6 @@ def render_executive_dashboard(exec_metrics, df):
                 transition: all 0.3s ease;
                 position: relative;
             '>
-                <div style='position: absolute; top: 12px; right: 12px; width: 8px; height: 8px; background: #d4ff00; border-radius: 50%; box-shadow: 0 0 8px rgba(212, 255, 0, 0.4);'></div>
                 <p style='margin: 0 0 12px 0; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #9ca3af;'>COMPLETION RATE</p>
                 <h2 style='margin: 0; font-size: 2.8rem; font-weight: 700; color: #0a4b4b; line-height: 1;'>{exec_metrics["completion_rate"]}%</h2>
             </div>

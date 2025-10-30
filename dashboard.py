@@ -472,10 +472,10 @@ with nav_container:
     # Simple navigation: Small Logo + Spacer + Large Hamburger Menu
     cols = st.columns([0.5, 3, 1.5])
 
-    # Logo (tiny)
+    # Logo (tiny - smaller to reduce fuzziness)
     with cols[0]:
         if os.path.exists(logo_path):
-            st.image(logo_path, width=25)
+            st.image(logo_path, width=18)
 
     # Spacer
     with cols[1]:
