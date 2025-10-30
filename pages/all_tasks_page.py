@@ -51,10 +51,10 @@ def show_analytics():
 
     # Add analytics charts for All Tasks
     from charts import create_task_completion_velocity, create_project_health_dashboard
-    from .dashboard_page import calculate_executive_overview
+    from .dashboard_page import calculate_executive_metrics
 
     # Calculate metrics for charts
-    exec_metrics = calculate_executive_overview(df)
+    exec_metrics = calculate_executive_metrics(df)
 
     # Two charts side by side
     chart_col1, chart_spacer, chart_col2 = st.columns([1, 0.1, 1])
