@@ -590,7 +590,7 @@ def render_charts_section(kpis, filtered_df, show_project_chart=True):
                     border: 1px solid rgba(10, 75, 75, 0.2) !important;
                 }
                 </style>
-                <h3 style="text-align: center; margin: 0 0 32px 0; color: #2d5016; font-weight: 700; font-size: 1.25rem;">Task Completion Status</h3>
+                <h3 style="text-align: left; margin: 0 0 20px 0; color: #0a4b4b; font-weight: 600; font-size: 1.1rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">Task Completion Status</h3>
             """, unsafe_allow_html=True)
 
             # Create vertical bar chart for task completion
@@ -617,7 +617,7 @@ def render_charts_section(kpis, filtered_df, show_project_chart=True):
                     ),
                     text=text_labels,
                     textposition='outside',
-                    textfont=dict(size=14, color='#2d5016', family='Inter', weight='bold'),
+                    textfont=dict(size=14, color='#0a4b4b', family='-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', weight='bold'),
                     hovertemplate='<b>%{x}</b><br>Count: %{y} (%{customdata:.0f}%)<extra></extra>',
                     customdata=percentages
                 )
@@ -626,19 +626,19 @@ def render_charts_section(kpis, filtered_df, show_project_chart=True):
             fig.update_layout(
                 showlegend=False,
                 height=380,
-                margin=dict(l=20, r=20, t=50, b=20),
+                margin=dict(l=20, r=20, t=50, b=60),
                 plot_bgcolor='rgba(0,0,0,0)',
                 paper_bgcolor='rgba(0,0,0,0)',
                 xaxis=dict(
                     showgrid=False,
                     title=None,
-                    tickfont=dict(size=13, color='#6b7280', family='Inter')
+                    tickfont=dict(size=13, color='#0a4b4b', family='-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif')
                 ),
                 yaxis=dict(
                     showgrid=True,
                     gridcolor='#f3f4f6',
                     title=None,
-                    tickfont=dict(size=12, color='#6b7280'),
+                    tickfont=dict(size=12, color='#0a4b4b', family='-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'),
                     range=[0, max(counts) * 1.2]  # Add 20% padding to prevent cutoff
                 )
             )
@@ -668,7 +668,7 @@ def render_charts_section(kpis, filtered_df, show_project_chart=True):
                         border: 1px solid rgba(10, 75, 75, 0.2) !important;
                     }
                     </style>
-                    <h3 style="text-align: center; margin: 0 0 20px 0; color: #2d5016; font-weight: 700; font-size: 1.25rem;">Tasks by Project</h3>
+                    <h3 style="text-align: left; margin: 0 0 20px 0; color: #0a4b4b; font-weight: 600; font-size: 1.1rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">Tasks by Project</h3>
                 """, unsafe_allow_html=True)
 
                 project_fig = create_project_breakdown_chart(filtered_df)
@@ -950,7 +950,7 @@ def render_tasks_table(filtered_df, limit=10, hide_project_column=False):
             # Save button to sync to Google Sheets - Centered
             _, btn_col, _ = st.columns([2, 1, 2])
             with btn_col:
-                if st.button("💾 Save to Sheets", key=f"save_btn_{hash(str(filtered_df.iloc[0].to_dict()) if len(filtered_df) > 0 else 'empty')}", type="primary", use_container_width=True):
+                if st.button("Save to Sheets", key=f"save_btn_{hash(str(filtered_df.iloc[0].to_dict()) if len(filtered_df) > 0 else 'empty')}", type="primary", use_container_width=True):
                     # Map edited data back to original DataFrame structure
                     # We need to reverse the cleaning process and update the original df
                     with st.spinner("Syncing to Google Sheets..."):
@@ -1670,18 +1670,13 @@ def show_dashboard():
 
                     completion_rate = int((complete_count / task_count * 100)) if task_count > 0 else 0
 
-                    # Premium project header - Gradient title
+                    # Premium project header - Left aligned
                     st.markdown(f"""<h2 style='
-                        text-align: center;
-                        font-size: 1.8rem;
-                        font-weight: 800;
-                        background: linear-gradient(135deg, #0a4b4b 0%, #4d7a40 50%, #7a9900 100%);
-                        -webkit-background-clip: text;
-                        -webkit-text-fill-color: transparent;
-                        background-clip: text;
+                        text-align: left;
+                        font-size: 1.75rem;
+                        font-weight: 700;
+                        color: #0a4b4b;
                         margin: 32px 0 24px 0;
-                        text-transform: uppercase;
-                        letter-spacing: 0.02em;
                     '>{project_name}</h2>""", unsafe_allow_html=True)
 
                     # Premium KPI cards using Streamlit columns

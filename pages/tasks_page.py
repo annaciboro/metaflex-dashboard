@@ -91,7 +91,7 @@ def show_tasks():
         from charts import create_task_age_analysis
 
         with chart_col2:
-            st.markdown("<h4 style='color: #0a4b4b; margin-bottom: 16px; text-align: center;'>Task Age Analysis</h4>", unsafe_allow_html=True)
+            st.markdown("<h3 style='text-align: left; margin: 0 0 20px 0; color: #0a4b4b; font-weight: 600; font-size: 1.1rem; font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif;'>Task Age Analysis</h3>", unsafe_allow_html=True)
             age_fig = create_task_age_analysis(personal_df)
             if age_fig:
                 st.plotly_chart(age_fig, use_container_width=True)
@@ -166,9 +166,9 @@ def show_tasks():
     # Display all personal OPEN tasks - with no limit
     # For regular users (Megan, Justin, Jess), just show the count; for Tea, show "My Open Tasks"
     if is_tea:
-        st.markdown(f"### My Open Tasks ({len(personal_df)} total)")
+        st.markdown(f"<h2 style='text-align: left; font-size: 1.75rem; font-weight: 700; color: #0a4b4b; margin: 24px 0 16px 0;'>My Open Tasks ({len(personal_df)} total)</h2>", unsafe_allow_html=True)
     else:
-        st.markdown(f"<h2 style='font-size: 1.75rem; font-weight: 700; color: #2d5016; margin-bottom: 8px;'>{len(personal_df)} Open Tasks</h2>", unsafe_allow_html=True)
+        st.markdown(f"<h2 style='text-align: left; font-size: 1.75rem; font-weight: 700; color: #0a4b4b; margin: 24px 0 16px 0;'>{len(personal_df)} Open Tasks</h2>", unsafe_allow_html=True)
     st.markdown("<br>", unsafe_allow_html=True)
 
     # Add "Add New Task" and "Save Changes" buttons with KPI card styling

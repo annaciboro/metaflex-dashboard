@@ -459,18 +459,14 @@ st.markdown("""
         line-height: 1.2 !important;
     }
 
-    /* Section headers (H2) - Executive Overview - Make it POP */
+    /* Section headers (H2) - Executive Overview - Left aligned */
     h2, .stMarkdown h2 {
-        font-size: 2rem !important;
-        font-weight: 800 !important;
+        font-size: 1.75rem !important;
+        font-weight: 700 !important;
         line-height: 1.2 !important;
-        background: linear-gradient(135deg, #0a4b4b 0%, #4d7a40 50%, #7a9900 100%) !important;
-        -webkit-background-clip: text !important;
-        -webkit-text-fill-color: transparent !important;
-        background-clip: text !important;
-        text-transform: uppercase !important;
-        letter-spacing: 0.02em !important;
-        margin: 32px 0 24px 0 !important;
+        color: #0a4b4b !important;
+        text-align: left !important;
+        margin: 24px 0 16px 0 !important;
     }
 
     /* Subsection headers (H3) */
@@ -608,59 +604,93 @@ with open(logo_path, "rb") as f:
 nav_container = st.container()
 
 with nav_container:
-    # Navigation with empty space on left, MetaFlex branding on right
-    cols = st.columns([5, 1])
+    # Navigation: Logo + Welcome message on left, hamburger menu on right
+    cols = st.columns([6, 1])
 
-    # Empty left column
+    # Get first name for greeting
+    first_name = user_name.split()[0] if user_name else "User"
+
+    # Logo + Welcome message combined - center aligned and close together
     with cols[0]:
-        st.write("")
+        st.markdown(f"""
+            <div style="
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            ">
+                <img src="data:image/png;base64,{logo_data}" style="
+                    width: 48px;
+                    height: 48px;
+                    image-rendering: -webkit-optimize-contrast;
+                    image-rendering: crisp-edges;
+                    flex-shrink: 0;
+                " />
+                <h2 style="
+                    font-size: 1.1rem;
+                    font-weight: 600;
+                    color: #0a4b4b;
+                    margin: 0;
+                    padding: 0;
+                    line-height: 1.2;
+                ">Welcome back, {first_name}</h2>
+            </div>
+        """, unsafe_allow_html=True)
 
-    # MetaFlex Operations branding with user greeting - clickable to open menu
+    # Hamburger menu on the right
     with cols[1]:
-        # Get first name for greeting
-        first_name = user_name.split()[0] if user_name else "User"
-        # Custom styling for clickable branding
+        # Hamburger menu button styling - completely remove all borders and outlines
         st.markdown(f"""
             <style>
-            /* Branding button styling - transparent background with gradient text */
-            button[data-testid*="baseButton-header"] {{
+            /* Hamburger menu button - clean text only, no outline ever */
+            button[data-testid*="baseButton-header"],
+            button[data-testid*="baseButton-header"]:focus,
+            button[data-testid*="baseButton-header"]:active,
+            button[data-testid*="baseButton-header"]:focus-visible {{
                 background: transparent !important;
                 border: none !important;
-                padding: 0 !important;
+                outline: none !important;
+                outline-width: 0 !important;
+                outline-style: none !important;
+                outline-color: transparent !important;
+                padding: 4px 8px !important;
                 box-shadow: none !important;
-                transition: all 0.2s ease !important;
+                transition: all 0.3s ease !important;
                 cursor: pointer !important;
-                text-align: right !important;
-                font-size: 1.75rem !important;
-                font-weight: 950 !important;
-                font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
-                letter-spacing: -0.01em !important;
+                font-size: 1.5rem !important;
+                color: #0a4b4b !important;
             }}
 
             button[data-testid*="baseButton-header"]:hover {{
                 background: transparent !important;
-                opacity: 0.8 !important;
+                color: #7a9900 !important;
+                border: none !important;
+                outline: none !important;
+                box-shadow: none !important;
             }}
 
-            /* Make the text gradient */
-            button[data-testid*="baseButton-header"] div {{
-                background: linear-gradient(135deg, #0a4b4b 0%, #4d7a40 50%, #7a9900 100%) !important;
-                -webkit-background-clip: text !important;
-                -webkit-text-fill-color: transparent !important;
-                background-clip: text !important;
+            /* Also target the div container */
+            div[data-testid="stPopover"] > button {{
+                outline: none !important;
+                border: none !important;
+            }}
+
+            div[data-testid="stPopover"] > button:focus {{
+                outline: none !important;
+                border: none !important;
+                box-shadow: none !important;
             }}
 
             /* Make popover larger */
-            div[data-testid="stPopover"] > div {
+            div[data-testid="stPopover"] > div {{
                 min-width: 300px !important;
-            }
+            }}
 
             /* Standardize navigation button styling - ULTRA AGGRESSIVE override */
             /* Primary button (current page) - teal with white text */
             div[data-testid="stPopover"] button[kind="primary"],
             div[data-testid="stPopover"] button[type="submit"],
             .stPopover button[kind="primary"],
-            .stPopover button[type="submit"] {
+            .stPopover button[type="submit"] {{
                 background: linear-gradient(135deg, #0a4b4b 0%, #0d6868 100%) !important;
                 background-color: #0a4b4b !important;
                 background-image: linear-gradient(135deg, #0a4b4b 0%, #0d6868 100%) !important;
@@ -671,24 +701,24 @@ with nav_container:
                 padding: 12px 20px !important;
                 border-radius: 8px !important;
                 transition: all 0.2s ease !important;
-            }
+            }}
 
             div[data-testid="stPopover"] button[kind="primary"]:hover,
             div[data-testid="stPopover"] button[type="submit"]:hover,
             .stPopover button[kind="primary"]:hover,
-            .stPopover button[type="submit"]:hover {
+            .stPopover button[type="submit"]:hover {{
                 background: linear-gradient(135deg, #0d6868 0%, #106a6a 100%) !important;
                 background-color: #0d6868 !important;
                 background-image: linear-gradient(135deg, #0d6868 0%, #106a6a 100%) !important;
                 transform: translateY(-1px) !important;
                 box-shadow: 0 2px 8px rgba(10, 75, 75, 0.2) !important;
-            }
+            }}
 
             /* Secondary button (other pages) - pure white with dark text */
             div[data-testid="stPopover"] button[kind="secondary"],
             .stPopover button[kind="secondary"],
             div[data-testid="stPopover"] button:not([kind="primary"]):not([type="submit"]),
-            .stPopover button:not([kind="primary"]):not([type="submit"]) {
+            .stPopover button:not([kind="primary"]):not([type="submit"]) {{
                 background: #ffffff !important;
                 background-color: #ffffff !important;
                 background-image: none !important;
@@ -699,45 +729,45 @@ with nav_container:
                 padding: 12px 20px !important;
                 border-radius: 8px !important;
                 transition: all 0.2s ease !important;
-            }
+            }}
 
             div[data-testid="stPopover"] button[kind="secondary"]:hover,
             .stPopover button[kind="secondary"]:hover,
             div[data-testid="stPopover"] button:not([kind="primary"]):not([type="submit"]):hover,
-            .stPopover button:not([kind="primary"]):not([type="submit"]):hover {
+            .stPopover button:not([kind="primary"]):not([type="submit"]):hover {{
                 background: #ffffff !important;
                 background-color: #ffffff !important;
                 border-color: #0a4b4b !important;
                 border-width: 2px !important;
                 transform: translateY(-1px) !important;
-            }
+            }}
             </style>
         """, unsafe_allow_html=True)
 
-        with st.popover("☰", width='stretch'):
+        # Hamburger menu popover
+        with st.popover("☰", use_container_width=True):
+                for page_name in pages_list:
+                    if page_name == "Logout":
+                        st.markdown("---")  # Separator before logout
+                        if st.button("Logout", key="nav_logout", use_container_width=True):
+                            # Clear all session state
+                            for key in list(st.session_state.keys()):
+                                del st.session_state[key]
 
-            for page_name in pages_list:
-                if page_name == "Logout":
-                    st.markdown("---")  # Separator before logout
-                    if st.button("Logout", key="nav_logout", use_container_width=True):
-                        # Clear all session state
-                        for key in list(st.session_state.keys()):
-                            del st.session_state[key]
+                            # Set query param
+                            st.query_params.clear()
+                            st.query_params["logout"] = "1"
 
-                        # Set query param
-                        st.query_params.clear()
-                        st.query_params["logout"] = "1"
+                            # Force immediate rerun
+                            st.rerun()
+                    else:
+                        # Navigation button
+                        is_current = st.session_state.current_page == page_name
+                        button_label = f"{'✓ ' if is_current else ''}{page_name}"
 
-                        # Force immediate rerun
-                        st.rerun()
-                else:
-                    # Navigation button
-                    is_current = st.session_state.current_page == page_name
-                    button_label = f"{'✓ ' if is_current else ''}{page_name}"
-
-                    if st.button(button_label, key=f"nav_{page_name}", use_container_width=True, type="primary" if is_current else "secondary"):
-                        st.session_state.current_page = page_name
-                        st.rerun()
+                        if st.button(button_label, key=f"nav_{page_name}", use_container_width=True, type="primary" if is_current else "secondary"):
+                            st.session_state.current_page = page_name
+                            st.rerun()
 
 # Vibrant lime green accent bar under navigation - MetaFlex personality
 st.markdown("""
@@ -922,13 +952,15 @@ st.markdown("<div style='margin-bottom: 20px;'></div>", unsafe_allow_html=True)
 # ULTRA AGGRESSIVE NAVIGATION BUTTON OVERRIDE - LOAD LAST
 st.markdown("""
 <style>
-/* PREMIUM LIGHT THEME NAVIGATION CONTAINER - Clean white with subtle gradient accent */
+/* PREMIUM LIGHT THEME NAVIGATION CONTAINER - Clean white with subtle gradient accent - STICKY */
 html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child {
     background: #ffffff !important;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06) !important;
     border-bottom: 3px solid #0a4b4b !important;
     padding: 16px 48px !important;
-    position: relative !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 999 !important;
 }
 
 html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child::after {

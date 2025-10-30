@@ -427,18 +427,18 @@ def create_project_breakdown_chart(df):
     projects = [p.title() for p in project_counts.index]
     counts = project_counts.values
 
-    # Create subtle teal gradient colors - different shade for each bar
-    teal_shades = [
-        '#c8d9d9',  # Very light teal
-        '#b0c9c9',  # Light teal
-        '#90b4b4',  # Medium light teal
-        '#6d9f9f',  # Medium teal
-        '#4d8787',  # Medium dark teal
-        '#357070',  # Darker teal
+    # MetaFlex color palette - teal, forest green, lime shades
+    metaflex_colors = [
+        '#0a4b4b',  # Dark teal
+        '#0d6868',  # Medium teal
+        '#2d5a3d',  # Dark forest green
+        '#4d7a40',  # Medium forest green
+        '#7a9900',  # Lime green
+        '#a8d900',  # Light lime
     ]
 
-    # Assign colors cycling through the teal palette
-    bar_colors = [teal_shades[i % len(teal_shades)] for i in range(len(counts))]
+    # Assign colors cycling through the MetaFlex palette
+    bar_colors = [metaflex_colors[i % len(metaflex_colors)] for i in range(len(counts))]
 
     # Create horizontal bar chart with rounded corners
     fig = go.Figure(data=[go.Bar(
@@ -452,15 +452,15 @@ def create_project_breakdown_chart(df):
         ),
         text=[f'<b>{count}</b>' for count in counts],
         textposition='outside',
-        textfont=dict(size=16, color='#2d5016', family='-apple-system, sans-serif', weight=900),
+        textfont=dict(size=14, color='#0a4b4b', family='-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', weight='bold'),
         hovertemplate='<b>%{y}</b><br>Tasks: %{x}<extra></extra>',
         width=0.6  # Slimmer bars for premium look
     )])
 
-    # Compact layout with smaller height
+    # Compact layout with matching height and margins to align bottoms
     fig.update_layout(
-        height=350,
-        margin=dict(t=20, b=80, l=30, r=70),
+        height=380,
+        margin=dict(t=50, b=60, l=30, r=70),
         paper_bgcolor='rgba(0,0,0,0)',  # Transparent background
         plot_bgcolor='rgba(0,0,0,0)',
         xaxis=dict(
@@ -469,12 +469,12 @@ def create_project_breakdown_chart(df):
             gridwidth=1,
             zeroline=False,
             title='',
-            tickfont=dict(size=12, color='#2d5016', family='-apple-system, sans-serif', weight=700),
+            tickfont=dict(size=12, color='#0a4b4b', family='-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', weight=600),
             range=[0, max(counts) * 1.15]  # Extra space for text labels
         ),
         yaxis=dict(
             title='',
-            tickfont=dict(size=13, color='#2d5016', family='-apple-system, sans-serif', weight=700),
+            tickfont=dict(size=13, color='#0a4b4b', family='-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', weight=600),
             showgrid=False
         ),
         font=dict(family='-apple-system, sans-serif'),
