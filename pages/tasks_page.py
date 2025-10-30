@@ -113,7 +113,7 @@ def show_tasks():
             st.markdown("<h3 style='text-align: left; margin: 0 0 20px 0; color: #0a4b4b; font-weight: 600; font-size: 1.1rem; font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif;'>Task Age Analysis</h3>", unsafe_allow_html=True)
             age_fig = create_task_age_analysis(personal_df)
             if age_fig:
-                st.plotly_chart(age_fig, use_container_width=True, config={
+                st.plotly_chart(age_fig, use_container_width=True, key="task_age_chart", config={
                     'displayModeBar': True,
                     'displaylogo': False,
                     'modeBarButtonsToAdd': ['zoom2d', 'pan2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d', 'resetScale2d'],
@@ -187,7 +187,7 @@ def show_tasks():
         st.markdown("<h4 style='color: #0a4b4b; margin-bottom: 16px;'>Task Age Analysis</h4>", unsafe_allow_html=True)
         age_fig = create_task_age_analysis(personal_df)
         if age_fig:
-            st.plotly_chart(age_fig, use_container_width=True, config={
+            st.plotly_chart(age_fig, use_container_width=True, key="tea_task_age_chart", config={
                 'displayModeBar': True,
                 'displaylogo': False,
                 'modeBarButtonsToAdd': ['zoom2d', 'pan2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d', 'resetScale2d'],
