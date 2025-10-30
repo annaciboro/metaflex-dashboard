@@ -1631,25 +1631,29 @@ def show_dashboard():
         # Style checkbox with green neon color
         st.markdown("""
             <style>
-            /* Target the checkbox for show_archived_projects */
-            div[data-testid="stCheckbox"] label {
+            /* Target ALL checkbox styling - make it green neon */
+            div[data-testid="stCheckbox"] label span[data-testid="stMarkdownContainer"] {
                 color: #2d3748 !important;
             }
 
-            /* Style the checkbox itself - green neon when checked */
-            div[data-testid="stCheckbox"] input[type="checkbox"]:checked + div {
+            /* Style the checkbox box itself - green neon when checked */
+            div[data-testid="stCheckbox"] input[type="checkbox"]:checked + div,
+            div[data-testid="stCheckbox"] input[type="checkbox"]:checked + div > div,
+            div[data-testid="stCheckbox"] input[type="checkbox"]:checked ~ div,
+            section[data-testid="stCheckbox"] input[type="checkbox"]:checked + div,
+            [data-testid="stCheckbox"] [role="checkbox"][aria-checked="true"] {
                 background-color: #7a9900 !important;
+                background: #7a9900 !important;
                 border-color: #7a9900 !important;
+                box-shadow: 0 0 10px rgba(122, 153, 0, 0.6) !important;
             }
 
-            /* Add glow effect when checked */
-            div[data-testid="stCheckbox"] input[type="checkbox"]:checked + div {
-                box-shadow: 0 0 8px rgba(122, 153, 0, 0.6) !important;
-            }
-
-            /* Style the checkmark icon */
-            div[data-testid="stCheckbox"] input[type="checkbox"]:checked + div svg {
+            /* Target the SVG checkmark icon to be white */
+            div[data-testid="stCheckbox"] input[type="checkbox"]:checked + div svg,
+            div[data-testid="stCheckbox"] input[type="checkbox"]:checked + div > div svg,
+            [data-testid="stCheckbox"] [role="checkbox"][aria-checked="true"] svg {
                 fill: #ffffff !important;
+                color: #ffffff !important;
             }
             </style>
         """, unsafe_allow_html=True)
