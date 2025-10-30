@@ -1340,68 +1340,72 @@ def render_executive_dashboard(exec_metrics, df):
     with col1:
         st.markdown(f"""
             <div style='
-                background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%);
+                background: #fafbfc;
                 padding: 28px 36px;
                 border-radius: 16px;
-                border: 1px solid #fecaca;
-                border-left: 4px solid #d17a6f;
-                box-shadow: 0 4px 12px rgba(209, 122, 111, 0.12), 0 1px 3px rgba(0, 0, 0, 0.08);
+                border: 1px solid #e5e7eb;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
                 text-align: center;
                 transition: all 0.3s ease;
+                position: relative;
             '>
+                <div style='position: absolute; top: 12px; right: 12px; width: 8px; height: 8px; background: #d4ff00; border-radius: 50%; box-shadow: 0 0 8px rgba(212, 255, 0, 0.4);'></div>
                 <p style='margin: 0 0 12px 0; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #9ca3af;'>OPEN TASKS</p>
-                <h2 style='margin: 0; font-size: 2.8rem; font-weight: 700; color: #d17a6f; line-height: 1;'>{exec_metrics["total_open"]}</h2>
+                <h2 style='margin: 0; font-size: 2.8rem; font-weight: 700; color: #0a4b4b; line-height: 1;'>{exec_metrics["total_open"]}</h2>
             </div>
         """, unsafe_allow_html=True)
 
     with col2:
         st.markdown(f"""
             <div style='
-                background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%);
+                background: #fafbfc;
                 padding: 28px 36px;
                 border-radius: 16px;
-                border: 1px solid #fde68a;
-                border-left: 4px solid #e8b968;
-                box-shadow: 0 4px 12px rgba(232, 185, 104, 0.12), 0 1px 3px rgba(0, 0, 0, 0.08);
+                border: 1px solid #e5e7eb;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
                 text-align: center;
                 transition: all 0.3s ease;
+                position: relative;
             '>
+                <div style='position: absolute; top: 12px; right: 12px; width: 8px; height: 8px; background: #d4ff00; border-radius: 50%; box-shadow: 0 0 8px rgba(212, 255, 0, 0.4);'></div>
                 <p style='margin: 0 0 12px 0; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #9ca3af;'>IN PROGRESS</p>
-                <h2 style='margin: 0; font-size: 2.8rem; font-weight: 700; color: #e8b968; line-height: 1;'>{exec_metrics["total_in_progress"]}</h2>
+                <h2 style='margin: 0; font-size: 2.8rem; font-weight: 700; color: #0a4b4b; line-height: 1;'>{exec_metrics["total_in_progress"]}</h2>
             </div>
         """, unsafe_allow_html=True)
 
     with col3:
         st.markdown(f"""
             <div style='
-                background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+                background: #fafbfc;
                 padding: 28px 36px;
                 border-radius: 16px;
-                border: 1px solid #bbf7d0;
-                border-left: 4px solid #4d7a40;
-                box-shadow: 0 4px 12px rgba(77, 122, 64, 0.12), 0 1px 3px rgba(0, 0, 0, 0.08);
+                border: 1px solid #e5e7eb;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
                 text-align: center;
                 transition: all 0.3s ease;
+                position: relative;
             '>
+                <div style='position: absolute; top: 12px; right: 12px; width: 8px; height: 8px; background: #d4ff00; border-radius: 50%; box-shadow: 0 0 8px rgba(212, 255, 0, 0.4);'></div>
                 <p style='margin: 0 0 12px 0; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #9ca3af;'>COMPLETE</p>
-                <h2 style='margin: 0; font-size: 2.8rem; font-weight: 700; color: #4d7a40; line-height: 1;'>{exec_metrics["total_complete"]}</h2>
+                <h2 style='margin: 0; font-size: 2.8rem; font-weight: 700; color: #0a4b4b; line-height: 1;'>{exec_metrics["total_complete"]}</h2>
             </div>
         """, unsafe_allow_html=True)
 
     with col4:
         st.markdown(f"""
             <div style='
-                background: linear-gradient(135deg, #f7fee7 0%, #ffffff 100%);
+                background: #fafbfc;
                 padding: 28px 36px;
                 border-radius: 16px;
-                border: 1px solid #d4ff00;
-                border-left: 4px solid #7a9900;
-                box-shadow: 0 4px 12px rgba(122, 153, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.08);
+                border: 1px solid #e5e7eb;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
                 text-align: center;
                 transition: all 0.3s ease;
+                position: relative;
             '>
+                <div style='position: absolute; top: 12px; right: 12px; width: 8px; height: 8px; background: #d4ff00; border-radius: 50%; box-shadow: 0 0 8px rgba(212, 255, 0, 0.4);'></div>
                 <p style='margin: 0 0 12px 0; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #9ca3af;'>COMPLETION RATE</p>
-                <h2 style='margin: 0; font-size: 2.8rem; font-weight: 700; color: #7a9900; line-height: 1;'>{exec_metrics["completion_rate"]}%</h2>
+                <h2 style='margin: 0; font-size: 2.8rem; font-weight: 700; color: #0a4b4b; line-height: 1;'>{exec_metrics["completion_rate"]}%</h2>
             </div>
         """, unsafe_allow_html=True)
 
@@ -1513,7 +1517,7 @@ def render_executive_dashboard(exec_metrics, df):
     # Third row: Dark theme executive charts in 2x2 grid
     st.markdown("<div style='margin: 60px 0 40px 0;'></div>", unsafe_allow_html=True)
 
-    # Import the new dark theme chart functions
+    # Import the chart functions
     from charts import (
         create_project_tasks_overview_chart,
         create_task_age_analysis,
@@ -1521,33 +1525,43 @@ def render_executive_dashboard(exec_metrics, df):
         create_project_health_dashboard
     )
 
-    # Row 1: Project Tasks Overview and Task Age
-    col1, sp1, col2 = st.columns([1, 0.1, 1])
+    # Organize charts in expandable sections to reduce overwhelm
+    st.markdown("<div style='margin: 48px 0 24px 0;'></div>", unsafe_allow_html=True)
 
-    with col1:
-        fig = create_project_tasks_overview_chart(exec_metrics)
-        if fig:
-            st.plotly_chart(fig, use_container_width=True)
+    with st.expander("📊 **Analytics & Insights** (Click to expand)", expanded=False):
+        st.markdown("<div style='margin: 20px 0;'></div>", unsafe_allow_html=True)
 
-    with col2:
-        fig = create_task_age_analysis(df)
-        if fig:
-            st.plotly_chart(fig, use_container_width=True)
+        # Row 1: Most important charts
+        col1, sp1, col2 = st.columns([1, 0.1, 1])
 
-    st.markdown("<div style='margin: 40px 0;'></div>", unsafe_allow_html=True)
+        with col1:
+            st.markdown("<h4 style='color: #0a4b4b; margin-bottom: 16px;'>Project Overview</h4>", unsafe_allow_html=True)
+            fig = create_project_tasks_overview_chart(exec_metrics)
+            if fig:
+                st.plotly_chart(fig, use_container_width=True)
 
-    # Row 2: Task Completion Velocity and Project Health
-    col3, sp2, col4 = st.columns([1, 0.1, 1])
+        with col2:
+            st.markdown("<h4 style='color: #0a4b4b; margin-bottom: 16px;'>Task Age Analysis</h4>", unsafe_allow_html=True)
+            fig = create_task_age_analysis(df)
+            if fig:
+                st.plotly_chart(fig, use_container_width=True)
 
-    with col3:
-        fig = create_task_completion_velocity(exec_metrics)
-        if fig:
-            st.plotly_chart(fig, use_container_width=True)
+        st.markdown("<div style='margin: 40px 0;'></div>", unsafe_allow_html=True)
 
-    with col4:
-        fig = create_project_health_dashboard(exec_metrics)
-        if fig:
-            st.plotly_chart(fig, use_container_width=True)
+        # Row 2: Additional insights
+        col3, sp2, col4 = st.columns([1, 0.1, 1])
+
+        with col3:
+            st.markdown("<h4 style='color: #0a4b4b; margin-bottom: 16px;'>Completion Velocity</h4>", unsafe_allow_html=True)
+            fig = create_task_completion_velocity(exec_metrics)
+            if fig:
+                st.plotly_chart(fig, use_container_width=True)
+
+        with col4:
+            st.markdown("<h4 style='color: #0a4b4b; margin-bottom: 16px;'>Project Health</h4>", unsafe_allow_html=True)
+            fig = create_project_health_dashboard(exec_metrics)
+            if fig:
+                st.plotly_chart(fig, use_container_width=True)
 
 
 def show_dashboard():

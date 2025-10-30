@@ -59,17 +59,21 @@ def create_project_tasks_overview_chart(exec_metrics):
 
     project_df = pd.DataFrame(project_data).sort_values("Total Tasks", ascending=True)
 
+    # Create bar colors - teal for all, lime green for top performer
+    total_colors = ['#2d8787' if i < len(project_df) - 1 else '#7a9900' for i in range(len(project_df))]
+    open_colors = ['#0a4b4b' for _ in range(len(project_df))]
+
     # Create grouped bar chart
     fig = go.Figure()
 
-    # Total Tasks bar (teal accent)
+    # Total Tasks bar (teal with lime green for top)
     fig.add_trace(go.Bar(
         y=project_df["Project"],
         x=project_df["Total Tasks"],
         name='Total Tasks',
         orientation='h',
         marker=dict(
-            color=MF_LIGHT['accent_teal'],
+            color=total_colors,
             line=dict(color=MF_LIGHT['border'], width=1)
         ),
         text=project_df["Total Tasks"],
@@ -78,14 +82,14 @@ def create_project_tasks_overview_chart(exec_metrics):
         hovertemplate='<b>%{y}</b><br>Total Tasks: %{x}<extra></extra>'
     ))
 
-    # Open Tasks bar (coral)
+    # Open Tasks bar (darker teal)
     fig.add_trace(go.Bar(
         y=project_df["Project"],
         x=project_df["Open Tasks"],
         name='Open Tasks',
         orientation='h',
         marker=dict(
-            color='#d17a6f',  # Coral color for open tasks
+            color=open_colors,
             line=dict(color=MF_LIGHT['border'], width=1)
         ),
         text=project_df["Open Tasks"],
