@@ -215,6 +215,7 @@ def load_google_sheet():
 def update_google_sheet(updated_df):
     """
     Push edited data back to Google Sheets (Otter_Tasks worksheet)
+    SAFE MODE: Only allows updates and additions - NEVER deletes rows
     """
     try:
         SCOPES = [
@@ -225,7 +226,7 @@ def update_google_sheet(updated_df):
             st.secrets["gcp_service_account"], scopes=SCOPES
         )
         gc = gspread.authorize(creds)
-        
+
         # Use Google Sheet ID: 1U_9CEbWHWMQVS2C20O0fpOG5gVxoYjB7BmppKlTHIzc
         SHEET_ID = "1U_9CEbWHWMQVS2C20O0fpOG5gVxoYjB7BmppKlTHIzc"
 
@@ -244,9 +245,20 @@ def update_google_sheet(updated_df):
             clean_columns.append(clean_col)
         df_to_write.columns = clean_columns
 
-        # Clear and write new data
-        ws.clear()
-        ws.update([df_to_write.columns.values.tolist()] + df_to_write.values.tolist())
+        # SAFE MODE: Get current sheet data to prevent deletions
+        current_data = ws.get_all_values()
+        current_row_count = len(current_data)
+        new_row_count = len(df_to_write) + 1  # +1 for header
+
+        # Check if rows would be deleted
+        if new_row_count < current_row_count:
+            st.error(f"❌ Cannot save: This would delete {current_row_count - new_row_count} rows from Google Sheets. Streamlit can only UPDATE or ADD data, never delete. Please use Google Sheets directly to delete rows.")
+            return False
+
+        # Safe update: Only update existing rows and add new ones
+        # Update header and all existing rows
+        data_to_write = [df_to_write.columns.values.tolist()] + df_to_write.values.tolist()
+        ws.update(data_to_write, 'A1')
 
         return True
     except Exception as e:
