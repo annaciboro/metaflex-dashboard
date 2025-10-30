@@ -459,11 +459,18 @@ st.markdown("""
         line-height: 1.2 !important;
     }
 
-    /* Section headers (H2) - Executive Overview */
+    /* Section headers (H2) - Executive Overview - Make it POP */
     h2, .stMarkdown h2 {
-        font-size: 1.5rem !important;
-        font-weight: 600 !important;
-        line-height: 1.3 !important;
+        font-size: 2rem !important;
+        font-weight: 800 !important;
+        line-height: 1.2 !important;
+        background: linear-gradient(135deg, #0a4b4b 0%, #4d7a40 50%, #7a9900 100%) !important;
+        -webkit-background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+        background-clip: text !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.02em !important;
+        margin: 32px 0 24px 0 !important;
     }
 
     /* Subsection headers (H3) */
@@ -484,6 +491,31 @@ st.markdown("""
         font-size: 0.9rem !important;
         font-weight: 500 !important;
         padding: 8px 16px !important;
+    }
+
+    /* ALL PRIMARY BUTTONS - MetaFlex Green Gradient (including "Save to Google Sheets") */
+    button[kind="primary"],
+    button[data-testid="baseButton-primary"],
+    .stButton > button[kind="primary"],
+    div[data-testid="stButton"] > button[type="submit"] {
+        background: linear-gradient(135deg, #0a4b4b 0%, #4d7a40 50%, #7a9900 100%) !important;
+        background-color: #0a4b4b !important;
+        border: none !important;
+        color: #ffffff !important;
+        font-weight: 600 !important;
+        padding: 10px 24px !important;
+        border-radius: 8px !important;
+        box-shadow: 0 2px 8px rgba(10, 75, 75, 0.2) !important;
+        transition: all 0.3s ease !important;
+    }
+
+    button[kind="primary"]:hover,
+    button[data-testid="baseButton-primary"]:hover,
+    .stButton > button[kind="primary"]:hover,
+    div[data-testid="stButton"] > button[type="submit"]:hover {
+        background: linear-gradient(135deg, #4d7a40 0%, #7a9900 50%, #a8d900 100%) !important;
+        box-shadow: 0 4px 12px rgba(77, 122, 64, 0.3) !important;
+        transform: translateY(-1px) !important;
     }
 
     /* Fix hamburger menu - remove baby blue, make it teal */
@@ -573,95 +605,50 @@ logo_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "logo.png")
 with open(logo_path, "rb") as f:
     logo_data = base64.b64encode(f.read()).decode()
 
-# Prominent METAFLE[X] OPERATIONS header - appears on all pages after authentication
-st.markdown(f"""
-    <div style="text-align: center; padding: 1.5rem 0 0.75rem 0; margin: 0;">
-        <div style="
-            font-size: 72px;
-            font-weight: 900;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            letter-spacing: -0.01em;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            line-height: 1;
-        ">
-            <span style="
-                background: linear-gradient(180deg, #7a9900 0%, #4d7a40 50%, #0a4b4b 100%);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
-                font-weight: 950;
-                -webkit-text-stroke: 0.5px rgba(77, 122, 64, 0.3);
-            ">METAFLE</span><img
-                src="data:image/png;base64,{logo_data}"
-                style="
-                    height: 38px;
-                    width: 38px;
-                    margin: 0 10px;
-                    display: inline-block;
-                    vertical-align: middle;
-                    filter: drop-shadow(0 4px 12px rgba(10, 75, 75, 0.4));
-                    object-fit: contain;
-                "
-            /><span style="
-                margin-left: 6px;
-                background: linear-gradient(180deg, #7a9900 0%, #4d7a40 50%, #0a4b4b 100%);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
-                font-weight: 950;
-                -webkit-text-stroke: 0.5px rgba(77, 122, 64, 0.3);
-            ">OPERATIONS</span>
-        </div>
-        <div style="
-            font-size: 16px;
-            font-weight: 800;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            color: #4d7a40;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            margin-top: 12px;
-        ">Custom Enterprise System</div>
-    </div>
-""", unsafe_allow_html=True)
-
 nav_container = st.container()
 
 with nav_container:
-    # Simple navigation: Just hamburger menu with user name on right
+    # Navigation with empty space on left, MetaFlex branding on right
     cols = st.columns([5, 1])
 
     # Empty left column
     with cols[0]:
         st.write("")
 
-    # Hamburger Menu with user name on right
+    # MetaFlex Operations branding with user greeting - clickable to open menu
     with cols[1]:
-        # Custom styling for large prominent hamburger button
-        st.markdown("""
+        # Get first name for greeting
+        first_name = user_name.split()[0] if user_name else "User"
+        # Custom styling for clickable branding
+        st.markdown(f"""
             <style>
-            /* Hamburger button styling - White text on dark gradient */
-            button[data-testid*="baseButton-header"] {
-                font-size: 1rem !important;
-                font-weight: 700 !important;
-                padding: 10px 20px !important;
-                background: rgba(255, 255, 255, 0.15) !important;
-                border: 2px solid rgba(255, 255, 255, 0.3) !important;
-                color: #ffffff !important;
-                border-radius: 10px !important;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
-                transition: all 0.3s ease !important;
-                backdrop-filter: blur(10px) !important;
-            }
+            /* Branding button styling - transparent background with gradient text */
+            button[data-testid*="baseButton-header"] {{
+                background: transparent !important;
+                border: none !important;
+                padding: 0 !important;
+                box-shadow: none !important;
+                transition: all 0.2s ease !important;
+                cursor: pointer !important;
+                text-align: right !important;
+                font-size: 1.75rem !important;
+                font-weight: 950 !important;
+                font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+                letter-spacing: -0.01em !important;
+            }}
 
-            button[data-testid*="baseButton-header"]:hover {
-                background: rgba(255, 255, 255, 0.25) !important;
-                border-color: rgba(212, 255, 0, 0.6) !important;
-                color: #d4ff00 !important;
-                transform: translateY(-2px) !important;
-                box-shadow: 0 4px 12px rgba(212, 255, 0, 0.3) !important;
-            }
+            button[data-testid*="baseButton-header"]:hover {{
+                background: transparent !important;
+                opacity: 0.8 !important;
+            }}
+
+            /* Make the text gradient */
+            button[data-testid*="baseButton-header"] div {{
+                background: linear-gradient(135deg, #0a4b4b 0%, #4d7a40 50%, #7a9900 100%) !important;
+                -webkit-background-clip: text !important;
+                -webkit-text-fill-color: transparent !important;
+                background-clip: text !important;
+            }}
 
             /* Make popover larger */
             div[data-testid="stPopover"] > div {
@@ -708,7 +695,7 @@ with nav_container:
                 color: #0a4b4b !important;
                 border: 1px solid #e5e7eb !important;
                 border-color: #e5e7eb !important;
-                font-weight: 500 !important;
+                font-weight: 700 !important;
                 padding: 12px 20px !important;
                 border-radius: 8px !important;
                 transition: all 0.2s ease !important;
@@ -718,19 +705,16 @@ with nav_container:
             .stPopover button[kind="secondary"]:hover,
             div[data-testid="stPopover"] button:not([kind="primary"]):not([type="submit"]):hover,
             .stPopover button:not([kind="primary"]):not([type="submit"]):hover {
-                background: #f9fafb !important;
-                background-color: #f9fafb !important;
+                background: #ffffff !important;
+                background-color: #ffffff !important;
                 border-color: #0a4b4b !important;
+                border-width: 2px !important;
                 transform: translateY(-1px) !important;
             }
             </style>
         """, unsafe_allow_html=True)
 
-        # Get first name for greeting
-        first_name = user_name.split()[0] if user_name else "User"
-
-        with st.popover(f"☰ Welcome back, {first_name}", width='stretch'):
-            st.markdown("### Navigation")
+        with st.popover("☰", width='stretch'):
 
             for page_name in pages_list:
                 if page_name == "Logout":
@@ -932,19 +916,29 @@ console.log('✅ Run window.applyMetaFlexStyling() in console to manually apply 
 </script>
 """, unsafe_allow_html=True)
 
-# Add spacing after nav
-st.markdown("<div style='margin-bottom: 30px;'></div>", unsafe_allow_html=True)
+# Remove spacing - MetaFlex Operations sits right against gradient bar
+st.markdown("<div style='margin-bottom: 20px;'></div>", unsafe_allow_html=True)
 
 # ULTRA AGGRESSIVE NAVIGATION BUTTON OVERRIDE - LOAD LAST
 st.markdown("""
 <style>
-/* PREMIUM LIGHT THEME NAVIGATION CONTAINER - Bold gradient with depth */
+/* PREMIUM LIGHT THEME NAVIGATION CONTAINER - Clean white with subtle gradient accent */
 html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child {
-    background: linear-gradient(135deg, #d4ff00 0%, #7a9900 5%, #4d7a40 25%, #0a4b4b 50%, #0a4b4b 100%) !important;
-    box-shadow: 0 4px 16px rgba(10, 75, 75, 0.25), 0 2px 8px rgba(122, 153, 0, 0.15) !important;
-    border-bottom: none !important;
+    background: #ffffff !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06) !important;
+    border-bottom: 3px solid #0a4b4b !important;
     padding: 16px 48px !important;
     position: relative !important;
+}
+
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child::after {
+    content: '' !important;
+    position: absolute !important;
+    bottom: -3px !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 3px !important;
+    background: linear-gradient(90deg, #0a4b4b 0%, #4d7a40 50%, #7a9900 100%) !important;
 }
 
 /* FINAL NUCLEAR OVERRIDE FOR NAVIGATION BUTTONS */

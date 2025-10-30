@@ -72,9 +72,10 @@ def show_tasks():
         # Show Task Completion Status donut chart at the top for regular users
         from charts import create_team_completion_donut
 
-        # Create the donut chart centered
-        col_left, col_chart, col_right = st.columns([1, 2, 1])
-        with col_chart:
+        # Create columns for both charts to display side by side
+        chart_col1, chart_col2 = st.columns(2)
+
+        with chart_col1:
             donut_fig = create_team_completion_donut(
                 personal_kpis.get("my_open_tasks", 0),
                 personal_kpis.get("working_tasks", 0),
@@ -86,14 +87,14 @@ def show_tasks():
                     'displayModeBar': False
                 })
 
-        st.markdown("<br>", unsafe_allow_html=True)
-
         # Add Task Age Analysis chart for all users
         from charts import create_task_age_analysis
-        st.markdown("<h4 style='color: #0a4b4b; margin-bottom: 16px; text-align: center;'>Task Age Analysis</h4>", unsafe_allow_html=True)
-        age_fig = create_task_age_analysis(personal_df)
-        if age_fig:
-            st.plotly_chart(age_fig, use_container_width=True)
+
+        with chart_col2:
+            st.markdown("<h4 style='color: #0a4b4b; margin-bottom: 16px; text-align: center;'>Task Age Analysis</h4>", unsafe_allow_html=True)
+            age_fig = create_task_age_analysis(personal_df)
+            if age_fig:
+                st.plotly_chart(age_fig, use_container_width=True)
 
         st.markdown("<br>", unsafe_allow_html=True)
     else:

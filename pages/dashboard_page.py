@@ -810,21 +810,24 @@ def render_tasks_table(filtered_df, limit=10, hide_project_column=False):
                     width="medium"
                 )
 
-            # Add MetaFlex premium light theme styling to the table
+            # Add MetaFlex premium light theme styling for tables (both dataframe and data_editor)
             st.markdown("""
                 <style>
-                /* Premium SaaS light theme styling for dataframes */
+                /* Premium SaaS light theme styling for dataframes AND data_editor */
                 div[data-testid="stDataFrame"],
                 div[data-testid="stDataFrame"] > div,
                 div[data-testid="stDataFrame"] > div > div,
                 div[data-testid="stDataFrame"] iframe,
-                [data-testid="stDataFrame"] {
+                [data-testid="stDataFrame"],
+                div[data-testid="data-editor"],
+                div[data-testid="data-editor"] > div,
+                [data-testid="data-editor"] {
                     background: #ffffff !important;
                     border-radius: 0 0 12px 12px !important;
                     padding: 16px !important;
                     border: 1px solid #e5e7eb !important;
                     border-top: none !important;
-                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+                    box-shadow: 0 4px 12px rgba(10, 75, 75, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04) !important;
                 }
 
                 /* Target ALL table elements */
@@ -832,6 +835,9 @@ def render_tasks_table(filtered_df, limit=10, hide_project_column=False):
                 div[data-testid="stDataFrame"] thead,
                 div[data-testid="stDataFrame"] tbody,
                 [data-testid="stDataFrame"] table,
+                div[data-testid="data-editor"] table,
+                div[data-testid="data-editor"] thead,
+                div[data-testid="data-editor"] tbody,
                 table {
                     background: transparent !important;
                 }
@@ -839,6 +845,8 @@ def render_tasks_table(filtered_df, limit=10, hide_project_column=False):
                 /* Style the table header - premium light theme */
                 div[data-testid="stDataFrame"] thead tr th,
                 div[data-testid="stDataFrame"] th,
+                div[data-testid="data-editor"] thead tr th,
+                div[data-testid="data-editor"] th,
                 [data-testid="stDataFrame"] thead tr th,
                 thead tr th,
                 th {
@@ -875,6 +883,8 @@ def render_tasks_table(filtered_df, limit=10, hide_project_column=False):
                 div[data-testid="stDataFrame"] tbody tr:hover,
                 div[data-testid="stDataFrame"] tbody tr:hover td,
                 [data-testid="stDataFrame"] tbody tr:hover,
+                div[data-testid="data-editor"] tbody tr:hover,
+                div[data-testid="data-editor"] tbody tr:hover td,
                 tbody tr:hover,
                 tbody tr:hover td {
                     background: rgba(10, 75, 75, 0.04) !important;
@@ -916,13 +926,53 @@ def render_tasks_table(filtered_df, limit=10, hide_project_column=False):
                 </style>
             """, unsafe_allow_html=True)
 
-            # Format the table
-            st.dataframe(
+            # Premium table header with gradient accent
+            st.markdown("""
+                <div style='
+                    background: linear-gradient(135deg, #0a4b4b 0%, #4d7a40 100%);
+                    height: 4px;
+                    border-radius: 4px 4px 0 0;
+                    margin-bottom: -1px;
+                    box-shadow: 0 2px 8px rgba(10, 75, 75, 0.3);
+                '></div>
+            """, unsafe_allow_html=True)
+
+            # Editable data table
+            edited_df = st.data_editor(
                 clean_table_df,
-                width='stretch',
+                use_container_width=True,
                 hide_index=True,
-                column_config=column_config
+                column_config=column_config,
+                num_rows="fixed",
+                key=f"project_table_{hash(str(filtered_df.iloc[0].to_dict()) if len(filtered_df) > 0 else 'empty')}"
             )
+
+            # Save button to sync to Google Sheets - Centered
+            _, btn_col, _ = st.columns([2, 1, 2])
+            with btn_col:
+                if st.button("💾 Save to Sheets", key=f"save_btn_{hash(str(filtered_df.iloc[0].to_dict()) if len(filtered_df) > 0 else 'empty')}", type="primary", use_container_width=True):
+                    # Map edited data back to original DataFrame structure
+                    # We need to reverse the cleaning process and update the original df
+                    with st.spinner("Syncing to Google Sheets..."):
+                        try:
+                            # Update the original dataframe with edited values
+                            for clean_col, orig_col in column_mapping.items():
+                                if clean_col in edited_df.columns:
+                                    # Find matching rows in filtered_df and update
+                                    for idx in filtered_df.head(limit).index:
+                                        row_num = list(filtered_df.head(limit).index).index(idx)
+                                        if row_num < len(edited_df):
+                                            filtered_df.loc[idx, orig_col] = edited_df.iloc[row_num][clean_col]
+
+                            # Call update function (you'll need to pass the full df and update it)
+                            success = update_google_sheet(filtered_df)
+                            if success:
+                                st.success("✅ Changes saved to Google Sheets successfully!")
+                                st.rerun()
+                            else:
+                                st.error("❌ Failed to save changes. Please try again.")
+                        except Exception as e:
+                            st.error(f"❌ Error saving: {str(e)}")
         else:
             st.info("No task details available to display.")
     else:
@@ -1600,9 +1650,7 @@ def show_dashboard():
             unique_projects = projects_df[project_col].str.strip().str.title().dropna().unique()
             unique_projects = sorted([p for p in unique_projects if p])  # Sort alphabetically
 
-            if len(unique_projects) == 0:
-                st.info("No projects found in the data.")
-            else:
+            if len(unique_projects) > 0:
                 # Display each project's tasks with editable grids
                 for idx, project_name in enumerate(unique_projects):
                     # Filter tasks for this project (case-insensitive)
@@ -1622,47 +1670,74 @@ def show_dashboard():
 
                     completion_rate = int((complete_count / task_count * 100)) if task_count > 0 else 0
 
-                    # Clean project header with metrics - single card
-                    st.markdown(f"""
-                        <div style='
-                            background: #ffffff;
-                            border-radius: 12px;
-                            padding: 24px 32px 28px 32px;
-                            border: 1px solid #e5e7eb;
-                            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-                            margin-bottom: 16px;
-                        '>
-                            <h3 style='
-                                margin: 0 0 20px 0;
-                                font-size: 2rem;
-                                font-weight: 700;
-                                color: #2d3748;
-                                letter-spacing: -0.01em;
-                                text-align: center;
-                                padding-bottom: 16px;
-                                border-bottom: 1px solid #f3f4f6;
-                            '>{project_name}</h3>
+                    # Premium project header - Gradient title
+                    st.markdown(f"""<h2 style='
+                        text-align: center;
+                        font-size: 1.8rem;
+                        font-weight: 800;
+                        background: linear-gradient(135deg, #0a4b4b 0%, #4d7a40 50%, #7a9900 100%);
+                        -webkit-background-clip: text;
+                        -webkit-text-fill-color: transparent;
+                        background-clip: text;
+                        margin: 32px 0 24px 0;
+                        text-transform: uppercase;
+                        letter-spacing: 0.02em;
+                    '>{project_name}</h2>""", unsafe_allow_html=True)
 
-                            <div style='display: flex; gap: 20px; justify-content: space-around;'>
-                                <div style='text-align: center;'>
-                                    <p style='margin: 0 0 8px 0; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #9ca3af;'>TOTAL</p>
-                                    <h2 style='margin: 0; font-size: 1.8rem; font-weight: 700; color: #0a4b4b;'>{task_count}</h2>
-                                </div>
-                                <div style='text-align: center;'>
-                                    <p style='margin: 0 0 8px 0; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #9ca3af;'>OPEN</p>
-                                    <h2 style='margin: 0; font-size: 1.8rem; font-weight: 700; color: #d17a6f;'>{open_count}</h2>
-                                </div>
-                                <div style='text-align: center;'>
-                                    <p style='margin: 0 0 8px 0; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #9ca3af;'>IN PROGRESS</p>
-                                    <h2 style='margin: 0; font-size: 1.8rem; font-weight: 700; color: #e8b968;'>{in_progress_count}</h2>
-                                </div>
-                                <div style='text-align: center;'>
-                                    <p style='margin: 0 0 8px 0; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #9ca3af;'>COMPLETE</p>
-                                    <h2 style='margin: 0; font-size: 1.8rem; font-weight: 700; color: #4d7a40;'>{completion_rate}%</h2>
-                                </div>
-                            </div>
-                        </div>
-                    """, unsafe_allow_html=True)
+                    # Premium KPI cards using Streamlit columns
+                    kpi_col1, kpi_col2, kpi_col3, kpi_col4 = st.columns(4)
+
+                    with kpi_col1:
+                        st.markdown(f"""<div style='
+                            background: linear-gradient(135deg, rgba(10, 75, 75, 0.08) 0%, rgba(10, 75, 75, 0.04) 100%);
+                            border-radius: 12px;
+                            padding: 24px;
+                            border-left: 4px solid #0a4b4b;
+                            box-shadow: 0 4px 12px rgba(10, 75, 75, 0.1);
+                            text-align: center;
+                        '>
+                            <p style='margin: 0 0 8px 0; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #0a4b4b;'>TOTAL</p>
+                            <h3 style='margin: 0; font-size: 2rem; font-weight: 800; color: #0a4b4b;'>{task_count}</h3>
+                        </div>""", unsafe_allow_html=True)
+
+                    with kpi_col2:
+                        st.markdown(f"""<div style='
+                            background: linear-gradient(135deg, rgba(209, 122, 111, 0.12) 0%, rgba(209, 122, 111, 0.06) 100%);
+                            border-radius: 12px;
+                            padding: 24px;
+                            border-left: 4px solid #d17a6f;
+                            box-shadow: 0 4px 12px rgba(209, 122, 111, 0.15);
+                            text-align: center;
+                        '>
+                            <p style='margin: 0 0 8px 0; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #d17a6f;'>OPEN</p>
+                            <h3 style='margin: 0; font-size: 2rem; font-weight: 800; color: #d17a6f;'>{open_count}</h3>
+                        </div>""", unsafe_allow_html=True)
+
+                    with kpi_col3:
+                        st.markdown(f"""<div style='
+                            background: linear-gradient(135deg, rgba(232, 185, 104, 0.12) 0%, rgba(232, 185, 104, 0.06) 100%);
+                            border-radius: 12px;
+                            padding: 24px;
+                            border-left: 4px solid #e8b968;
+                            box-shadow: 0 4px 12px rgba(232, 185, 104, 0.15);
+                            text-align: center;
+                        '>
+                            <p style='margin: 0 0 8px 0; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #e8b968;'>IN PROGRESS</p>
+                            <h3 style='margin: 0; font-size: 2rem; font-weight: 800; color: #e8b968;'>{in_progress_count}</h3>
+                        </div>""", unsafe_allow_html=True)
+
+                    with kpi_col4:
+                        st.markdown(f"""<div style='
+                            background: linear-gradient(135deg, rgba(77, 122, 64, 0.12) 0%, rgba(77, 122, 64, 0.06) 100%);
+                            border-radius: 12px;
+                            padding: 24px;
+                            border-left: 4px solid #4d7a40;
+                            box-shadow: 0 4px 12px rgba(77, 122, 64, 0.15);
+                            text-align: center;
+                        '>
+                            <p style='margin: 0 0 8px 0; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #4d7a40;'>COMPLETE</p>
+                            <h3 style='margin: 0; font-size: 2rem; font-weight: 800; color: #4d7a40;'>{completion_rate}%</h3>
+                        </div>""", unsafe_allow_html=True)
 
                     # Spacing after KPI cards
                     st.markdown("<div style='margin-bottom: 20px;'></div>", unsafe_allow_html=True)
@@ -1671,14 +1746,10 @@ def show_dashboard():
                         # Render STATIC read-only table for display
                         # Hide Project column since we're already showing project-specific tables
                         render_tasks_table(project_df, limit=len(project_df), hide_project_column=True)
-                    else:
-                        st.caption(f"No {project_name} tasks found.")
 
                     # Elegant spacing between project sections
                     if idx < len(unique_projects) - 1:  # Don't add extra space after last project
                         st.markdown("<div style='margin-bottom: 40px;'></div>", unsafe_allow_html=True)
-        else:
-            st.info("Project column not found in data.")
 
     # LOAD METAFLEX JAVASCRIPT AT END OF PAGE
     import os
