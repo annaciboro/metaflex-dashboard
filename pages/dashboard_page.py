@@ -1525,43 +1525,9 @@ def render_executive_dashboard(exec_metrics, df):
         create_project_health_dashboard
     )
 
-    # Organize charts in expandable sections to reduce overwhelm
-    st.markdown("<div style='margin: 48px 0 24px 0;'></div>", unsafe_allow_html=True)
-
-    with st.expander("📊 **Analytics & Insights** (Click to expand)", expanded=False):
-        st.markdown("<div style='margin: 20px 0;'></div>", unsafe_allow_html=True)
-
-        # Row 1: Most important charts
-        col1, sp1, col2 = st.columns([1, 0.1, 1])
-
-        with col1:
-            st.markdown("<h4 style='color: #0a4b4b; margin-bottom: 16px;'>Project Overview</h4>", unsafe_allow_html=True)
-            fig = create_project_tasks_overview_chart(exec_metrics)
-            if fig:
-                st.plotly_chart(fig, width='stretch')
-
-        with col2:
-            st.markdown("<h4 style='color: #0a4b4b; margin-bottom: 16px;'>Task Age Analysis</h4>", unsafe_allow_html=True)
-            fig = create_task_age_analysis(df)
-            if fig:
-                st.plotly_chart(fig, width='stretch')
-
-        st.markdown("<div style='margin: 40px 0;'></div>", unsafe_allow_html=True)
-
-        # Row 2: Additional insights
-        col3, sp2, col4 = st.columns([1, 0.1, 1])
-
-        with col3:
-            st.markdown("<h4 style='color: #0a4b4b; margin-bottom: 16px;'>Completion Velocity</h4>", unsafe_allow_html=True)
-            fig = create_task_completion_velocity(exec_metrics)
-            if fig:
-                st.plotly_chart(fig, width='stretch')
-
-        with col4:
-            st.markdown("<h4 style='color: #0a4b4b; margin-bottom: 16px;'>Project Health</h4>", unsafe_allow_html=True)
-            fig = create_project_health_dashboard(exec_metrics)
-            if fig:
-                st.plotly_chart(fig, width='stretch')
+    # Charts moved to other pages for better organization:
+    # - Task Age Analysis -> My Tasks page
+    # - Completion Velocity & Project Health -> All Tasks page
 
 
 def show_dashboard():

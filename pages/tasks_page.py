@@ -82,9 +82,18 @@ def show_tasks():
             )
 
             if donut_fig:
-                st.plotly_chart(donut_fig, use_container_width=True, config={
+                st.plotly_chart(donut_fig, width='stretch', config={
                     'displayModeBar': False
                 })
+
+        st.markdown("<br>", unsafe_allow_html=True)
+
+        # Add Task Age Analysis chart for all users
+        from charts import create_task_age_analysis
+        st.markdown("<h4 style='color: #0a4b4b; margin-bottom: 16px; text-align: center;'>Task Age Analysis</h4>", unsafe_allow_html=True)
+        age_fig = create_task_age_analysis(personal_df)
+        if age_fig:
+            st.plotly_chart(age_fig, width='stretch')
 
         st.markdown("<br>", unsafe_allow_html=True)
     else:
@@ -142,8 +151,14 @@ def show_tasks():
 
         st.markdown("<br>", unsafe_allow_html=True)
 
-        # Display all Charts for Tea only
-        render_charts_section(personal_kpis, personal_df)
+        # Add Task Age Analysis chart for Tea
+        from charts import create_task_age_analysis
+        st.markdown("<h4 style='color: #0a4b4b; margin-bottom: 16px;'>Task Age Analysis</h4>", unsafe_allow_html=True)
+        age_fig = create_task_age_analysis(personal_df)
+        if age_fig:
+            st.plotly_chart(age_fig, width='stretch')
+
+        st.markdown("<br>", unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
 
@@ -186,10 +201,10 @@ def show_tasks():
         search_term = st.text_input("Search tasks", placeholder="Type to search by task name, project, or status...", key="search_tasks", label_visibility="collapsed")
 
     with col_btn1:
-        add_task = st.button("Add New Task", key="add_task_btn", use_container_width=True)
+        add_task = st.button("Add New Task", key="add_task_btn", width='stretch')
 
     with col_btn2:
-        save_changes = st.button("Save Changes", key="save_changes_btn", type="primary", use_container_width=True)
+        save_changes = st.button("Save Changes", key="save_changes_btn", type="primary", width='stretch')
 
     st.markdown("<br>", unsafe_allow_html=True)
 

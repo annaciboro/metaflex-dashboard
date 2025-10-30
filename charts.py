@@ -4,16 +4,19 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime, timedelta
 
-# MetaFlex Premium Light Theme Palette
+# MetaFlex Premium Light Theme Palette - Subtle Version
 MF_LIGHT = {
-    'bg_white': '#ffffff',       # Pure white background
-    'bg_light': '#f9fafb',       # Very light gray surface
-    'border': '#e5e7eb',         # Subtle gray border
-    'accent_teal': '#0a4b4b',    # Teal for strategic accents
-    'accent_lime': '#7a9900',    # Olive lime for CTAs
-    'text_dark': '#2d3748',      # Dark gray text (primary)
-    'text_medium': '#374151',    # Medium gray text
-    'text_light': '#6b7280',     # Light gray text (secondary)
+    'bg_white': '#ffffff',           # Pure white background
+    'bg_light': '#f9fafb',           # Very light gray surface
+    'border': '#e5e7eb',             # Subtle gray border
+    'accent_teal': '#0a4b4b',        # Teal for strategic accents (dark)
+    'accent_teal_light': '#4d8787',  # Lighter teal for subtle charts
+    'accent_teal_very_light': '#90b4b4',  # Very light teal for backgrounds
+    'accent_lime': '#7a9900',        # Olive lime for CTAs
+    'accent_lime_muted': '#a8c957',  # Muted lime for subtle highlights
+    'text_dark': '#2d3748',          # Dark gray text (primary)
+    'text_medium': '#374151',        # Medium gray text
+    'text_light': '#6b7280',         # Light gray text (secondary)
 }
 
 def get_column(df, col_name):
@@ -59,9 +62,9 @@ def create_project_tasks_overview_chart(exec_metrics):
 
     project_df = pd.DataFrame(project_data).sort_values("Total Tasks", ascending=True)
 
-    # Create bar colors - teal for all, lime green for top performer
-    total_colors = ['#2d8787' if i < len(project_df) - 1 else '#7a9900' for i in range(len(project_df))]
-    open_colors = ['#0a4b4b' for _ in range(len(project_df))]
+    # Create bar colors - subtle light teal for all, muted lime for top performer
+    total_colors = [MF_LIGHT['accent_teal_very_light'] if i < len(project_df) - 1 else MF_LIGHT['accent_lime_muted'] for i in range(len(project_df))]
+    open_colors = [MF_LIGHT['accent_teal_light'] for _ in range(len(project_df))]
 
     # Create grouped bar chart
     fig = go.Figure()
@@ -167,7 +170,8 @@ def create_task_age_analysis(df):
     labels = list(age_ranges.keys())
     values = list(age_ranges.values())
 
-    colors = ['#d4ff00', '#a8cc00', '#7a9900', '#4d6600']
+    # Subtle teal gradient - from very light to medium light
+    colors = ['#c8d9d9', '#90b4b4', '#6d9f9f', '#4d8787']
 
     fig = go.Figure(data=[go.Bar(
         x=labels,
@@ -284,15 +288,15 @@ def create_project_health_dashboard(exec_metrics):
 
     project_df = pd.DataFrame(project_data).sort_values("Health Score", ascending=True)
 
-    # Color code by health score
+    # Color code by health score - subtle teal shades
     colors = []
     for score in project_df["Health Score"]:
         if score >= 75:
-            colors.append('#d4ff00')  # Healthy - lime
+            colors.append('#90b4b4')  # Healthy - light teal
         elif score >= 50:
-            colors.append('#7a9900')  # Warning - darker lime
+            colors.append('#6d9f9f')  # Warning - medium teal
         else:
-            colors.append('#4d6600')  # At risk - dark green
+            colors.append('#4d8787')  # At risk - darker teal
 
     fig = go.Figure(data=[go.Bar(
         y=project_df["Project"],
@@ -423,18 +427,18 @@ def create_project_breakdown_chart(df):
     projects = [p.title() for p in project_counts.index]
     counts = project_counts.values
 
-    # Create MetaFlex green gradient colors - different shade for each bar
-    green_shades = [
-        '#0a4b4b',  # Dark teal
-        '#2d5016',  # Dark forest green
-        '#4a7c59',  # Medium green
-        '#6bcf7f',  # Light green
-        '#8ee99f',  # Lighter green
-        '#b8ffc6',  # Very light green
+    # Create subtle teal gradient colors - different shade for each bar
+    teal_shades = [
+        '#c8d9d9',  # Very light teal
+        '#b0c9c9',  # Light teal
+        '#90b4b4',  # Medium light teal
+        '#6d9f9f',  # Medium teal
+        '#4d8787',  # Medium dark teal
+        '#357070',  # Darker teal
     ]
 
-    # Assign colors cycling through the green palette
-    bar_colors = [green_shades[i % len(green_shades)] for i in range(len(counts))]
+    # Assign colors cycling through the teal palette
+    bar_colors = [teal_shades[i % len(teal_shades)] for i in range(len(counts))]
 
     # Create horizontal bar chart with rounded corners
     fig = go.Figure(data=[go.Bar(
@@ -442,8 +446,8 @@ def create_project_breakdown_chart(df):
         x=counts,
         orientation='h',
         marker=dict(
-            color=bar_colors,  # Different MetaFlex green for each bar
-            line=dict(color='#2d5016', width=2),  # Dark forest green border
+            color=bar_colors,  # Different subtle teal for each bar
+            line=dict(color=MF_LIGHT['border'], width=1),  # Subtle border
             cornerradius=8  # Rounded corners for modern look
         ),
         text=[f'<b>{count}</b>' for count in counts],

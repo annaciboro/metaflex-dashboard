@@ -56,5 +56,29 @@ def show_analytics():
     # Uniform spacing after header
     st.markdown("<div style='margin-bottom: 32px;'></div>", unsafe_allow_html=True)
 
+    # Add analytics charts for All Tasks
+    from charts import create_task_completion_velocity, create_project_health_dashboard
+    from .dashboard_page import calculate_executive_overview
+
+    # Calculate metrics for charts
+    exec_metrics = calculate_executive_overview(df)
+
+    # Two charts side by side
+    chart_col1, chart_spacer, chart_col2 = st.columns([1, 0.1, 1])
+
+    with chart_col1:
+        st.markdown("<h4 style='color: #0a4b4b; margin-bottom: 16px;'>Completion Velocity</h4>", unsafe_allow_html=True)
+        velocity_fig = create_task_completion_velocity(exec_metrics)
+        if velocity_fig:
+            st.plotly_chart(velocity_fig, width='stretch')
+
+    with chart_col2:
+        st.markdown("<h4 style='color: #0a4b4b; margin-bottom: 16px;'>Project Health</h4>", unsafe_allow_html=True)
+        health_fig = create_project_health_dashboard(exec_metrics)
+        if health_fig:
+            st.plotly_chart(health_fig, width='stretch')
+
+    st.markdown("<div style='margin-bottom: 32px;'></div>", unsafe_allow_html=True)
+
     # Render editable task grid for all tasks (with show_title=False to avoid duplicate header)
     render_editable_task_grid(df, user_name, is_tea=is_tea, show_title=False)
