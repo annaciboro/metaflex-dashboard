@@ -55,16 +55,17 @@ def show_analytics():
         if assignee_col:
             df = df[df[assignee_col].str.lower().str.contains(user_name.lower(), na=False, regex=False)].copy()
 
-    # Standardized header
-    if is_tea:
-        render_page_header("All Task Management", f"View and manage all team tasks • {len(df)} total tasks")
-    elif is_jess:
-        render_page_header("Team Task Management", f"Manage tasks for Jess, Megan, and Justin • {len(df)} total tasks")
-    else:
-        render_page_header("My Task Management", f"Manage your tasks • {len(df)} total tasks")
-
-    # Uniform spacing after header
-    st.markdown("<div style='margin-bottom: 32px;'></div>", unsafe_allow_html=True)
+    # Page header matching MY TASKS style
+    st.markdown("""
+        <h2 style='
+            margin: 0 0 32px 0;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #0a4b4b;
+            letter-spacing: -0.01em;
+            text-align: left;
+        '>ALL TASKS</h2>
+    """, unsafe_allow_html=True)
 
     # Add control checkboxes in a row
     ctrl_col1, ctrl_col2, ctrl_col3 = st.columns([1, 1, 3])
