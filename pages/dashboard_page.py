@@ -356,7 +356,7 @@ def calculate_kpis(df, user_name, is_personal=False):
 
 def render_kpi_section(kpis, section_label=""):
     """
-    Render KPI metrics in premium SaaS-style cards with MetaFlex branding
+    Render KPI metrics in premium dark SaaS-style cards with MetaFlex branding
     """
     # Add edge spacers for more breathing room
     edge_spacer_left, col1, spacer1, col2, spacer2, col3, edge_spacer_right = st.columns([0.2, 1, 0.1, 1, 0.1, 1, 0.2])
@@ -364,12 +364,11 @@ def render_kpi_section(kpis, section_label=""):
     with col1:
         st.markdown(f"""
             <div class='kpi-card' style='
-                background: linear-gradient(135deg, #f5faf2 0%, #f8fbf8 100%);
+                background: linear-gradient(135deg, #0a2f2f 0%, #0d3a3a 100%);
                 padding: 32px 48px;
                 border-radius: 16px;
-                border-left: 4px solid #0a4b4b;
-                border-top: 2px solid rgba(212, 255, 0, 0.3);
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+                border: 3px solid #2d5016;
+                box-shadow: 0 0 20px rgba(212, 255, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.4);
                 transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                 text-align: center;
             '>
@@ -379,15 +378,16 @@ def render_kpi_section(kpis, section_label=""):
                     font-weight: 600;
                     text-transform: uppercase;
                     letter-spacing: 0.05em;
-                    color: #2d5016;
+                    color: #e8f5e9;
+                    opacity: 0.8;
                 '>MY OPEN TASKS</p>
                 <h2 style='
                     margin: 0;
                     font-size: 3.5rem;
                     font-weight: 900;
-                    color: #2d5016;
+                    color: #d4ff00;
                     line-height: 1;
-                    text-shadow: 0 2px 4px rgba(212, 255, 0, 0.1);
+                    text-shadow: 0 0 10px rgba(212, 255, 0, 0.5);
                 '>{kpis["my_open_tasks"]}</h2>
             </div>
         """, unsafe_allow_html=True)
@@ -395,12 +395,11 @@ def render_kpi_section(kpis, section_label=""):
     with col2:
         st.markdown(f"""
             <div class='kpi-card' style='
-                background: linear-gradient(135deg, #f5faf2 0%, #f8fbf8 100%);
+                background: linear-gradient(135deg, #0a2f2f 0%, #0d3a3a 100%);
                 padding: 32px 48px;
                 border-radius: 16px;
-                border-left: 4px solid #0a4b4b;
-                border-top: 2px solid rgba(212, 255, 0, 0.3);
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+                border: 3px solid #2d5016;
+                box-shadow: 0 0 20px rgba(212, 255, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.4);
                 transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                 text-align: center;
             '>
@@ -410,15 +409,16 @@ def render_kpi_section(kpis, section_label=""):
                     font-weight: 600;
                     text-transform: uppercase;
                     letter-spacing: 0.05em;
-                    color: #2d5016;
+                    color: #e8f5e9;
+                    opacity: 0.8;
                 '>TEAM OPEN TASKS</p>
                 <h2 style='
                     margin: 0;
                     font-size: 3.5rem;
                     font-weight: 900;
-                    color: #2d5016;
+                    color: #d4ff00;
                     line-height: 1;
-                    text-shadow: 0 2px 4px rgba(212, 255, 0, 0.1);
+                    text-shadow: 0 0 10px rgba(212, 255, 0, 0.5);
                 '>{kpis["team_open_tasks"]}</h2>
             </div>
         """, unsafe_allow_html=True)
@@ -426,12 +426,11 @@ def render_kpi_section(kpis, section_label=""):
     with col3:
         st.markdown(f"""
             <div class='kpi-card' style='
-                background: linear-gradient(135deg, #f5faf2 0%, #f8fbf8 100%);
+                background: linear-gradient(135deg, #0a2f2f 0%, #0d3a3a 100%);
                 padding: 32px 48px;
                 border-radius: 16px;
-                border-left: 4px solid #0a4b4b;
-                border-top: 2px solid rgba(212, 255, 0, 0.3);
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+                border: 3px solid #2d5016;
+                box-shadow: 0 0 20px rgba(212, 255, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.4);
                 transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                 text-align: center;
             '>
@@ -441,22 +440,23 @@ def render_kpi_section(kpis, section_label=""):
                     font-weight: 600;
                     text-transform: uppercase;
                     letter-spacing: 0.05em;
-                    color: #2d5016;
+                    color: #e8f5e9;
+                    opacity: 0.8;
                 '>ACTIVE PROJECTS</p>
                 <h2 style='
                     margin: 0;
                     font-size: 3.5rem;
                     font-weight: 900;
-                    color: #2d5016;
+                    color: #d4ff00;
                     line-height: 1;
-                    text-shadow: 0 2px 4px rgba(212, 255, 0, 0.1);
+                    text-shadow: 0 0 10px rgba(212, 255, 0, 0.5);
                 '>{kpis["active_projects"]}</h2>
             </div>
         """, unsafe_allow_html=True)
 
 def render_personal_kpi_section(kpis):
     """
-    Render KPI metrics for personal users (only My Open Tasks and Active Projects)
+    Render KPI metrics for personal users with dark theme (only My Open Tasks and Active Projects)
     """
     # Add edge spacers and only 2 columns
     edge_spacer_left, col1, spacer1, col2, edge_spacer_right = st.columns([0.5, 1, 0.2, 1, 0.5])
@@ -464,12 +464,11 @@ def render_personal_kpi_section(kpis):
     with col1:
         st.markdown(f"""
             <div class='kpi-card' style='
-                background: linear-gradient(135deg, #f5faf2 0%, #f8fbf8 100%);
+                background: linear-gradient(135deg, #0a2f2f 0%, #0d3a3a 100%);
                 padding: 32px 48px;
                 border-radius: 16px;
-                border-left: 4px solid #0a4b4b;
-                border-top: 2px solid rgba(212, 255, 0, 0.3);
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+                border: 3px solid #2d5016;
+                box-shadow: 0 0 20px rgba(212, 255, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.4);
                 transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                 text-align: center;
             '>
@@ -479,15 +478,16 @@ def render_personal_kpi_section(kpis):
                     font-weight: 600;
                     text-transform: uppercase;
                     letter-spacing: 0.05em;
-                    color: #2d5016;
+                    color: #e8f5e9;
+                    opacity: 0.8;
                 '>MY OPEN TASKS</p>
                 <h2 style='
                     margin: 0;
                     font-size: 3.5rem;
                     font-weight: 900;
-                    color: #2d5016;
+                    color: #d4ff00;
                     line-height: 1;
-                    text-shadow: 0 2px 4px rgba(212, 255, 0, 0.1);
+                    text-shadow: 0 0 10px rgba(212, 255, 0, 0.5);
                 '>{kpis["my_open_tasks"]}</h2>
             </div>
         """, unsafe_allow_html=True)
@@ -495,12 +495,11 @@ def render_personal_kpi_section(kpis):
     with col2:
         st.markdown(f"""
             <div class='kpi-card' style='
-                background: linear-gradient(135deg, #f5faf2 0%, #f8fbf8 100%);
+                background: linear-gradient(135deg, #0a2f2f 0%, #0d3a3a 100%);
                 padding: 32px 48px;
                 border-radius: 16px;
-                border-left: 4px solid #0a4b4b;
-                border-top: 2px solid rgba(212, 255, 0, 0.3);
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+                border: 3px solid #2d5016;
+                box-shadow: 0 0 20px rgba(212, 255, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.4);
                 transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                 text-align: center;
             '>
@@ -510,15 +509,16 @@ def render_personal_kpi_section(kpis):
                     font-weight: 600;
                     text-transform: uppercase;
                     letter-spacing: 0.05em;
-                    color: #2d5016;
+                    color: #e8f5e9;
+                    opacity: 0.8;
                 '>ACTIVE PROJECTS</p>
                 <h2 style='
                     margin: 0;
                     font-size: 3.5rem;
                     font-weight: 900;
-                    color: #2d5016;
+                    color: #d4ff00;
                     line-height: 1;
-                    text-shadow: 0 2px 4px rgba(212, 255, 0, 0.1);
+                    text-shadow: 0 0 10px rgba(212, 255, 0, 0.5);
                 '>{kpis["active_projects"]}</h2>
             </div>
         """, unsafe_allow_html=True)
