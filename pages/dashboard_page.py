@@ -1610,17 +1610,25 @@ def show_dashboard():
         """, unsafe_allow_html=True)
 
         # Add archive filter with elegant styling
+        # Wrap checkbox in a container to ensure clickability
+        st.markdown('<div style="position: relative; z-index: 999;">', unsafe_allow_html=True)
         show_archived_projects = st.checkbox("Include archived", value=False, key="show_archived_projects")
+        st.markdown('</div>', unsafe_allow_html=True)
 
         # Style checkbox with green neon color
         st.markdown("""
             <style>
-            /* Ensure checkbox is clickable */
+            /* Ensure checkbox is clickable - very aggressive */
             div[data-testid="stCheckbox"],
             div[data-testid="stCheckbox"] *,
-            div[data-testid="stCheckbox"] input {
+            div[data-testid="stCheckbox"] input,
+            div[data-testid="stCheckbox"] label,
+            div[data-testid="stCheckbox"] label *,
+            div[data-testid="stCheckbox"] div {
                 pointer-events: auto !important;
                 cursor: pointer !important;
+                position: relative !important;
+                z-index: 1000 !important;
             }
 
             /* Remove ALL background highlighting from checkbox label text */
