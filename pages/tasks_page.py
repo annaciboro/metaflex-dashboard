@@ -85,7 +85,7 @@ def show_tasks():
         chart_col1, chart_col2 = st.columns(2)
 
         with chart_col1:
-            # Removed header text per user request
+            st.markdown("<h3 style='text-align: left; margin: 0 0 20px 0; color: #0a4b4b; font-weight: 600; font-size: 1.1rem; font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif;'>Task Completion Status</h3>", unsafe_allow_html=True)
             donut_fig = create_team_completion_donut(
                 personal_kpis.get("my_open_tasks", 0),
                 personal_kpis.get("working_tasks", 0),
@@ -110,7 +110,7 @@ def show_tasks():
         from charts import create_task_age_analysis
 
         with chart_col2:
-            # Removed header text per user request
+            st.markdown("<h3 style='text-align: left; margin: 0 0 20px 0; color: #0a4b4b; font-weight: 600; font-size: 1.1rem; font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif;'>Task Age Analysis</h3>", unsafe_allow_html=True)
             age_fig = create_task_age_analysis(personal_df)
             if age_fig:
                 st.plotly_chart(age_fig, use_container_width=True, key="task_age_chart", config={
@@ -182,8 +182,9 @@ def show_tasks():
 
         st.markdown("<br>", unsafe_allow_html=True)
 
-        # Add Task Age Analysis chart for Tea (header removed per user request)
+        # Add Task Age Analysis chart for Tea
         from charts import create_task_age_analysis
+        st.markdown("<h4 style='color: #0a4b4b; margin-bottom: 16px;'>Task Age Analysis</h4>", unsafe_allow_html=True)
         age_fig = create_task_age_analysis(personal_df)
         if age_fig:
             st.plotly_chart(age_fig, use_container_width=True, key="tea_task_age_chart", config={
@@ -357,15 +358,12 @@ def show_tasks():
                 st.session_state.show_add_task_form = False
                 st.rerun()
 
-    # Create a clean display DataFrame with all tasks - including row IDs
-    display_columns = []
+    # Use the same AgGrid table as All Tasks page, but filtered for individual user
+    # Pass show_transcript_id via session state
+    st.session_state['show_transcript_id_my_tasks'] = show_transcript_id
 
-    # Add Transcript ID if it exists and checkbox is checked
-    if show_transcript_id and has_column(personal_df, "Transcript ID"):
-        display_columns.append(get_column(personal_df, "Transcript ID"))
-
-    # Simplified columns for Tea: Task, Date Assigned, Due Date, Notes, Priority
-    if is_tea:
+    # Render editable task grid (same as All Tasks but filtered for user)
+    render_editable_task_grid(personal_df, user_name, is_tea=is_tea, key_prefix="my_tasks_", show_title=False)
         cols_to_display = ["Task", "Priority", "Date Assigned", "Due Date", "Notes"]
     else:
         cols_to_display = ["Task", "Status", "Priority", "Project", "Date Assigned", "Due Date", "Notes"]
