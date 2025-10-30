@@ -1131,8 +1131,8 @@ def render_editable_task_grid(df, current_user, is_tea=False, key_prefix="", sho
         # Removed duplicate checkbox to avoid double checkboxes
         st.markdown("<br>", unsafe_allow_html=True)
 
-        # Add filter dropdowns and search box in 3-column layout
-        col1, col2, col3 = st.columns([2, 2, 1])
+        # Add filter dropdowns and search box in 2-column layout
+        col1, col2 = st.columns(2)
 
         # Build project filter options
         project_options = ["All Projects"]
@@ -1147,16 +1147,6 @@ def render_editable_task_grid(df, current_user, is_tea=False, key_prefix="", sho
 
         with col2:
             search_term = st.text_input("🔎 Search Tasks", placeholder="Search by keywords...", key=f"{key_prefix}_search_tasks")
-
-        with col3:
-            st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
-            clear_filters = st.button("Clear Filters", key=f"{key_prefix}_clear_filters")
-
-        # Handle clear filters
-        if clear_filters:
-            st.session_state[f"{key_prefix}_project_filter"] = "All Projects"
-            st.session_state[f"{key_prefix}_search_tasks"] = ""
-            st.rerun()
 
         # Check if filters are active
         filters_active = project_filter != "All Projects" or (search_term and search_term.strip() != "")

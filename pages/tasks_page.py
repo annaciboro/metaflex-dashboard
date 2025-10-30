@@ -85,7 +85,17 @@ def show_tasks():
         chart_col1, chart_col2 = st.columns(2)
 
         with chart_col1:
-            st.markdown("<h3 style='text-align: left; margin: 0 0 20px 0; color: #0a4b4b; font-weight: 600; font-size: 1.1rem; font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif;'>Task Completion Status</h3>", unsafe_allow_html=True)
+            st.markdown("""
+                <h3 style='
+                    margin: 0 0 20px 0;
+                    font-size: 1.1rem;
+                    font-weight: 700;
+                    color: #0a4b4b;
+                    letter-spacing: 0.05em;
+                    text-align: left;
+                    text-transform: uppercase;
+                '>TASK COMPLETION STATUS</h3>
+            """, unsafe_allow_html=True)
             donut_fig = create_team_completion_donut(
                 personal_kpis.get("my_open_tasks", 0),
                 personal_kpis.get("working_tasks", 0),
@@ -110,7 +120,17 @@ def show_tasks():
         from charts import create_task_age_analysis
 
         with chart_col2:
-            st.markdown("<h3 style='text-align: left; margin: 0 0 20px 0; color: #0a4b4b; font-weight: 600; font-size: 1.1rem; font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif;'>Task Age Analysis</h3>", unsafe_allow_html=True)
+            st.markdown("""
+                <h3 style='
+                    margin: 0 0 20px 0;
+                    font-size: 1.1rem;
+                    font-weight: 700;
+                    color: #0a4b4b;
+                    letter-spacing: 0.05em;
+                    text-align: left;
+                    text-transform: uppercase;
+                '>TASK AGE ANALYSIS</h3>
+            """, unsafe_allow_html=True)
             age_fig = create_task_age_analysis(personal_df)
             if age_fig:
                 st.plotly_chart(age_fig, use_container_width=True, key="task_age_chart", config={
@@ -184,7 +204,17 @@ def show_tasks():
 
         # Add Task Age Analysis chart for Tea
         from charts import create_task_age_analysis
-        st.markdown("<h4 style='color: #0a4b4b; margin-bottom: 16px;'>Task Age Analysis</h4>", unsafe_allow_html=True)
+        st.markdown("""
+            <h3 style='
+                margin: 0 0 20px 0;
+                font-size: 1.1rem;
+                font-weight: 700;
+                color: #0a4b4b;
+                letter-spacing: 0.05em;
+                text-align: left;
+                text-transform: uppercase;
+            '>TASK AGE ANALYSIS</h3>
+        """, unsafe_allow_html=True)
         age_fig = create_task_age_analysis(personal_df)
         if age_fig:
             st.plotly_chart(age_fig, use_container_width=True, key="tea_task_age_chart", config={
@@ -247,47 +277,6 @@ def show_tasks():
 
     with col_btn2:
         save_changes = st.button("Save Changes", key="save_changes_btn", type="primary", width='stretch')
-
-    st.markdown("<br>", unsafe_allow_html=True)
-
-    # Add control checkboxes in a row - below search bar
-    # Style checkboxes to match header styling
-    st.markdown("""
-        <style>
-        /* Checkbox label styling to match headers */
-        div[data-testid="stCheckbox"] label p {
-            color: #0a4b4b !important;
-            font-size: 0.95rem !important;
-            font-weight: 600 !important;
-            letter-spacing: 0.02em !important;
-        }
-
-        /* Checkbox styling - teal theme */
-        div[data-testid="stCheckbox"] input[type="checkbox"] ~ span div svg rect {
-            fill: rgba(229, 231, 235, 0.5) !important;
-            stroke: rgba(10, 75, 75, 0.4) !important;
-            stroke-width: 1.5 !important;
-        }
-
-        div[data-testid="stCheckbox"] input[type="checkbox"]:checked ~ span div svg rect {
-            fill: #0a4b4b !important;
-            stroke: #0a4b4b !important;
-        }
-
-        div[data-testid="stCheckbox"] input[type="checkbox"]:checked ~ span div svg path {
-            fill: #ffffff !important;
-            stroke: #ffffff !important;
-        }
-        </style>
-    """, unsafe_allow_html=True)
-
-    ctrl_col1, ctrl_col2, ctrl_col3 = st.columns([1, 1, 3])
-
-    with ctrl_col1:
-        show_archived = st.checkbox("Show Archived", value=False, key="show_archived_my_tasks")
-
-    with ctrl_col2:
-        show_transcript_id = st.checkbox("Show Transcript #", value=False, key="show_transcript_my_tasks")
 
     st.markdown("<br>", unsafe_allow_html=True)
 
@@ -387,6 +376,47 @@ def show_tasks():
             if cancel:
                 st.session_state.show_add_task_form = False
                 st.rerun()
+
+    # Add control checkboxes right above table
+    # Style checkboxes to match header styling
+    st.markdown("""
+        <style>
+        /* Checkbox label styling to match headers */
+        div[data-testid="stCheckbox"] label p {
+            color: #0a4b4b !important;
+            font-size: 0.95rem !important;
+            font-weight: 600 !important;
+            letter-spacing: 0.02em !important;
+        }
+
+        /* Checkbox styling - teal theme */
+        div[data-testid="stCheckbox"] input[type="checkbox"] ~ span div svg rect {
+            fill: rgba(229, 231, 235, 0.5) !important;
+            stroke: rgba(10, 75, 75, 0.4) !important;
+            stroke-width: 1.5 !important;
+        }
+
+        div[data-testid="stCheckbox"] input[type="checkbox"]:checked ~ span div svg rect {
+            fill: #0a4b4b !important;
+            stroke: #0a4b4b !important;
+        }
+
+        div[data-testid="stCheckbox"] input[type="checkbox"]:checked ~ span div svg path {
+            fill: #ffffff !important;
+            stroke: #ffffff !important;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+    ctrl_col1, ctrl_col2, ctrl_col3 = st.columns([1, 1, 3])
+
+    with ctrl_col1:
+        show_archived = st.checkbox("Show Archived", value=False, key="show_archived_my_tasks")
+
+    with ctrl_col2:
+        show_transcript_id = st.checkbox("Show Transcript #", value=False, key="show_transcript_my_tasks")
+
+    st.markdown("<br>", unsafe_allow_html=True)
 
     # Use the same AgGrid table as All Tasks page, but filtered for individual user
     # Pass show_transcript_id via session state

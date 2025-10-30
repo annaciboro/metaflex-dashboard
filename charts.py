@@ -183,7 +183,8 @@ def create_task_age_analysis(df):
         text=values,
         textposition='outside',
         textfont=dict(size=14, color='#0a4b4b', family='-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', weight='bold'),
-        hovertemplate='<b>%{x}</b><br>Tasks: %{y}<extra></extra>'
+        hovertemplate='<b>%{x}</b><br>Tasks: %{y}<extra></extra>',
+        name=''  # Remove legend/series name to avoid "undefined"
     )])
 
     fig.update_layout(
@@ -192,6 +193,7 @@ def create_task_age_analysis(df):
         margin=dict(t=40, b=40, l=80, r=60),
         paper_bgcolor=MF_LIGHT['bg_white'],
         plot_bgcolor=MF_LIGHT['bg_light'],
+        showlegend=False,  # Hide legend to remove "undefined"
         xaxis=dict(
             title='',
             tickfont=dict(size=13, color='#0a4b4b', family='-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif')
