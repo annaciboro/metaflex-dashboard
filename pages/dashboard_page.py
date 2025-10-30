@@ -677,8 +677,8 @@ def render_tasks_table(filtered_df, limit=10, hide_project_column=False):
                 transcript_col_found = True
                 break
 
-        # Add other columns (including Date Assigned, excluding Project if hide_project_column is True)
-        columns_to_add = ["Task", "Person", "Status", "Date Assigned", "Due Date", "Progress %"]
+        # Add other columns (including Date Assigned, Notes, excluding Project if hide_project_column is True)
+        columns_to_add = ["Task", "Person", "Status", "Date Assigned", "Due Date", "Progress %", "Notes"]
         if not hide_project_column:
             columns_to_add.insert(3, "Project")  # Add Project after Status
 
@@ -735,6 +735,11 @@ def render_tasks_table(filtered_df, limit=10, hide_project_column=False):
                 "Due Date": st.column_config.TextColumn(
                     "Due Date",
                     width="small"
+                ),
+                "Notes": st.column_config.TextColumn(
+                    "Notes",
+                    width="large",
+                    help="Additional notes or comments"
                 )
             }
 
@@ -776,46 +781,108 @@ def render_tasks_table(filtered_df, limit=10, hide_project_column=False):
                     width="medium"
                 )
 
-            # Add MetaFlex green styling to the table
+            # Add MetaFlex DARK theme styling to the table
             st.markdown("""
                 <style>
-                /* MetaFlex green styling for dataframes */
-                div[data-testid="stDataFrame"] {
-                    background: linear-gradient(135deg, #f0f9f4 0%, #f5faf7 100%) !important;
-                    border-radius: 12px !important;
+                /* ULTRA AGGRESSIVE MetaFlex dark theme styling for dataframes */
+                div[data-testid="stDataFrame"],
+                div[data-testid="stDataFrame"] > div,
+                div[data-testid="stDataFrame"] > div > div,
+                div[data-testid="stDataFrame"] iframe,
+                [data-testid="stDataFrame"] {
+                    background: linear-gradient(135deg, #0a2f2f 0%, #0d3a3a 100%) !important;
+                    border-radius: 0 0 12px 12px !important;
                     padding: 16px !important;
-                    border: 2px solid #4d7a40 !important;
-                    box-shadow: 0 2px 8px rgba(77, 122, 64, 0.1), 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+                    border: 3px solid #2d5016 !important;
+                    border-top: none !important;
+                    box-shadow: 0 0 20px rgba(212, 255, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.4) !important;
                 }
 
-                /* Style the table header */
-                div[data-testid="stDataFrame"] thead tr th {
-                    background: linear-gradient(135deg, #4d7a40 0%, #5a8f4a 100%) !important;
-                    color: #ffffff !important;
-                    font-weight: 600 !important;
-                    border-bottom: 2px solid #d4ff00 !important;
+                /* Target ALL table elements */
+                div[data-testid="stDataFrame"] table,
+                div[data-testid="stDataFrame"] thead,
+                div[data-testid="stDataFrame"] tbody,
+                [data-testid="stDataFrame"] table,
+                table {
+                    background: transparent !important;
+                }
+
+                /* Style the table header - ULTRA AGGRESSIVE */
+                div[data-testid="stDataFrame"] thead tr th,
+                div[data-testid="stDataFrame"] th,
+                [data-testid="stDataFrame"] thead tr th,
+                thead tr th,
+                th {
+                    background: linear-gradient(135deg, #0a2f2f 0%, #0d3a3a 100%) !important;
+                    color: #d4ff00 !important;
+                    font-weight: 700 !important;
+                    border-bottom: 2px solid #2d5016 !important;
                     padding: 12px 8px !important;
+                    text-transform: uppercase !important;
+                    font-size: 0.7rem !important;
+                    letter-spacing: 0.05em !important;
                 }
 
-                /* Alternate row colors with green tint */
-                div[data-testid="stDataFrame"] tbody tr:nth-child(even) {
-                    background-color: rgba(77, 122, 64, 0.05) !important;
+                /* Alternate row colors - ULTRA AGGRESSIVE */
+                div[data-testid="stDataFrame"] tbody tr:nth-child(even),
+                div[data-testid="stDataFrame"] tbody tr:nth-child(even) td,
+                [data-testid="stDataFrame"] tbody tr:nth-child(even),
+                tbody tr:nth-child(even),
+                tbody tr:nth-child(even) td {
+                    background: rgba(13, 58, 58, 0.5) !important;
+                    background-color: rgba(13, 58, 58, 0.5) !important;
                 }
 
-                div[data-testid="stDataFrame"] tbody tr:nth-child(odd) {
-                    background-color: rgba(212, 255, 0, 0.03) !important;
+                div[data-testid="stDataFrame"] tbody tr:nth-child(odd),
+                div[data-testid="stDataFrame"] tbody tr:nth-child(odd) td,
+                [data-testid="stDataFrame"] tbody tr:nth-child(odd),
+                tbody tr:nth-child(odd),
+                tbody tr:nth-child(odd) td {
+                    background: rgba(10, 47, 47, 0.5) !important;
+                    background-color: rgba(10, 47, 47, 0.5) !important;
                 }
 
-                /* Hover effect */
-                div[data-testid="stDataFrame"] tbody tr:hover {
-                    background-color: rgba(77, 122, 64, 0.12) !important;
-                    transition: background-color 0.2s ease !important;
+                /* Hover effect - ULTRA AGGRESSIVE */
+                div[data-testid="stDataFrame"] tbody tr:hover,
+                div[data-testid="stDataFrame"] tbody tr:hover td,
+                [data-testid="stDataFrame"] tbody tr:hover,
+                tbody tr:hover,
+                tbody tr:hover td {
+                    background: rgba(212, 255, 0, 0.1) !important;
+                    background-color: rgba(212, 255, 0, 0.1) !important;
+                    box-shadow: inset 0 0 0 1px rgba(212, 255, 0, 0.3) !important;
+                    transition: all 0.2s ease !important;
                 }
 
-                /* Cell styling */
-                div[data-testid="stDataFrame"] tbody tr td {
-                    border-bottom: 1px solid rgba(77, 122, 64, 0.15) !important;
-                    padding: 10px 8px !important;
+                /* Cell styling - ULTRA AGGRESSIVE */
+                div[data-testid="stDataFrame"] tbody tr td,
+                div[data-testid="stDataFrame"] td,
+                [data-testid="stDataFrame"] tbody tr td,
+                tbody tr td,
+                td {
+                    border-bottom: 1px solid rgba(45, 80, 22, 0.3) !important;
+                    padding: 12px 8px !important;
+                    color: #e8f5e9 !important;
+                }
+
+                /* Scrollbar styling for dark theme */
+                div[data-testid="stDataFrame"] ::-webkit-scrollbar {
+                    width: 8px !important;
+                    height: 8px !important;
+                }
+
+                div[data-testid="stDataFrame"] ::-webkit-scrollbar-track {
+                    background: rgba(10, 47, 47, 0.5) !important;
+                    border-radius: 4px !important;
+                }
+
+                div[data-testid="stDataFrame"] ::-webkit-scrollbar-thumb {
+                    background: rgba(212, 255, 0, 0.3) !important;
+                    border-radius: 4px !important;
+                }
+
+                div[data-testid="stDataFrame"] ::-webkit-scrollbar-thumb:hover {
+                    background: rgba(212, 255, 0, 0.5) !important;
                 }
                 </style>
             """, unsafe_allow_html=True)
@@ -1577,25 +1644,26 @@ def show_dashboard():
 
         st.markdown("""
             <div style='
-                background: linear-gradient(135deg, #f5faf2 0%, #f8fbf8 100%);
+                background: linear-gradient(135deg, #0a2f2f 0%, #0d3a3a 100%);
                 border-radius: 16px;
                 padding: 32px;
-                border-left: 4px solid #0a4b4b;
-                border-top: 2px solid rgba(212, 255, 0, 0.3);
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+                border: 3px solid #2d5016;
+                box-shadow: 0 0 20px rgba(212, 255, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.4);
                 margin-bottom: 32px;
             '>
                 <h2 style='
                     margin: 0 0 8px 0;
                     font-size: 1.75rem;
                     font-weight: 700;
-                    color: #0a4b4b;
+                    color: #d4ff00;
                     letter-spacing: -0.02em;
-                '>Projects</h2>
+                    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+                '>Breakdown of Tasks by Project</h2>
                 <p style='
                     margin: 0;
-                    color: #6b7280;
+                    color: #e8f5e9;
                     font-size: 0.95rem;
+                    opacity: 0.9;
                 '>Track and manage tasks across all active projects</p>
             </div>
         """, unsafe_allow_html=True)
@@ -1633,7 +1701,8 @@ def show_dashboard():
                     in_progress_count = 0
                     complete_count = 0
 
-                    if status_col:
+                    if has_column(project_df, "Status"):
+                        status_col = get_column(project_df, "Status")
                         open_count = len(project_df[project_df[status_col].str.lower().str.contains("open|not started", case=False, na=False)])
                         in_progress_count = len(project_df[project_df[status_col].str.lower().str.contains("in progress|working", case=False, na=False)])
                         complete_count = len(project_df[project_df[status_col].str.lower().str.contains("done|complete", case=False, na=False)])
@@ -1649,6 +1718,7 @@ def show_dashboard():
                             border: 3px solid #2d5016;
                             border-bottom: none;
                             box-shadow: 0 0 20px rgba(212, 255, 0, 0.2);
+                            text-align: center;
                         '>
                             <h3 style='
                                 margin: 0;
@@ -1683,7 +1753,7 @@ def show_dashboard():
                                     letter-spacing: 0.05em;
                                     color: #e8f5e9;
                                     opacity: 0.8;
-                                '>TOTAL</p>
+                                '>TOTAL TASKS</p>
                                 <h2 style='
                                     margin: 0;
                                     font-size: 2rem;
@@ -1713,7 +1783,7 @@ def show_dashboard():
                                     letter-spacing: 0.05em;
                                     color: #e8f5e9;
                                     opacity: 0.8;
-                                '>OPEN</p>
+                                '>OPEN TASKS</p>
                                 <h2 style='
                                     margin: 0;
                                     font-size: 2rem;
@@ -1742,7 +1812,7 @@ def show_dashboard():
                                     letter-spacing: 0.05em;
                                     color: #e8f5e9;
                                     opacity: 0.8;
-                                '>IN PROGRESS</p>
+                                '>IN PROGRESS TASKS</p>
                                 <h2 style='
                                     margin: 0;
                                     font-size: 2rem;
@@ -1772,7 +1842,7 @@ def show_dashboard():
                                     letter-spacing: 0.05em;
                                     color: #e8f5e9;
                                     opacity: 0.8;
-                                '>COMPLETE</p>
+                                '>COMPLETE TASKS</p>
                                 <h2 style='
                                     margin: 0;
                                     font-size: 2rem;
