@@ -1631,9 +1631,21 @@ def show_dashboard():
         # Style checkbox with green neon color
         st.markdown("""
             <style>
-            /* Target ALL checkbox styling - make it green neon */
-            div[data-testid="stCheckbox"] label span[data-testid="stMarkdownContainer"] {
+            /* Remove glow from checkbox label text */
+            div[data-testid="stCheckbox"] label,
+            div[data-testid="stCheckbox"] label span,
+            div[data-testid="stCheckbox"] label span[data-testid="stMarkdownContainer"],
+            div[data-testid="stCheckbox"] label p {
                 color: #2d3748 !important;
+                text-shadow: none !important;
+                box-shadow: none !important;
+            }
+
+            /* Target the SVG background rectangle directly */
+            div[data-testid="stCheckbox"] svg rect,
+            [data-testid="stCheckbox"] svg rect {
+                fill: #7a9900 !important;
+                stroke: #7a9900 !important;
             }
 
             /* Style the checkbox box itself - green neon when checked */
@@ -1645,15 +1657,15 @@ def show_dashboard():
                 background-color: #7a9900 !important;
                 background: #7a9900 !important;
                 border-color: #7a9900 !important;
-                box-shadow: 0 0 10px rgba(122, 153, 0, 0.6) !important;
+                box-shadow: none !important;
             }
 
-            /* Target the SVG checkmark icon to be white */
-            div[data-testid="stCheckbox"] input[type="checkbox"]:checked + div svg,
-            div[data-testid="stCheckbox"] input[type="checkbox"]:checked + div > div svg,
-            [data-testid="stCheckbox"] [role="checkbox"][aria-checked="true"] svg {
+            /* Target the SVG checkmark icon path to be white */
+            div[data-testid="stCheckbox"] input[type="checkbox"]:checked + div svg path,
+            div[data-testid="stCheckbox"] input[type="checkbox"]:checked + div > div svg path,
+            [data-testid="stCheckbox"] [role="checkbox"][aria-checked="true"] svg path {
                 fill: #ffffff !important;
-                color: #ffffff !important;
+                stroke: #ffffff !important;
             }
             </style>
         """, unsafe_allow_html=True)
