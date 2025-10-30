@@ -869,7 +869,7 @@ function forceButtonStyling() {
         button.style.setProperty('font-weight', '600', 'important');
         button.style.setProperty('text-transform', 'uppercase', 'important');
         button.style.setProperty('letter-spacing', '0.05em', 'important');
-        button.style.setProperty('color', '#2d5016', 'important');
+        button.style.setProperty('color', '#e8f5e9', 'important');
         button.style.setProperty('font-family', "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", 'important');
         button.style.setProperty('transition', 'all 0.2s ease', 'important');
         button.style.setProperty('transform', 'translateY(0)', 'important');
@@ -884,7 +884,7 @@ function forceButtonStyling() {
         );
         textElements.forEach(el => {
             el.style.setProperty('text-transform', 'uppercase', 'important');
-            el.style.setProperty('color', '#2d5016', 'important');
+            el.style.setProperty('color', '#e8f5e9', 'important');
             el.style.setProperty('font-variant-caps', 'normal', 'important');
             el.style.setProperty('font-size', '12px', 'important');
             el.style.setProperty('font-weight', '600', 'important');
@@ -937,6 +937,14 @@ st.markdown("<div style='margin-bottom: 30px;'></div>", unsafe_allow_html=True)
 # ULTRA AGGRESSIVE NAVIGATION BUTTON OVERRIDE - LOAD LAST
 st.markdown("""
 <style>
+/* DARK THEME NAVIGATION CONTAINER */
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child {
+    background: linear-gradient(135deg, #0a2f2f 0%, #0d3a3a 100%) !important;
+    box-shadow: 0 0 20px rgba(212, 255, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+    border-bottom: 2px solid #2d5016 !important;
+    padding: 10px 48px !important;
+}
+
 /* FINAL NUCLEAR OVERRIDE FOR NAVIGATION BUTTONS */
 html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button,
 html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="secondary"],
@@ -959,25 +967,40 @@ html body div[data-testid="column"] button {
     font-weight: 600 !important;
     text-transform: uppercase !important;
     letter-spacing: 0.05em !important;
-    color: #2d5016 !important;
+    color: #e8f5e9 !important;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
     transition: all 0.2s ease !important;
     transform: translateY(0) !important;
+    opacity: 0.8;
 }
 
 /* Force uppercase on all text inside buttons */
 html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button *,
 html body div[data-testid="column"] button * {
     text-transform: uppercase !important;
-    color: #2d5016 !important;
+    color: #e8f5e9 !important;
 }
 
-/* Hover - lift up */
+/* Hover - DARK THEME */
 html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button:hover,
 html body div[data-testid="column"] button:hover {
-    background: transparent !important;
+    background: rgba(212, 255, 0, 0.1) !important;
     transform: translateY(-2px) !important;
     border-bottom: 3px solid transparent !important;
+    color: #d4ff00 !important;
+    opacity: 1 !important;
+}
+
+/* Active button - DARK THEME */
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"] {
+    background: linear-gradient(135deg, #2d5016, #3a6520) !important;
+    color: #d4ff00 !important;
+    border-bottom: 3px solid #d4ff00 !important;
+    opacity: 1 !important;
+}
+
+html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child button[kind="primary"] * {
+    color: #d4ff00 !important;
 }
 </style>
 """, unsafe_allow_html=True)
