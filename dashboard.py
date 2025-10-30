@@ -458,13 +458,13 @@ is_jess = user_email.lower() == "jess@metaflexglove.com"
 # Different navigation based on user type
 if is_tea:
     # Tea (admin) sees all pages
-    pages_list = ["Home", "My Tasks", "Team Tasks", "Archive", "Sales Portal", "Investor Portal", "Logout"]
+    pages_list = ["Overview", "My Tasks", "All Tasks", "Archive", "Sales Portal", "Investor Portal", "Logout"]
 elif is_jess:
     # Jess sees team-related pages but not Sales/Investor portals
-    pages_list = ["Home", "My Tasks", "Team Tasks", "Archive", "Logout"]
+    pages_list = ["Overview", "My Tasks", "All Tasks", "Archive", "Logout"]
 else:
-    # Regular users only see Home, My Tasks, Archive, and Logout
-    pages_list = ["Home", "My Tasks", "Archive", "Logout"]
+    # Regular users only see Overview, My Tasks, Archive, and Logout
+    pages_list = ["Overview", "My Tasks", "Archive", "Logout"]
 
 nav_container = st.container()
 
@@ -472,7 +472,7 @@ with nav_container:
     nav_items_without_logout = [p for p in pages_list if p != "Logout"]
 
     # Create columns for navigation - white space on left, logo, spacer, then nav buttons
-    cols = st.columns([0.15, 0.2, 0.3] + [1]*len(nav_items_without_logout) + [0.5, 0.1, 0.8])
+    cols = st.columns([0.15, 0.2, 0.05] + [1]*len(nav_items_without_logout) + [0.3, 0.05, 1.5])
 
     # White space column (left side padding)
     with cols[0]:
@@ -619,6 +619,16 @@ with nav_container:
     with cols[len(nav_items_without_logout) + 4]:
         st.markdown(f"""
             <style>
+            /* Force column and all parent containers to not wrap */
+            div[data-testid="column"]:last-child,
+            div[data-testid="column"]:last-child > div,
+            div[data-testid="column"]:last-child > div > div,
+            div[data-testid="column"]:last-child .stButton {{
+                min-width: 120px !important;
+                flex-shrink: 0 !important;
+                width: auto !important;
+            }}
+
             div[data-testid="column"]:last-child button {{
                 background: transparent !important;
                 color: #d17a6f !important;
@@ -630,10 +640,24 @@ with nav_container:
                 text-transform: uppercase !important;
                 letter-spacing: 0.08em !important;
                 font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
-                width: 100% !important;
+                width: auto !important;
+                max-width: none !important;
+                white-space: nowrap !important;
+                display: inline-block !important;
+                min-width: fit-content !important;
                 transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
                 border-radius: 24px !important;
             }}
+
+            /* Force text to stay on one line */
+            div[data-testid="column"]:last-child button *,
+            div[data-testid="column"]:last-child button p,
+            div[data-testid="column"]:last-child button div,
+            div[data-testid="column"]:last-child button span {{
+                white-space: nowrap !important;
+                display: inline !important;
+            }}
+
             div[data-testid="column"]:last-child button:hover {{
                 color: #b96860 !important;
                 background: rgba(209, 122, 111, 0.15) !important;
@@ -643,7 +667,7 @@ with nav_container:
             </style>
         """, unsafe_allow_html=True)
 
-        if st.button("Logout", key="nav_logout", use_container_width=True):
+        if st.button("Logout", key="nav_logout"):
             # ULTIMATE LOGOUT FIX: Use st.components.html for immediate execution
             # This executes BEFORE Streamlit can interfere
 
@@ -721,7 +745,8 @@ with nav_container:
             # Also set query param for backup
             st.query_params["logout"] = "1"
 
-            # Don't call st.rerun() - let JavaScript handle the redirect
+            # Force immediate rerun to show login page
+            st.rerun()
 
 # Neon green gradient line under navigation - starts after logo
 st.markdown("""
@@ -1008,9 +1033,9 @@ content_container = st.container()
 
 with content_container:
     functions = {
-        "Home": pg.show_dashboard,
+        "Overview": pg.show_dashboard,
         "My Tasks": pg.show_tasks,
-        "Team Tasks": pg.show_analytics,
+        "All Tasks": pg.show_analytics,
         "Archive": pg.show_archive,
         "Sales Portal": pg.show_sales_portal,
         "Investor Portal": pg.show_investor_portal,

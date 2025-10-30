@@ -549,26 +549,51 @@ def render_charts_section(kpis, filtered_df, show_project_chart=True):
                     border: 1px solid rgba(10, 75, 75, 0.2) !important;
                 }
                 </style>
-                <h3 style="text-align: center; margin: 0 0 20px 0; color: #2d5016; font-weight: 700; font-size: 1.25rem;">Task Completion Status</h3>
+                <h3 style="text-align: center; margin: 0 0 32px 0; color: #2d5016; font-weight: 700; font-size: 1.25rem;">Task Completion Status</h3>
             """, unsafe_allow_html=True)
 
-            donut_fig = create_team_completion_donut(
-                kpis["open_tasks"],
-                kpis["working_tasks"],
-                kpis["done_tasks"]
+            # Create vertical bar chart for task completion
+            import plotly.graph_objects as go
+
+            statuses = ['Open', 'In Progress', 'Complete']
+            counts = [kpis["open_tasks"], kpis["working_tasks"], kpis["done_tasks"]]
+            colors = ['#d17a6f', '#e8b968', '#4d7a40']
+
+            fig = go.Figure(data=[
+                go.Bar(
+                    x=statuses,
+                    y=counts,
+                    marker=dict(
+                        color=colors,
+                        line=dict(color='#ffffff', width=2)
+                    ),
+                    text=counts,
+                    textposition='outside',
+                    textfont=dict(size=16, color='#2d5016', family='Inter'),
+                    hovertemplate='<b>%{x}</b><br>Count: %{y}<extra></extra>'
+                )
+            ])
+
+            fig.update_layout(
+                showlegend=False,
+                height=350,
+                margin=dict(l=20, r=20, t=40, b=20),
+                plot_bgcolor='rgba(0,0,0,0)',
+                paper_bgcolor='rgba(0,0,0,0)',
+                xaxis=dict(
+                    showgrid=False,
+                    title=None,
+                    tickfont=dict(size=13, color='#6b7280', family='Inter')
+                ),
+                yaxis=dict(
+                    showgrid=True,
+                    gridcolor='#f3f4f6',
+                    title=None,
+                    tickfont=dict(size=12, color='#6b7280')
+                )
             )
-            if donut_fig:
-                st.plotly_chart(donut_fig, use_container_width=True, config={
-                    'displayModeBar': True,
-                    'modeBarButtonsToAdd': ['toImage'],
-                    'toImageButtonOptions': {
-                        'format': 'png',
-                        'filename': 'task_completion_chart',
-                        'height': 500,
-                        'width': 700,
-                        'scale': 2
-                    }
-                })
+
+            st.plotly_chart(fig, use_container_width=True)
 
     # Only show "Tasks by Project" chart for Tea and Jess
     if show_project_chart:
@@ -617,7 +642,7 @@ def render_tasks_table(filtered_df, limit=10):
     if not filtered_df.empty:
         # Select and order columns for display using helper function
         display_columns = []
-        for col in ["Task", "Person", "Status", "Project", "Due Date", "Progress %"]:
+        for col in ["Transcript ID", "Task", "Person", "Status", "Project", "Due Date", "Progress %"]:
             if has_column(filtered_df, col):
                 display_columns.append(get_column(filtered_df, col))
 
@@ -639,6 +664,11 @@ def render_tasks_table(filtered_df, limit=10):
 
             # Configure column settings for wrapping and progress bars
             column_config = {
+                "Transcript ID": st.column_config.TextColumn(
+                    "Transcript ID",
+                    width="small",
+                    help="Transcript number"
+                ),
                 "Task": st.column_config.TextColumn(
                     "Task",
                     width="large",
@@ -1023,6 +1053,293 @@ def render_editable_task_grid(df, current_user, is_tea=False, key_prefix="", sho
 
     return edited_df
 
+def calculate_executive_metrics(df):
+    """
+    Calculate executive-level metrics for Tea's admin view
+    Returns detailed project breakdown and team metrics
+    """
+    if df.empty:
+        return {
+            "total_tasks": 0,
+            "total_open": 0,
+            "total_in_progress": 0,
+            "total_complete": 0,
+            "completion_rate": 0,
+            "tasks_by_project": {},
+            "tasks_by_person": {},
+            "overdue_tasks": 0
+        }
+
+    df_copy = df.copy()
+
+    # Normalize status
+    if has_column(df_copy, "Status"):
+        status_col = get_column(df_copy, "Status")
+        df_copy[status_col] = df_copy[status_col].str.strip().str.lower()
+    else:
+        return {}
+
+    # Count status
+    status_lower = df_copy[status_col]
+    total_open = len(df_copy[status_lower.str.contains("not started|open|🔴", case=False, na=False)])
+    total_in_progress = len(df_copy[status_lower.str.contains("in progress|working|🟡", case=False, na=False)])
+    total_complete = len(df_copy[status_lower.str.contains("done|complete|🟢", case=False, na=False)])
+    total_tasks = len(df_copy)
+
+    # Completion rate
+    completion_rate = round((total_complete / total_tasks * 100) if total_tasks > 0 else 0, 1)
+
+    # Tasks by project
+    tasks_by_project = {}
+    if has_column(df_copy, "Project"):
+        project_col = get_column(df_copy, "Project")
+        for project in df_copy[project_col].dropna().unique():
+            project_df = df_copy[df_copy[project_col] == project]
+            project_status = project_df[status_col]
+            tasks_by_project[project] = {
+                "total": len(project_df),
+                "open": len(project_df[project_status.str.contains("not started|open|🔴", case=False, na=False)]),
+                "in_progress": len(project_df[project_status.str.contains("in progress|working|🟡", case=False, na=False)]),
+                "complete": len(project_df[project_status.str.contains("done|complete|🟢", case=False, na=False)])
+            }
+
+    # Tasks by person
+    tasks_by_person = {}
+    person_col = None
+    if has_column(df_copy, "Person"):
+        person_col = get_column(df_copy, "Person")
+    elif has_column(df_copy, "Assigned To"):
+        person_col = get_column(df_copy, "Assigned To")
+
+    if person_col:
+        # Normalize person names to title case for consistent grouping
+        # Also filter out empty/null values
+        df_copy['_normalized_person'] = df_copy[person_col].fillna('').str.strip().str.title()
+        df_copy = df_copy[df_copy['_normalized_person'] != '']  # Remove empty names
+
+        for person in sorted(df_copy['_normalized_person'].unique()):
+            if person:  # Skip empty strings
+                person_df = df_copy[df_copy['_normalized_person'] == person]
+                person_status = person_df[status_col]
+                tasks_by_person[person] = {
+                    "total": len(person_df),
+                    "open": len(person_df[person_status.str.contains("not started|open|🔴", case=False, na=False)]),
+                    "in_progress": len(person_df[person_status.str.contains("in progress|working|🟡", case=False, na=False)]),
+                    "complete": len(person_df[person_status.str.contains("done|complete|🟢", case=False, na=False)])
+                }
+
+    # Overdue tasks
+    overdue_tasks = 0
+    if has_column(df_copy, "Due Date"):
+        from datetime import datetime
+        due_date_col = get_column(df_copy, "Due Date")
+        today = datetime.now()
+
+        for idx, row in df_copy.iterrows():
+            try:
+                if pd.notna(row[due_date_col]):
+                    due_date = pd.to_datetime(row[due_date_col])
+                    if due_date < today and row[status_col] not in ["done", "complete", "completed"]:
+                        overdue_tasks += 1
+            except:
+                pass
+
+    return {
+        "total_tasks": total_tasks,
+        "total_open": total_open,
+        "total_in_progress": total_in_progress,
+        "total_complete": total_complete,
+        "completion_rate": completion_rate,
+        "tasks_by_project": tasks_by_project,
+        "tasks_by_person": tasks_by_person,
+        "overdue_tasks": overdue_tasks
+    }
+
+
+def render_executive_dashboard(exec_metrics, df):
+    """
+    Render executive dashboard for Tea with enhanced metrics
+    """
+    st.markdown("""
+        <h2 style='
+            margin: 0 0 32px 0;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #0a4b4b;
+            letter-spacing: -0.01em;
+        '>Executive Overview</h2>
+    """, unsafe_allow_html=True)
+
+    # Top row: 4 key metrics
+    col1, sp1, col2, sp2, col3, sp3, col4 = st.columns([1, 0.1, 1, 0.1, 1, 0.1, 1])
+
+    with col1:
+        st.markdown(f"""
+            <div style='
+                background: linear-gradient(135deg, #f5faf2 0%, #f8fbf8 100%);
+                padding: 24px 32px;
+                border-radius: 12px;
+                border-left: 4px solid #d17a6f;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+                text-align: center;
+            '>
+                <p style='margin: 0 0 12px 0; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280;'>OPEN TASKS</p>
+                <h2 style='margin: 0; font-size: 2.5rem; font-weight: 900; color: #d17a6f;'>{exec_metrics["total_open"]}</h2>
+            </div>
+        """, unsafe_allow_html=True)
+
+    with col2:
+        st.markdown(f"""
+            <div style='
+                background: linear-gradient(135deg, #f5faf2 0%, #f8fbf8 100%);
+                padding: 24px 32px;
+                border-radius: 12px;
+                border-left: 4px solid #e8b968;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+                text-align: center;
+            '>
+                <p style='margin: 0 0 12px 0; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280;'>IN PROGRESS</p>
+                <h2 style='margin: 0; font-size: 2.5rem; font-weight: 900; color: #e8b968;'>{exec_metrics["total_in_progress"]}</h2>
+            </div>
+        """, unsafe_allow_html=True)
+
+    with col3:
+        st.markdown(f"""
+            <div style='
+                background: linear-gradient(135deg, #f5faf2 0%, #f8fbf8 100%);
+                padding: 24px 32px;
+                border-radius: 12px;
+                border-left: 4px solid #4d7a40;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+                text-align: center;
+            '>
+                <p style='margin: 0 0 12px 0; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280;'>COMPLETE</p>
+                <h2 style='margin: 0; font-size: 2.5rem; font-weight: 900; color: #4d7a40;'>{exec_metrics["total_complete"]}</h2>
+            </div>
+        """, unsafe_allow_html=True)
+
+    with col4:
+        st.markdown(f"""
+            <div style='
+                background: linear-gradient(135deg, #f5faf2 0%, #f8fbf8 100%);
+                padding: 24px 32px;
+                border-radius: 12px;
+                border-left: 4px solid #2d5016;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+                text-align: center;
+            '>
+                <p style='margin: 0 0 12px 0; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280;'>COMPLETION RATE</p>
+                <h2 style='margin: 0; font-size: 2.5rem; font-weight: 900; color: #2d5016;'>{exec_metrics["completion_rate"]}%</h2>
+            </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown("<div style='margin: 40px 0;'></div>", unsafe_allow_html=True)
+
+    # Second row: Project and Person breakdowns side by side
+    col_left, spacer, col_right = st.columns([1, 0.1, 1])
+
+    with col_left:
+        st.markdown("""
+            <h3 style='
+                margin: 0 0 20px 0;
+                font-size: 1.15rem;
+                font-weight: 600;
+                color: #1a2424;
+            '>Open Tasks by Project</h3>
+        """, unsafe_allow_html=True)
+
+        # Create project breakdown data
+        project_data = []
+        for project, metrics in exec_metrics["tasks_by_project"].items():
+            if metrics["open"] > 0:  # Only show projects with open tasks
+                project_data.append({"Project": project, "Open Tasks": metrics["open"]})
+
+        if project_data:
+            import plotly.express as px
+            project_df = pd.DataFrame(project_data).sort_values("Open Tasks", ascending=True)
+            fig = px.bar(
+                project_df,
+                x="Open Tasks",
+                y="Project",
+                orientation='h',
+                color="Open Tasks",
+                color_continuous_scale=[[0, '#b8ffc6'], [0.5, '#4d7a40'], [1, '#0a4b4b']],
+                text="Open Tasks"
+            )
+            fig.update_traces(textposition='outside', textfont_size=12)
+            fig.update_layout(
+                showlegend=False,
+                height=max(300, len(project_data) * 50),
+                margin=dict(l=0, r=20, t=10, b=0),
+                plot_bgcolor='rgba(0,0,0,0)',
+                paper_bgcolor='rgba(0,0,0,0)',
+                xaxis=dict(showgrid=True, gridcolor='#f3f4f6', title=None),
+                yaxis=dict(showgrid=False, title=None),
+                coloraxis_showscale=False
+            )
+            st.plotly_chart(fig, use_container_width=True)
+        else:
+            st.info("No open tasks by project")
+
+    with col_right:
+        st.markdown("""
+            <h3 style='
+                margin: 0 0 20px 0;
+                font-size: 1.15rem;
+                font-weight: 600;
+                color: #1a2424;
+                text-align: left;
+                padding-left: 0;
+            '>Tasks by Team Member</h3>
+        """, unsafe_allow_html=True)
+
+        # Create person breakdown pie chart
+        person_data = []
+        for person, metrics in exec_metrics["tasks_by_person"].items():
+            person_data.append({
+                "Team Member": person,
+                "Total Tasks": metrics["total"]
+            })
+
+        if person_data:
+            import plotly.express as px
+            person_df = pd.DataFrame(person_data).sort_values("Total Tasks", ascending=False)
+
+            fig = px.pie(
+                person_df,
+                values="Total Tasks",
+                names="Team Member",
+                hole=0.4,  # Donut style
+                color_discrete_sequence=['#0a4b4b', '#2d5016', '#4d7a40', '#7fa830', '#b8e600', '#d4ff00']
+            )
+
+            fig.update_traces(
+                textposition='inside',
+                textinfo='label+percent',
+                textfont_size=12,
+                marker=dict(line=dict(color='#ffffff', width=2))
+            )
+
+            fig.update_layout(
+                showlegend=True,
+                height=400,
+                margin=dict(l=0, r=0, t=20, b=0),
+                plot_bgcolor='rgba(0,0,0,0)',
+                paper_bgcolor='rgba(0,0,0,0)',
+                legend=dict(
+                    orientation="v",
+                    yanchor="middle",
+                    y=0.5,
+                    xanchor="left",
+                    x=1.05
+                )
+            )
+
+            st.plotly_chart(fig, use_container_width=True)
+        else:
+            st.info("No team member data")
+
+
 def show_dashboard():
     """
     Home page: Team and Project Overview with charts and analytics
@@ -1040,8 +1357,8 @@ def show_dashboard():
 
     st.markdown(f"""
     <h1 style='
-        margin: 0 0 40px 0;
-        font-size: 2.4rem;
+        margin: 0 0 16px 0;
+        font-size: 3rem;
         font-weight: 700;
         color: #0a4b4b;
         letter-spacing: -0.02em;
@@ -1058,18 +1375,18 @@ def show_dashboard():
         return
 
     # Determine if user is Tea (admin), Jess (view_all_tasks), or regular user
-    is_tea = user_name.lower() == "tea" or user_name.lower() == "tēa" or "tea" in user_name.lower()
-    is_jess = "jess" in user_name.lower()
+    # Handle various spellings: Tea, Téa, Tēa, tea phillips, etc.
+    user_lower = user_name.lower()
+    is_tea = "tea" in user_lower or "téa" in user_lower or "tēa" in user_lower
+    is_jess = "jess" in user_lower
 
-    # DEBUG: Show detection status
-    st.write(f"DEBUG: user_name = '{user_name}', is_tea = {is_tea}, is_jess = {is_jess}")
 
     # Filter data based on user type
     if is_tea:
         # Tea sees all data with team KPIs
         filtered_df = df
         kpis = calculate_kpis(filtered_df, user_name, is_personal=False)
-        st.write(f"DEBUG: KPIs = {kpis}")
+        exec_metrics = calculate_executive_metrics(df)
     elif is_jess:
         # Jess sees only her, Megan's, and Justin's tasks
         assignee_col = None
@@ -1109,53 +1426,52 @@ def show_dashboard():
     # Section: Analytics Dashboard
     st.markdown("<div style='margin-top: 40px;'></div>", unsafe_allow_html=True)
 
-    # Add white container wrapper using raw HTML
-    st.markdown("""
-        <style>
-        /* White container for KPIs and charts */
-        .metaflex-content-wrapper {
-            background: #ffffff !important;
-            border-radius: 24px !important;
-            padding: 48px 60px !important;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02) !important;
-            margin: 0 auto 48px auto !important;
-            max-width: 1600px !important;
-        }
-        </style>
-        <div class="metaflex-content-wrapper">
-    """, unsafe_allow_html=True)
+    # Render KPIs based on user type
+    if is_tea:
+        # Tea sees enhanced executive dashboard only (no duplicate basic KPIs)
+        render_executive_dashboard(exec_metrics, df)
+    elif is_jess:
+        # Jess sees all 3 KPI cards
+        render_kpi_section(kpis)
+    else:
+        # Other users see only 2 KPI cards (My Open Tasks, Active Projects)
+        render_personal_kpi_section(kpis)
 
-    # Start white container using a Streamlit container
-    white_container = st.container()
-    with white_container:
+    # Section: Performance Overview
+    st.markdown("<div style='margin-top: 48px;'></div>", unsafe_allow_html=True)
 
-        # Render KPIs based on user type
-        if is_tea or is_jess:
-            # Tea and Jess see all 3 KPI cards
-            st.write("DEBUG: Calling render_kpi_section() for Tea/Jess - should show 3 cards")
-            render_kpi_section(kpis)
-        else:
-            # Other users see only 2 KPI cards (My Open Tasks, Active Projects)
-            st.write("DEBUG: Calling render_personal_kpi_section() for regular user - should show 2 cards")
-            render_personal_kpi_section(kpis)
-
-        # Section: Performance Overview
-        st.markdown("<div style='margin-top: 48px;'></div>", unsafe_allow_html=True)
-
-        # Charts (filtered based on user)
-        # Only Tea and Jess see the "Tasks by Project" chart; regular users only see Task Completion Status
-        st.write(f"DEBUG: Calling render_charts_section with show_project_chart={(is_tea or is_jess)}")
-        render_charts_section(kpis, filtered_df, show_project_chart=(is_tea or is_jess))
-
-    # Close the white container div
-    st.markdown("</div>", unsafe_allow_html=True)
+    # Charts (filtered based on user)
+    # Only Tea and Jess see the "Tasks by Project" chart; regular users only see Task Completion Status
+    render_charts_section(kpis, filtered_df, show_project_chart=(is_tea or is_jess))
 
     # === PROJECT BREAKDOWN === (Only show for Tea and Jess)
     if is_tea or is_jess:
-        st.markdown("<div style='margin-top: 48px;'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='margin-top: 64px;'></div>", unsafe_allow_html=True)
 
-        st.markdown("## Projects")
-        st.markdown('<p style="color: #6b7280; margin-bottom: 24px;">Edit tasks inline and sync changes automatically</p>', unsafe_allow_html=True)
+        st.markdown("""
+            <div style='
+                background: linear-gradient(135deg, #f5faf2 0%, #f8fbf8 100%);
+                border-radius: 16px;
+                padding: 32px;
+                border-left: 4px solid #0a4b4b;
+                border-top: 2px solid rgba(212, 255, 0, 0.3);
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+                margin-bottom: 32px;
+            '>
+                <h2 style='
+                    margin: 0 0 8px 0;
+                    font-size: 1.75rem;
+                    font-weight: 700;
+                    color: #0a4b4b;
+                    letter-spacing: -0.02em;
+                '>Projects</h2>
+                <p style='
+                    margin: 0;
+                    color: #6b7280;
+                    font-size: 0.95rem;
+                '>Track and manage tasks across all active projects</p>
+            </div>
+        """, unsafe_allow_html=True)
 
         # Add archive filter with elegant styling
         show_archived_projects = st.checkbox("Include archived", value=False, key="show_archived_projects")
