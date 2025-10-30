@@ -44,6 +44,47 @@ def show_tasks():
         st.warning("No data available. Please check your Google Sheet connection.")
         return
 
+    # Add control checkboxes at the top
+    # Style checkboxes to match header styling
+    st.markdown("""
+        <style>
+        /* Checkbox label styling to match headers */
+        div[data-testid="stCheckbox"] label p {
+            color: #0a4b4b !important;
+            font-size: 0.95rem !important;
+            font-weight: 600 !important;
+            letter-spacing: 0.02em !important;
+        }
+
+        /* Checkbox styling - teal theme */
+        div[data-testid="stCheckbox"] input[type="checkbox"] ~ span div svg rect {
+            fill: rgba(229, 231, 235, 0.5) !important;
+            stroke: rgba(10, 75, 75, 0.4) !important;
+            stroke-width: 1.5 !important;
+        }
+
+        div[data-testid="stCheckbox"] input[type="checkbox"]:checked ~ span div svg rect {
+            fill: #0a4b4b !important;
+            stroke: #0a4b4b !important;
+        }
+
+        div[data-testid="stCheckbox"] input[type="checkbox"]:checked ~ span div svg path {
+            fill: #ffffff !important;
+            stroke: #ffffff !important;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+    ctrl_col1, ctrl_col2, ctrl_col3 = st.columns([1, 1, 3])
+
+    with ctrl_col1:
+        show_archived = st.checkbox("Show Archived", value=False, key="show_archived_my_tasks")
+
+    with ctrl_col2:
+        show_transcript_id = st.checkbox("Show Transcript #", value=False, key="show_transcript_my_tasks")
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
     # Filter for user's tasks based on assignee column
     assignee_col = None
     if has_column(df, "Assigned To"):
@@ -376,47 +417,6 @@ def show_tasks():
             if cancel:
                 st.session_state.show_add_task_form = False
                 st.rerun()
-
-    # Add control checkboxes right above table
-    # Style checkboxes to match header styling
-    st.markdown("""
-        <style>
-        /* Checkbox label styling to match headers */
-        div[data-testid="stCheckbox"] label p {
-            color: #0a4b4b !important;
-            font-size: 0.95rem !important;
-            font-weight: 600 !important;
-            letter-spacing: 0.02em !important;
-        }
-
-        /* Checkbox styling - teal theme */
-        div[data-testid="stCheckbox"] input[type="checkbox"] ~ span div svg rect {
-            fill: rgba(229, 231, 235, 0.5) !important;
-            stroke: rgba(10, 75, 75, 0.4) !important;
-            stroke-width: 1.5 !important;
-        }
-
-        div[data-testid="stCheckbox"] input[type="checkbox"]:checked ~ span div svg rect {
-            fill: #0a4b4b !important;
-            stroke: #0a4b4b !important;
-        }
-
-        div[data-testid="stCheckbox"] input[type="checkbox"]:checked ~ span div svg path {
-            fill: #ffffff !important;
-            stroke: #ffffff !important;
-        }
-        </style>
-    """, unsafe_allow_html=True)
-
-    ctrl_col1, ctrl_col2, ctrl_col3 = st.columns([1, 1, 3])
-
-    with ctrl_col1:
-        show_archived = st.checkbox("Show Archived", value=False, key="show_archived_my_tasks")
-
-    with ctrl_col2:
-        show_transcript_id = st.checkbox("Show Transcript #", value=False, key="show_transcript_my_tasks")
-
-    st.markdown("<br>", unsafe_allow_html=True)
 
     # Use the same AgGrid table as All Tasks page, but filtered for individual user
     # Pass show_transcript_id via session state
