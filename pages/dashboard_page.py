@@ -1332,60 +1332,64 @@ def render_executive_dashboard(exec_metrics, df):
     with col1:
         st.markdown(f"""
             <div style='
-                background: linear-gradient(135deg, #f5faf2 0%, #f8fbf8 100%);
-                padding: 24px 32px;
-                border-radius: 12px;
-                border-left: 4px solid #d17a6f;
-                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+                background: #ffffff;
+                padding: 28px 36px;
+                border-radius: 16px;
+                border: 1px solid #e5e7eb;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
                 text-align: center;
+                transition: all 0.2s ease;
             '>
-                <p style='margin: 0 0 12px 0; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280;'>OPEN TASKS</p>
-                <h2 style='margin: 0; font-size: 2.5rem; font-weight: 900; color: #d17a6f;'>{exec_metrics["total_open"]}</h2>
+                <p style='margin: 0 0 12px 0; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #6b7280;'>OPEN TASKS</p>
+                <h2 style='margin: 0; font-size: 2.8rem; font-weight: 700; color: #d17a6f; line-height: 1;'>{exec_metrics["total_open"]}</h2>
             </div>
         """, unsafe_allow_html=True)
 
     with col2:
         st.markdown(f"""
             <div style='
-                background: linear-gradient(135deg, #f5faf2 0%, #f8fbf8 100%);
-                padding: 24px 32px;
-                border-radius: 12px;
-                border-left: 4px solid #e8b968;
-                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+                background: #ffffff;
+                padding: 28px 36px;
+                border-radius: 16px;
+                border: 1px solid #e5e7eb;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
                 text-align: center;
+                transition: all 0.2s ease;
             '>
-                <p style='margin: 0 0 12px 0; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280;'>IN PROGRESS</p>
-                <h2 style='margin: 0; font-size: 2.5rem; font-weight: 900; color: #e8b968;'>{exec_metrics["total_in_progress"]}</h2>
+                <p style='margin: 0 0 12px 0; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #6b7280;'>IN PROGRESS</p>
+                <h2 style='margin: 0; font-size: 2.8rem; font-weight: 700; color: #e8b968; line-height: 1;'>{exec_metrics["total_in_progress"]}</h2>
             </div>
         """, unsafe_allow_html=True)
 
     with col3:
         st.markdown(f"""
             <div style='
-                background: linear-gradient(135deg, #f5faf2 0%, #f8fbf8 100%);
-                padding: 24px 32px;
-                border-radius: 12px;
-                border-left: 4px solid #4d7a40;
-                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+                background: #ffffff;
+                padding: 28px 36px;
+                border-radius: 16px;
+                border: 1px solid #e5e7eb;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
                 text-align: center;
+                transition: all 0.2s ease;
             '>
-                <p style='margin: 0 0 12px 0; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280;'>COMPLETE</p>
-                <h2 style='margin: 0; font-size: 2.5rem; font-weight: 900; color: #4d7a40;'>{exec_metrics["total_complete"]}</h2>
+                <p style='margin: 0 0 12px 0; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #6b7280;'>COMPLETE</p>
+                <h2 style='margin: 0; font-size: 2.8rem; font-weight: 700; color: #4d7a40; line-height: 1;'>{exec_metrics["total_complete"]}</h2>
             </div>
         """, unsafe_allow_html=True)
 
     with col4:
         st.markdown(f"""
             <div style='
-                background: linear-gradient(135deg, #f5faf2 0%, #f8fbf8 100%);
-                padding: 24px 32px;
-                border-radius: 12px;
-                border-left: 4px solid #2d5016;
-                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+                background: #ffffff;
+                padding: 28px 36px;
+                border-radius: 16px;
+                border: 1px solid #e5e7eb;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
                 text-align: center;
+                transition: all 0.2s ease;
             '>
-                <p style='margin: 0 0 12px 0; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280;'>COMPLETION RATE</p>
-                <h2 style='margin: 0; font-size: 2.5rem; font-weight: 900; color: #2d5016;'>{exec_metrics["completion_rate"]}%</h2>
+                <p style='margin: 0 0 12px 0; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #6b7280;'>COMPLETION RATE</p>
+                <h2 style='margin: 0; font-size: 2.8rem; font-weight: 700; color: #7a9900; line-height: 1;'>{exec_metrics["completion_rate"]}%</h2>
             </div>
         """, unsafe_allow_html=True)
 
