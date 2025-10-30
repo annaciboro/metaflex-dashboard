@@ -781,21 +781,21 @@ def render_tasks_table(filtered_df, limit=10, hide_project_column=False):
                     width="medium"
                 )
 
-            # Add MetaFlex DARK theme styling to the table
+            # Add MetaFlex premium light theme styling to the table
             st.markdown("""
                 <style>
-                /* ULTRA AGGRESSIVE MetaFlex dark theme styling for dataframes */
+                /* Premium SaaS light theme styling for dataframes */
                 div[data-testid="stDataFrame"],
                 div[data-testid="stDataFrame"] > div,
                 div[data-testid="stDataFrame"] > div > div,
                 div[data-testid="stDataFrame"] iframe,
                 [data-testid="stDataFrame"] {
-                    background: linear-gradient(135deg, #0a2f2f 0%, #0d3a3a 100%) !important;
+                    background: #ffffff !important;
                     border-radius: 0 0 12px 12px !important;
                     padding: 16px !important;
-                    border: 3px solid #2d5016 !important;
+                    border: 1px solid #e5e7eb !important;
                     border-top: none !important;
-                    box-shadow: 0 0 20px rgba(212, 255, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04) !important;
                 }
 
                 /* Target ALL table elements */
@@ -807,30 +807,30 @@ def render_tasks_table(filtered_df, limit=10, hide_project_column=False):
                     background: transparent !important;
                 }
 
-                /* Style the table header - ULTRA AGGRESSIVE */
+                /* Style the table header - premium light theme */
                 div[data-testid="stDataFrame"] thead tr th,
                 div[data-testid="stDataFrame"] th,
                 [data-testid="stDataFrame"] thead tr th,
                 thead tr th,
                 th {
-                    background: linear-gradient(135deg, #0a2f2f 0%, #0d3a3a 100%) !important;
-                    color: #d4ff00 !important;
-                    font-weight: 700 !important;
-                    border-bottom: 2px solid #2d5016 !important;
+                    background: #f9fafb !important;
+                    color: #374151 !important;
+                    font-weight: 600 !important;
+                    border-bottom: 1px solid #e5e7eb !important;
                     padding: 12px 8px !important;
                     text-transform: uppercase !important;
                     font-size: 0.7rem !important;
                     letter-spacing: 0.05em !important;
                 }
 
-                /* Alternate row colors - ULTRA AGGRESSIVE */
+                /* Alternate row colors - subtle light gray */
                 div[data-testid="stDataFrame"] tbody tr:nth-child(even),
                 div[data-testid="stDataFrame"] tbody tr:nth-child(even) td,
                 [data-testid="stDataFrame"] tbody tr:nth-child(even),
                 tbody tr:nth-child(even),
                 tbody tr:nth-child(even) td {
-                    background: rgba(13, 58, 58, 0.5) !important;
-                    background-color: rgba(13, 58, 58, 0.5) !important;
+                    background: #fafbfc !important;
+                    background-color: #fafbfc !important;
                 }
 
                 div[data-testid="stDataFrame"] tbody tr:nth-child(odd),
@@ -838,51 +838,51 @@ def render_tasks_table(filtered_df, limit=10, hide_project_column=False):
                 [data-testid="stDataFrame"] tbody tr:nth-child(odd),
                 tbody tr:nth-child(odd),
                 tbody tr:nth-child(odd) td {
-                    background: rgba(10, 47, 47, 0.5) !important;
-                    background-color: rgba(10, 47, 47, 0.5) !important;
+                    background: #ffffff !important;
+                    background-color: #ffffff !important;
                 }
 
-                /* Hover effect - ULTRA AGGRESSIVE */
+                /* Hover effect - subtle teal accent */
                 div[data-testid="stDataFrame"] tbody tr:hover,
                 div[data-testid="stDataFrame"] tbody tr:hover td,
                 [data-testid="stDataFrame"] tbody tr:hover,
                 tbody tr:hover,
                 tbody tr:hover td {
-                    background: rgba(212, 255, 0, 0.1) !important;
-                    background-color: rgba(212, 255, 0, 0.1) !important;
-                    box-shadow: inset 0 0 0 1px rgba(212, 255, 0, 0.3) !important;
+                    background: rgba(10, 75, 75, 0.04) !important;
+                    background-color: rgba(10, 75, 75, 0.04) !important;
+                    box-shadow: inset 0 0 0 1px rgba(10, 75, 75, 0.1) !important;
                     transition: all 0.2s ease !important;
                 }
 
-                /* Cell styling - ULTRA AGGRESSIVE */
+                /* Cell styling - dark gray text on light background */
                 div[data-testid="stDataFrame"] tbody tr td,
                 div[data-testid="stDataFrame"] td,
                 [data-testid="stDataFrame"] tbody tr td,
                 tbody tr td,
                 td {
-                    border-bottom: 1px solid rgba(45, 80, 22, 0.3) !important;
+                    border-bottom: 1px solid #f3f4f6 !important;
                     padding: 12px 8px !important;
-                    color: #e8f5e9 !important;
+                    color: #2d3748 !important;
                 }
 
-                /* Scrollbar styling for dark theme */
+                /* Scrollbar styling for light theme */
                 div[data-testid="stDataFrame"] ::-webkit-scrollbar {
                     width: 8px !important;
                     height: 8px !important;
                 }
 
                 div[data-testid="stDataFrame"] ::-webkit-scrollbar-track {
-                    background: rgba(10, 47, 47, 0.5) !important;
+                    background: #f3f4f6 !important;
                     border-radius: 4px !important;
                 }
 
                 div[data-testid="stDataFrame"] ::-webkit-scrollbar-thumb {
-                    background: rgba(212, 255, 0, 0.3) !important;
+                    background: #d1d5db !important;
                     border-radius: 4px !important;
                 }
 
                 div[data-testid="stDataFrame"] ::-webkit-scrollbar-thumb:hover {
-                    background: rgba(212, 255, 0, 0.5) !important;
+                    background: #9ca3af !important;
                 }
                 </style>
             """, unsafe_allow_html=True)

@@ -4,14 +4,16 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime, timedelta
 
-# MetaFlex Dark Theme Palette
-MF_DARK = {
-    'bg_dark': '#0a2f2f',        # Deep dark teal canvas
-    'bg_surface': '#0d3a3a',     # Dark teal surface
-    'border': '#2d5016',         # Dark forest green border
-    'accent_lime': '#d4ff00',    # Neon lime accent
-    'text_light': '#e8f5e9',     # Light text for readability
-    'text_dark': '#2d5016',      # Dark green text
+# MetaFlex Premium Light Theme Palette
+MF_LIGHT = {
+    'bg_white': '#ffffff',       # Pure white background
+    'bg_light': '#f9fafb',       # Very light gray surface
+    'border': '#e5e7eb',         # Subtle gray border
+    'accent_teal': '#0a4b4b',    # Teal for strategic accents
+    'accent_lime': '#7a9900',    # Olive lime for CTAs
+    'text_dark': '#2d3748',      # Dark gray text (primary)
+    'text_medium': '#374151',    # Medium gray text
+    'text_light': '#6b7280',     # Light gray text (secondary)
 }
 
 def get_column(df, col_name):
@@ -40,7 +42,7 @@ def has_column(df, col_name):
 
 def create_project_tasks_overview_chart(exec_metrics):
     """
-    Combined Project Tasks Overview with dark theme
+    Combined Project Tasks Overview with premium light theme
     Shows both total tasks and open tasks per project in grouped bars
     """
     project_data = []
@@ -60,19 +62,19 @@ def create_project_tasks_overview_chart(exec_metrics):
     # Create grouped bar chart
     fig = go.Figure()
 
-    # Total Tasks bar (lime)
+    # Total Tasks bar (teal accent)
     fig.add_trace(go.Bar(
         y=project_df["Project"],
         x=project_df["Total Tasks"],
         name='Total Tasks',
         orientation='h',
         marker=dict(
-            color=MF_DARK['accent_lime'],
-            line=dict(color=MF_DARK['border'], width=2)
+            color=MF_LIGHT['accent_teal'],
+            line=dict(color=MF_LIGHT['border'], width=1)
         ),
         text=project_df["Total Tasks"],
         textposition='outside',
-        textfont=dict(size=13, color=MF_DARK['text_light'], family='-apple-system, sans-serif'),
+        textfont=dict(size=13, color=MF_LIGHT['text_dark'], family='-apple-system, sans-serif'),
         hovertemplate='<b>%{y}</b><br>Total Tasks: %{x}<extra></extra>'
     ))
 
@@ -84,11 +86,11 @@ def create_project_tasks_overview_chart(exec_metrics):
         orientation='h',
         marker=dict(
             color='#d17a6f',  # Coral color for open tasks
-            line=dict(color=MF_DARK['border'], width=2)
+            line=dict(color=MF_LIGHT['border'], width=1)
         ),
         text=project_df["Open Tasks"],
         textposition='outside',
-        textfont=dict(size=13, color=MF_DARK['text_light'], family='-apple-system, sans-serif'),
+        textfont=dict(size=13, color=MF_LIGHT['text_dark'], family='-apple-system, sans-serif'),
         hovertemplate='<b>%{y}</b><br>Open Tasks: %{x}<extra></extra>'
     ))
 
@@ -99,25 +101,25 @@ def create_project_tasks_overview_chart(exec_metrics):
             text='<b>Project Tasks Overview</b>',
             x=0.5,
             xanchor='center',
-            font=dict(size=18, color=MF_DARK['text_light'], family='-apple-system, sans-serif')
+            font=dict(size=18, color=MF_LIGHT['text_dark'], family='-apple-system, sans-serif')
         ),
         height=400,
         margin=dict(t=60, b=40, l=140, r=80),
-        paper_bgcolor=MF_DARK['bg_dark'],
-        plot_bgcolor=MF_DARK['bg_surface'],
+        paper_bgcolor=MF_LIGHT['bg_white'],
+        plot_bgcolor=MF_LIGHT['bg_light'],
         barmode='group',  # Group bars side by side
         bargap=0.15,
         bargroupgap=0.1,
         xaxis=dict(
             showgrid=True,
-            gridcolor='rgba(212, 255, 0, 0.1)',
-            title=dict(text='Number of Tasks', font=dict(size=12, color=MF_DARK['text_light'])),
-            tickfont=dict(size=11, color=MF_DARK['text_light']),
+            gridcolor='rgba(229, 231, 235, 0.6)',
+            title=dict(text='Number of Tasks', font=dict(size=12, color=MF_LIGHT['text_medium'])),
+            tickfont=dict(size=11, color=MF_LIGHT['text_medium']),
             range=[0, max_value * 1.2]
         ),
         yaxis=dict(
             title='',
-            tickfont=dict(size=12, color=MF_DARK['text_light'])
+            tickfont=dict(size=12, color=MF_LIGHT['text_dark'])
         ),
         legend=dict(
             orientation="h",
@@ -125,7 +127,7 @@ def create_project_tasks_overview_chart(exec_metrics):
             y=-0.15,
             xanchor="center",
             x=0.5,
-            font=dict(size=12, color=MF_DARK['text_light'], family='-apple-system, sans-serif'),
+            font=dict(size=12, color=MF_LIGHT['text_medium'], family='-apple-system, sans-serif'),
             bgcolor='rgba(0,0,0,0)'
         )
     )
@@ -168,11 +170,11 @@ def create_task_age_analysis(df):
         y=values,
         marker=dict(
             color=colors,
-            line=dict(color=MF_DARK['border'], width=2)
+            line=dict(color=MF_LIGHT['border'], width=2)
         ),
         text=values,
         textposition='outside',
-        textfont=dict(size=14, color=MF_DARK['text_light'], family='-apple-system, sans-serif'),
+        textfont=dict(size=14, color=MF_LIGHT['text_light'], family='-apple-system, sans-serif'),
         hovertemplate='<b>%{x}</b><br>Tasks: %{y}<extra></extra>'
     )])
 
@@ -181,21 +183,21 @@ def create_task_age_analysis(df):
             text='<b>Task Age Analysis</b>',
             x=0.5,
             xanchor='center',
-            font=dict(size=18, color=MF_DARK['text_light'], family='-apple-system, sans-serif')
+            font=dict(size=18, color=MF_LIGHT['text_light'], family='-apple-system, sans-serif')
         ),
         height=400,
         margin=dict(t=60, b=40, l=60, r=60),
-        paper_bgcolor=MF_DARK['bg_dark'],
-        plot_bgcolor=MF_DARK['bg_surface'],
+        paper_bgcolor=MF_LIGHT['bg_dark'],
+        plot_bgcolor=MF_LIGHT['bg_surface'],
         xaxis=dict(
             title='',
-            tickfont=dict(size=12, color=MF_DARK['text_light'])
+            tickfont=dict(size=12, color=MF_LIGHT['text_light'])
         ),
         yaxis=dict(
             showgrid=True,
-            gridcolor='rgba(212, 255, 0, 0.1)',
-            title=dict(text='Number of Tasks', font=dict(size=12, color=MF_DARK['text_light'])),
-            tickfont=dict(size=11, color=MF_DARK['text_light'])
+            gridcolor='rgba(229, 231, 235, 0.6)',
+            title=dict(text='Number of Tasks', font=dict(size=12, color=MF_LIGHT['text_light'])),
+            tickfont=dict(size=11, color=MF_LIGHT['text_light'])
         )
     )
 
@@ -215,14 +217,14 @@ def create_task_completion_velocity(exec_metrics):
         x=days,
         y=completed_counts,
         mode='lines+markers',
-        line=dict(color=MF_DARK['accent_lime'], width=3),
+        line=dict(color=MF_LIGHT['accent_lime'], width=3),
         marker=dict(
             size=10,
-            color=MF_DARK['accent_lime'],
-            line=dict(color=MF_DARK['border'], width=2)
+            color=MF_LIGHT['accent_lime'],
+            line=dict(color=MF_LIGHT['border'], width=2)
         ),
         fill='tozeroy',
-        fillcolor='rgba(212, 255, 0, 0.2)',
+        fillcolor='rgba(10, 75, 75, 0.1)',
         hovertemplate='<b>%{x}</b><br>Completed: %{y}<extra></extra>'
     )])
 
@@ -231,22 +233,22 @@ def create_task_completion_velocity(exec_metrics):
             text='<b>Task Completion Velocity</b>',
             x=0.5,
             xanchor='center',
-            font=dict(size=18, color=MF_DARK['text_light'], family='-apple-system, sans-serif')
+            font=dict(size=18, color=MF_LIGHT['text_light'], family='-apple-system, sans-serif')
         ),
         height=400,
         margin=dict(t=60, b=40, l=60, r=60),
-        paper_bgcolor=MF_DARK['bg_dark'],
-        plot_bgcolor=MF_DARK['bg_surface'],
+        paper_bgcolor=MF_LIGHT['bg_dark'],
+        plot_bgcolor=MF_LIGHT['bg_surface'],
         xaxis=dict(
             title='',
-            tickfont=dict(size=12, color=MF_DARK['text_light']),
+            tickfont=dict(size=12, color=MF_LIGHT['text_light']),
             showgrid=False
         ),
         yaxis=dict(
             showgrid=True,
-            gridcolor='rgba(212, 255, 0, 0.1)',
-            title=dict(text='Tasks Completed', font=dict(size=12, color=MF_DARK['text_light'])),
-            tickfont=dict(size=11, color=MF_DARK['text_light'])
+            gridcolor='rgba(229, 231, 235, 0.6)',
+            title=dict(text='Tasks Completed', font=dict(size=12, color=MF_LIGHT['text_light'])),
+            tickfont=dict(size=11, color=MF_LIGHT['text_light'])
         )
     )
 
@@ -294,11 +296,11 @@ def create_project_health_dashboard(exec_metrics):
         orientation='h',
         marker=dict(
             color=colors,
-            line=dict(color=MF_DARK['border'], width=2)
+            line=dict(color=MF_LIGHT['border'], width=2)
         ),
         text=[f"{score}%" for score in project_df["Health Score"]],
         textposition='outside',
-        textfont=dict(size=14, color=MF_DARK['text_light'], family='-apple-system, sans-serif'),
+        textfont=dict(size=14, color=MF_LIGHT['text_light'], family='-apple-system, sans-serif'),
         hovertemplate='<b>%{y}</b><br>Health: %{x}%<br>Total Tasks: %{customdata}<extra></extra>',
         customdata=project_df["Total"]
     )])
@@ -308,22 +310,22 @@ def create_project_health_dashboard(exec_metrics):
             text='<b>Project Health Dashboard</b>',
             x=0.5,
             xanchor='center',
-            font=dict(size=18, color=MF_DARK['text_light'], family='-apple-system, sans-serif')
+            font=dict(size=18, color=MF_LIGHT['text_light'], family='-apple-system, sans-serif')
         ),
         height=400,
         margin=dict(t=60, b=40, l=140, r=60),
-        paper_bgcolor=MF_DARK['bg_dark'],
-        plot_bgcolor=MF_DARK['bg_surface'],
+        paper_bgcolor=MF_LIGHT['bg_dark'],
+        plot_bgcolor=MF_LIGHT['bg_surface'],
         xaxis=dict(
             showgrid=True,
-            gridcolor='rgba(212, 255, 0, 0.1)',
-            title=dict(text='Health Score (%)', font=dict(size=12, color=MF_DARK['text_light'])),
-            tickfont=dict(size=11, color=MF_DARK['text_light']),
+            gridcolor='rgba(229, 231, 235, 0.6)',
+            title=dict(text='Health Score (%)', font=dict(size=12, color=MF_LIGHT['text_light'])),
+            tickfont=dict(size=11, color=MF_LIGHT['text_light']),
             range=[0, 110]
         ),
         yaxis=dict(
             title='',
-            tickfont=dict(size=12, color=MF_DARK['text_light'])
+            tickfont=dict(size=12, color=MF_LIGHT['text_light'])
         )
     )
 

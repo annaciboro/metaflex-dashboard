@@ -935,11 +935,11 @@ st.markdown("<div style='margin-bottom: 30px;'></div>", unsafe_allow_html=True)
 # ULTRA AGGRESSIVE NAVIGATION BUTTON OVERRIDE - LOAD LAST
 st.markdown("""
 <style>
-/* DARK THEME NAVIGATION CONTAINER */
+/* PREMIUM LIGHT THEME NAVIGATION CONTAINER */
 html body [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"]:first-child {
-    background: linear-gradient(135deg, #0a2f2f 0%, #0d3a3a 100%) !important;
-    box-shadow: 0 0 20px rgba(212, 255, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.4) !important;
-    border-bottom: 2px solid #2d5016 !important;
+    background: #ffffff !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+    border-bottom: 1px solid #e5e7eb !important;
     padding: 10px 48px !important;
 }
 
