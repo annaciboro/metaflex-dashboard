@@ -439,6 +439,107 @@ elif st.session_state.get("authentication_status") is None:
 
 # If authenticated, continue with the app
 # ============================================
+# GLOBAL STYLE STANDARDIZATION
+# ============================================
+st.markdown("""
+    <style>
+    /* COMPREHENSIVE FONT & SIZE STANDARDIZATION - MetaFlex Design System */
+
+    /* Base font size for entire app */
+    html, body, [class*="st-"] {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+        font-size: 16px !important;
+    }
+
+    /* Page headers (H1) - Welcome back, Téa */
+    h1, .stMarkdown h1 {
+        font-size: 2rem !important;
+        font-weight: 700 !important;
+        line-height: 1.2 !important;
+    }
+
+    /* Section headers (H2) - Executive Overview */
+    h2, .stMarkdown h2 {
+        font-size: 1.5rem !important;
+        font-weight: 600 !important;
+        line-height: 1.3 !important;
+    }
+
+    /* Subsection headers (H3) */
+    h3, .stMarkdown h3 {
+        font-size: 1.2rem !important;
+        font-weight: 600 !important;
+        line-height: 1.4 !important;
+    }
+
+    /* Body text, paragraphs */
+    p, .stMarkdown p, div, span {
+        font-size: 0.95rem !important;
+        line-height: 1.6 !important;
+    }
+
+    /* ALL BUTTONS - Consistent sizing */
+    button, .stButton button {
+        font-size: 0.9rem !important;
+        font-weight: 500 !important;
+        padding: 8px 16px !important;
+    }
+
+    /* Fix hamburger menu - remove baby blue, make it teal */
+    button[data-testid*="baseButton-header"] {
+        background: white !important;
+        border: 1.5px solid #0a4b4b !important;
+        color: #0a4b4b !important;
+        font-size: 0.9rem !important;
+        padding: 8px 16px !important;
+    }
+
+    button[data-testid*="baseButton-header"]:hover {
+        background: #f0f9f9 !important;
+        border-color: #0a4b4b !important;
+    }
+
+    /* Navigation buttons inside popover - FORCE consistent styling */
+    div[data-testid="stPopover"] button,
+    .stPopover button {
+        font-size: 0.9rem !important;
+        font-weight: 500 !important;
+        padding: 10px 16px !important;
+        margin: 4px 0 !important;
+    }
+
+    /* Remove ALL baby blue/light blue colors */
+    [data-baseweb="popover"] {
+        background: white !important;
+    }
+
+    /* Metric labels */
+    [data-testid="stMetricLabel"] {
+        font-size: 0.75rem !important;
+        font-weight: 600 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.05em !important;
+    }
+
+    /* Metric values */
+    [data-testid="stMetricValue"] {
+        font-size: 2rem !important;
+        font-weight: 700 !important;
+    }
+
+    /* Dataframe/table text */
+    .dataframe, table {
+        font-size: 0.85rem !important;
+    }
+
+    /* Input fields */
+    input, textarea, select {
+        font-size: 0.9rem !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# ============================================
 # INITIALIZE SESSION STATE
 # ============================================
 if 'current_page' not in st.session_state:
