@@ -825,8 +825,7 @@ def render_tasks_table(filtered_df, limit=10, hide_project_column=False):
                     background: #ffffff !important;
                     border-radius: 0 0 12px 12px !important;
                     padding: 16px !important;
-                    border: 1px solid #e5e7eb !important;
-                    border-top: none !important;
+                    border: none !important;
                     box-shadow: 0 4px 12px rgba(10, 75, 75, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04) !important;
                 }
 
@@ -1617,17 +1616,12 @@ def show_dashboard():
                 margin-bottom: 32px;
             '>
                 <h2 style='
-                    margin: 0 0 8px 0;
+                    margin: 0;
                     font-size: 2rem;
                     font-weight: 700;
                     color: #2d3748;
                     letter-spacing: -0.02em;
                 '>Breakdown of Tasks by Project</h2>
-                <p style='
-                    margin: 0;
-                    color: #6b7280;
-                    font-size: 0.95rem;
-                '>Track and manage tasks across all active projects</p>
             </div>
         """, unsafe_allow_html=True)
 
