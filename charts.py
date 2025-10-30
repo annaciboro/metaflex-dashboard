@@ -189,7 +189,7 @@ def create_task_age_analysis(df):
     fig.update_layout(
         title=None,
         height=400,
-        margin=dict(t=60, b=40, l=80, r=60),
+        margin=dict(t=40, b=40, l=80, r=60),
         paper_bgcolor=MF_LIGHT['bg_white'],
         plot_bgcolor=MF_LIGHT['bg_light'],
         xaxis=dict(
