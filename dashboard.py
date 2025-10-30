@@ -675,7 +675,7 @@ with nav_container:
                 transform: translateY(-2px) !important;
             }}
 
-            /* Also target the div container - position to right edge */
+            /* Also target the div container - position to left edge */
             div[data-testid="stPopover"],
             div[data-testid="stPopover"] > button {{
                 outline: none !important;
@@ -689,7 +689,7 @@ with nav_container:
                 max-height: 56px !important;
                 padding: 0 !important;
                 margin: 0 !important;
-                margin-left: auto !important;
+                margin-right: auto !important;
                 display: flex !important;
                 align-items: center !important;
                 justify-content: center !important;

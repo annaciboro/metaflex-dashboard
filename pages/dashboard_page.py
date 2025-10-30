@@ -590,7 +590,7 @@ def render_charts_section(kpis, filtered_df, show_project_chart=True):
                     border: 1px solid rgba(10, 75, 75, 0.2) !important;
                 }
                 </style>
-                <h3 style="text-align: left; margin: 0 0 20px 0; color: #0a4b4b; font-weight: 600; font-size: 1.1rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">Task Completion Status</h3>
+                <h3 style="text-align: left; margin: 0 0 20px 0; color: #0a4b4b; font-weight: 500; font-size: 1.0rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">Task Completion Status</h3>
             """, unsafe_allow_html=True)
 
             # Create vertical bar chart for task completion
@@ -668,7 +668,7 @@ def render_charts_section(kpis, filtered_df, show_project_chart=True):
                         border: 1px solid rgba(10, 75, 75, 0.2) !important;
                     }
                     </style>
-                    <h3 style="text-align: left; margin: 0 0 20px 0; color: #0a4b4b; font-weight: 600; font-size: 1.1rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">Tasks by Project</h3>
+                    <h3 style="text-align: left; margin: 0 0 20px 0; color: #0a4b4b; font-weight: 500; font-size: 1.0rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">Tasks by Project</h3>
                 """, unsafe_allow_html=True)
 
                 project_fig = create_project_breakdown_chart(filtered_df)
@@ -1402,14 +1402,6 @@ def render_executive_dashboard(exec_metrics, df):
             color: #0a4b4b;
             letter-spacing: -0.01em;
         '>Executive Overview</h2>
-        <style>
-        /* Hover effect for KPI cards - subtle lift */
-        .stMarkdown div[style*="background: linear-gradient"]:hover {
-            transform: translateY(-4px) !important;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.08) !important;
-            cursor: pointer;
-        }
-        </style>
     """, unsafe_allow_html=True)
 
     # Top row: 4 key metrics - High-end MetaFlex style
@@ -1418,84 +1410,84 @@ def render_executive_dashboard(exec_metrics, df):
     with col1:
         st.markdown(f"""
             <div style='
-                background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
-                padding: 32px 36px;
-                border-radius: 16px;
-                border-left: 4px solid #d17a6f;
-                border-top: 1px solid #e5e7eb;
-                border-right: 1px solid #e5e7eb;
-                border-bottom: 1px solid #e5e7eb;
-                box-shadow: 0 4px 12px rgba(209, 122, 111, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
+                background: linear-gradient(135deg, #fff5f3 0%, #ffffff 50%, #fef8f7 100%);
+                padding: 40px 36px;
+                border-radius: 20px;
+                border-left: 6px solid #d17a6f;
+                border-top: 2px solid rgba(209, 122, 111, 0.2);
+                border-right: 2px solid rgba(209, 122, 111, 0.2);
+                border-bottom: 2px solid rgba(209, 122, 111, 0.2);
+                box-shadow: 0 8px 24px rgba(209, 122, 111, 0.15), 0 2px 8px rgba(209, 122, 111, 0.1);
                 text-align: center;
                 transition: all 0.3s ease;
                 position: relative;
             '>
-                <p style='margin: 0 0 14px 0; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #d17a6f;'>OPEN TASKS</p>
-                <h2 style='margin: 0; font-size: 2.8rem; font-weight: 700; background: linear-gradient(135deg, #d17a6f 0%, #e89a8f 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1;'>{exec_metrics["total_open"]}</h2>
+                <p style='margin: 0 0 18px 0; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: #b8645a; text-align: center;'>OPEN TASKS</p>
+                <h2 style='margin: 0; font-size: 3.5rem; font-weight: 800; background: linear-gradient(135deg, #d17a6f 0%, #c96659 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; text-shadow: 0 2px 4px rgba(209, 122, 111, 0.2); text-align: center;'>{exec_metrics["total_open"]}</h2>
             </div>
         """, unsafe_allow_html=True)
 
     with col2:
         st.markdown(f"""
             <div style='
-                background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
-                padding: 32px 36px;
-                border-radius: 16px;
-                border-left: 4px solid #e8b968;
-                border-top: 1px solid #e5e7eb;
-                border-right: 1px solid #e5e7eb;
-                border-bottom: 1px solid #e5e7eb;
-                box-shadow: 0 4px 12px rgba(232, 185, 104, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
+                background: linear-gradient(135deg, #fffbf0 0%, #ffffff 50%, #fef9e8 100%);
+                padding: 40px 36px;
+                border-radius: 20px;
+                border-left: 6px solid #e8b968;
+                border-top: 2px solid rgba(232, 185, 104, 0.2);
+                border-right: 2px solid rgba(232, 185, 104, 0.2);
+                border-bottom: 2px solid rgba(232, 185, 104, 0.2);
+                box-shadow: 0 8px 24px rgba(232, 185, 104, 0.15), 0 2px 8px rgba(232, 185, 104, 0.1);
                 text-align: center;
                 transition: all 0.3s ease;
                 position: relative;
             '>
-                <p style='margin: 0 0 14px 0; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #d4a145;'>IN PROGRESS</p>
-                <h2 style='margin: 0; font-size: 2.8rem; font-weight: 700; background: linear-gradient(135deg, #d4a145 0%, #e8b968 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1;'>{exec_metrics["total_in_progress"]}</h2>
+                <p style='margin: 0 0 18px 0; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: #c9963a; text-align: center;'>IN PROGRESS</p>
+                <h2 style='margin: 0; font-size: 3.5rem; font-weight: 800; background: linear-gradient(135deg, #d4a145 0%, #ba8a30 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; text-shadow: 0 2px 4px rgba(232, 185, 104, 0.2); text-align: center;'>{exec_metrics["total_in_progress"]}</h2>
             </div>
         """, unsafe_allow_html=True)
 
     with col3:
         st.markdown(f"""
             <div style='
-                background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
-                padding: 32px 36px;
-                border-radius: 16px;
-                border-left: 4px solid #4d7a40;
-                border-top: 1px solid #e5e7eb;
-                border-right: 1px solid #e5e7eb;
-                border-bottom: 1px solid #e5e7eb;
-                box-shadow: 0 4px 12px rgba(77, 122, 64, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
+                background: linear-gradient(135deg, #e8f4f1 0%, #ffffff 50%, #e0f5ed 100%);
+                padding: 40px 36px;
+                border-radius: 20px;
+                border-left: 6px solid #4d7a40;
+                border-top: 2px solid rgba(77, 122, 64, 0.2);
+                border-right: 2px solid rgba(77, 122, 64, 0.2);
+                border-bottom: 2px solid rgba(77, 122, 64, 0.2);
+                box-shadow: 0 8px 24px rgba(77, 122, 64, 0.15), 0 2px 8px rgba(77, 122, 64, 0.1);
                 text-align: center;
                 transition: all 0.3s ease;
                 position: relative;
             '>
-                <p style='margin: 0 0 14px 0; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #4d7a40;'>COMPLETE</p>
-                <h2 style='margin: 0; font-size: 2.8rem; font-weight: 700; background: linear-gradient(135deg, #4d7a40 0%, #5d9050 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1;'>{exec_metrics["total_complete"]}</h2>
+                <p style='margin: 0 0 18px 0; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: #3d6233; text-align: center;'>COMPLETE</p>
+                <h2 style='margin: 0; font-size: 3.5rem; font-weight: 800; background: linear-gradient(135deg, #4d7a40 0%, #0d6868 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; text-shadow: 0 2px 4px rgba(77, 122, 64, 0.2); text-align: center;'>{exec_metrics["total_complete"]}</h2>
             </div>
         """, unsafe_allow_html=True)
 
     with col4:
         st.markdown(f"""
             <div style='
-                background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
-                padding: 32px 36px;
-                border-radius: 16px;
-                border-left: 4px solid #7a9900;
-                border-top: 1px solid #e5e7eb;
-                border-right: 1px solid #e5e7eb;
-                border-bottom: 1px solid #e5e7eb;
-                box-shadow: 0 4px 12px rgba(122, 153, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
+                background: linear-gradient(135deg, #f3fce8 0%, #ffffff 50%, #eaf8dd 100%);
+                padding: 40px 36px;
+                border-radius: 20px;
+                border-left: 6px solid #8fb310;
+                border-top: 2px solid rgba(143, 179, 16, 0.2);
+                border-right: 2px solid rgba(143, 179, 16, 0.2);
+                border-bottom: 2px solid rgba(143, 179, 16, 0.2);
+                box-shadow: 0 8px 24px rgba(143, 179, 16, 0.15), 0 2px 8px rgba(143, 179, 16, 0.1);
                 text-align: center;
                 transition: all 0.3s ease;
                 position: relative;
             '>
-                <p style='margin: 0 0 14px 0; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #7a9900;'>COMPLETION RATE</p>
-                <h2 style='margin: 0; font-size: 2.8rem; font-weight: 700; background: linear-gradient(135deg, #7a9900 0%, #8fb310 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1;'>{exec_metrics["completion_rate"]}%</h2>
+                <p style='margin: 0 0 18px 0; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: #6b8700; text-align: center;'>COMPLETION RATE</p>
+                <h2 style='margin: 0; font-size: 3.5rem; font-weight: 800; background: linear-gradient(135deg, #4d7a40 0%, #8fb310 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; text-shadow: 0 2px 4px rgba(143, 179, 16, 0.2); text-align: center;'>{exec_metrics["completion_rate"]}%</h2>
             </div>
         """, unsafe_allow_html=True)
 
-    st.markdown("<div style='margin: 40px 0;'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='margin: 60px 0;'></div>", unsafe_allow_html=True)
 
     # Second row: Project and Person breakdowns side by side
     # Charts removed from Overview - now distributed across other pages
@@ -1607,22 +1599,14 @@ def show_dashboard():
         st.markdown("<div style='margin-top: 64px;'></div>", unsafe_allow_html=True)
 
         st.markdown("""
-            <div style='
-                background: #ffffff;
-                border-radius: 12px;
-                padding: 32px 40px;
-                border: 1px solid #e5e7eb;
-                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
-                margin-bottom: 32px;
-            '>
-                <h2 style='
-                    margin: 0;
-                    font-size: 2rem;
-                    font-weight: 700;
-                    color: #2d3748;
-                    letter-spacing: -0.02em;
-                '>Breakdown of Tasks by Project</h2>
-            </div>
+            <h2 style='
+                margin: 0 0 32px 0;
+                font-size: 2rem;
+                font-weight: 700;
+                color: #2d3748;
+                letter-spacing: 0.05em;
+                text-transform: uppercase;
+            '>BREAKDOWN OF TASKS BY PROJECT</h2>
         """, unsafe_allow_html=True)
 
         # Add archive filter with elegant styling
@@ -1720,54 +1704,54 @@ def show_dashboard():
 
                     with kpi_col1:
                         st.markdown(f"""<div style='
-                            background: linear-gradient(135deg, rgba(10, 75, 75, 0.08) 0%, rgba(10, 75, 75, 0.04) 100%);
-                            border-radius: 12px;
-                            padding: 24px;
-                            border-left: 4px solid #0a4b4b;
-                            box-shadow: 0 4px 12px rgba(10, 75, 75, 0.1);
+                            background: #fafbfc;
+                            border-radius: 8px;
+                            padding: 16px;
+                            border-left: 3px solid #d1d5db;
+                            border: 1px solid #e5e7eb;
                             text-align: center;
                         '>
-                            <p style='margin: 0 0 8px 0; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #0a4b4b;'>TOTAL</p>
-                            <h3 style='margin: 0; font-size: 2rem; font-weight: 800; color: #0a4b4b;'>{task_count}</h3>
+                            <p style='margin: 0 0 6px 0; font-size: 0.6rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280;'>TOTAL</p>
+                            <h3 style='margin: 0; font-size: 1.5rem; font-weight: 600; color: #374151;'>{task_count}</h3>
                         </div>""", unsafe_allow_html=True)
 
                     with kpi_col2:
                         st.markdown(f"""<div style='
-                            background: linear-gradient(135deg, rgba(209, 122, 111, 0.12) 0%, rgba(209, 122, 111, 0.06) 100%);
-                            border-radius: 12px;
-                            padding: 24px;
-                            border-left: 4px solid #d17a6f;
-                            box-shadow: 0 4px 12px rgba(209, 122, 111, 0.15);
+                            background: #fafbfc;
+                            border-radius: 8px;
+                            padding: 16px;
+                            border-left: 3px solid #fca5a5;
+                            border: 1px solid #e5e7eb;
                             text-align: center;
                         '>
-                            <p style='margin: 0 0 8px 0; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #d17a6f;'>OPEN</p>
-                            <h3 style='margin: 0; font-size: 2rem; font-weight: 800; color: #d17a6f;'>{open_count}</h3>
+                            <p style='margin: 0 0 6px 0; font-size: 0.6rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #9ca3af;'>OPEN</p>
+                            <h3 style='margin: 0; font-size: 1.5rem; font-weight: 600; color: #ef4444;'>{open_count}</h3>
                         </div>""", unsafe_allow_html=True)
 
                     with kpi_col3:
                         st.markdown(f"""<div style='
-                            background: linear-gradient(135deg, rgba(232, 185, 104, 0.12) 0%, rgba(232, 185, 104, 0.06) 100%);
-                            border-radius: 12px;
-                            padding: 24px;
-                            border-left: 4px solid #e8b968;
-                            box-shadow: 0 4px 12px rgba(232, 185, 104, 0.15);
+                            background: #fafbfc;
+                            border-radius: 8px;
+                            padding: 16px;
+                            border-left: 3px solid #fcd34d;
+                            border: 1px solid #e5e7eb;
                             text-align: center;
                         '>
-                            <p style='margin: 0 0 8px 0; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #e8b968;'>IN PROGRESS</p>
-                            <h3 style='margin: 0; font-size: 2rem; font-weight: 800; color: #e8b968;'>{in_progress_count}</h3>
+                            <p style='margin: 0 0 6px 0; font-size: 0.6rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #9ca3af;'>IN PROGRESS</p>
+                            <h3 style='margin: 0; font-size: 1.5rem; font-weight: 600; color: #f59e0b;'>{in_progress_count}</h3>
                         </div>""", unsafe_allow_html=True)
 
                     with kpi_col4:
                         st.markdown(f"""<div style='
-                            background: linear-gradient(135deg, rgba(77, 122, 64, 0.12) 0%, rgba(77, 122, 64, 0.06) 100%);
-                            border-radius: 12px;
-                            padding: 24px;
-                            border-left: 4px solid #4d7a40;
-                            box-shadow: 0 4px 12px rgba(77, 122, 64, 0.15);
+                            background: #fafbfc;
+                            border-radius: 8px;
+                            padding: 16px;
+                            border-left: 3px solid #86efac;
+                            border: 1px solid #e5e7eb;
                             text-align: center;
                         '>
-                            <p style='margin: 0 0 8px 0; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #4d7a40;'>COMPLETE</p>
-                            <h3 style='margin: 0; font-size: 2rem; font-weight: 800; color: #4d7a40;'>{completion_rate}%</h3>
+                            <p style='margin: 0 0 6px 0; font-size: 0.6rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #9ca3af;'>COMPLETE</p>
+                            <h3 style='margin: 0; font-size: 1.5rem; font-weight: 600; color: #10b981;'>{completion_rate}%</h3>
                         </div>""", unsafe_allow_html=True)
 
                     # Spacing after KPI cards
