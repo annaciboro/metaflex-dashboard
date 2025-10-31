@@ -1274,6 +1274,25 @@ def render_editable_task_grid(df, current_user, is_tea=False, key_prefix="", sho
             cols.insert(status_idx + 1, "Progress Status")
             display_df = display_df[cols]
 
+    # Transform Status column to include colored squares (same as in render_tasks_table)
+    if "Status" in display_df.columns:
+        def normalize_status(status):
+            status_str = str(status).strip().lower()
+
+            # Map various status values to our three standard options
+            if any(word in status_str for word in ['open', 'not started', 'to do', 'todo']):
+                return "🟥 Open"
+            elif any(word in status_str for word in ['working', 'in progress', 'progress']):
+                return "🟨 In Progress"
+            elif any(word in status_str for word in ['done', 'complete', 'closed']):
+                return "🟩 Done"
+            else:
+                # Default to Open if status is unrecognized
+                return "🟥 Open"
+
+        # Apply normalization to Status column
+        display_df["Status"] = display_df["Status"].apply(normalize_status)
+
     # Add unique row IDs for proper AG-Grid tracking
     display_df = display_df.reset_index(drop=False)
     display_df = display_df.rename(columns={'index': '_row_id'})
@@ -1287,9 +1306,9 @@ def render_editable_task_grid(df, current_user, is_tea=False, key_prefix="", sho
     gb.configure_column("_row_id", hide=True)
 
     # Configure specific columns using clean names
-    # Status column - now visible for all users
+    # Status column - hide it (we use Progress Status with colored squares instead)
     if "Status" in display_df.columns:
-        gb.configure_column("Status", hide=False, editable=False)  # Show for all users, read-only
+        gb.configure_column("Status", hide=True, editable=False)  # Hidden
 
     if "Due Date" in display_df.columns:
         gb.configure_column("Due Date", editable=True)
@@ -1424,6 +1443,12 @@ def render_editable_task_grid(df, current_user, is_tea=False, key_prefix="", sho
 
                 # Remove Progress Status column (it's not in the original sheet)
                 edited_df_to_save = edited_df_to_save.drop(columns=["Progress Status"])
+
+            # Strip emoji squares from Status column before saving to Google Sheets
+            if "Status" in edited_df_to_save.columns:
+                edited_df_to_save["Status"] = edited_df_to_save["Status"].apply(
+                    lambda x: str(x).replace("🟥 ", "").replace("🟨 ", "").replace("🟩 ", "").strip() if pd.notna(x) else x
+                )
 
             # Restore the ___N suffix to column names for proper mapping
             edited_df_with_suffix = edited_df_to_save.copy()

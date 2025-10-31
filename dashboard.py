@@ -820,27 +820,21 @@ with nav_container:
                             st.session_state.current_page = page_name
                             st.rerun()
 
-# Handle logout outside popover (after the popover closes)
+# Handle logout outside popover (after the popover closes) - MUST BE BEFORE MAIN APP LOGIC
 if st.session_state.get('_logout_requested', False):
-    # Clear all custom session state keys
-    keys_to_preserve = ['_is_running_with_streamlit', '_logout_requested']
-    keys_to_clear = [k for k in list(st.session_state.keys()) if k not in keys_to_preserve]
-    for key in keys_to_clear:
-        try:
-            del st.session_state[key]
-        except:
-            pass
-
-    # Clear authentication state
-    st.session_state.authentication_status = None
-    st.session_state.name = None
-    st.session_state.username = None
-
-    # Clear the logout flag
+    # Clear the logout flag first
     if '_logout_requested' in st.session_state:
         del st.session_state['_logout_requested']
 
-    # Rerun to show login page
+    # Clear ALL session state
+    for key in list(st.session_state.keys()):
+        if key not in ['_is_running_with_streamlit']:
+            try:
+                del st.session_state[key]
+            except:
+                pass
+
+    # Stop execution and rerun to show login page
     st.rerun()
 
 # Vibrant lime green accent bar under navigation - MetaFlex personality
