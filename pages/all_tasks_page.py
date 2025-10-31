@@ -144,7 +144,4 @@ def show_analytics():
         st.markdown("<div style='margin-bottom: 32px;'></div>", unsafe_allow_html=True)
 
     # Render editable task grid for all tasks (with show_title=False to avoid duplicate header)
-    # Note: The render_editable_task_grid function doesn't support show_transcript_id parameter yet
-    # For now, we'll just pass the show_transcript_id as a session state variable
-    st.session_state['show_transcript_id_all_tasks'] = show_transcript_id
-    render_editable_task_grid(df, user_name, is_tea=is_tea, show_title=False)
+    render_editable_task_grid(df, user_name, is_tea=is_tea, show_title=False, show_transcript_id=show_transcript_id)

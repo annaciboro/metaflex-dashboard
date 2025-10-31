@@ -419,9 +419,5 @@ def show_tasks():
         status_col = get_column(personal_df, "Status")
         personal_df = personal_df[~personal_df[status_col].str.lower().isin(['done', 'complete', 'completed', 'closed'])]
 
-    # Use the same AgGrid table as All Tasks page, but filtered for individual user
-    # Pass show_transcript_id via session state
-    st.session_state['show_transcript_id_my_tasks'] = show_transcript_id
-
     # Render editable task grid (same as All Tasks but filtered for user)
-    render_editable_task_grid(personal_df, user_name, is_tea=is_tea, key_prefix="my_tasks_", show_title=False)
+    render_editable_task_grid(personal_df, user_name, is_tea=is_tea, key_prefix="my_tasks_", show_title=False, show_transcript_id=show_transcript_id)

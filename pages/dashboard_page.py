@@ -1060,7 +1060,7 @@ def render_tasks_table(filtered_df, limit=10, hide_project_column=False, show_tr
     else:
         st.info("No tasks to display.")
 
-def render_editable_task_grid(df, current_user, is_tea=False, key_prefix="", show_title=True):
+def render_editable_task_grid(df, current_user, is_tea=False, key_prefix="", show_title=True, show_transcript_id=False):
     """
     Render editable AgGrid for task management
 
@@ -1070,6 +1070,7 @@ def render_editable_task_grid(df, current_user, is_tea=False, key_prefix="", sho
         is_tea: Whether the current user is Téa Phillips
         key_prefix: Unique prefix for widget keys to avoid duplicates
         show_title: Whether to display the section title and caption
+        show_transcript_id: Whether to show the Transcript ID column (default False)
     """
     # Filter based on user permissions
     if is_tea:
@@ -1263,6 +1264,11 @@ def render_editable_task_grid(df, current_user, is_tea=False, key_prefix="", sho
         gb.configure_column("Project", hide=True)  # Hide since project name is in heading
     if "Task" in display_df.columns:
         gb.configure_column("Task", editable=True)
+
+    # Transcript ID column - hidden by default, shown only if checkbox is checked
+    for transcript_col_name in ["Transcript ID", "Transcript Number", "Transcript #", "Transcript"]:
+        if transcript_col_name in display_df.columns:
+            gb.configure_column(transcript_col_name, hide=not show_transcript_id, editable=False)
 
     # Person column - only editable for Téa
     if "Person" in display_df.columns:
