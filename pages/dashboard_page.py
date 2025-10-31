@@ -282,12 +282,18 @@ def update_google_sheet(updated_df):
             clean_columns.append(clean_col)
         df_to_write.columns = clean_columns
 
+        # Remove completely empty rows (all columns are empty/whitespace)
+        # This ensures we don't write blank rows that would create gaps
+        df_to_write = df_to_write.replace('', pd.NA).dropna(how='all').fillna('')
+
         # Build the data to write (header + rows)
         data_to_write = [df_to_write.columns.values.tolist()] + df_to_write.values.tolist()
 
-        # Update the range - this will overwrite only the rows we're sending
-        # WARNING: This assumes the dataframe is the FULL dataset, not a filtered view
-        # If filtered, this will overwrite and remove missing rows
+        # Clear the entire sheet first, then write the clean data
+        # This ensures no orphaned rows remain after the data
+        ws.clear()
+
+        # Write all data starting from A1 (header + all task rows)
         range_to_update = f'A1:{chr(65 + len(df_to_write.columns) - 1)}{len(data_to_write)}'
         ws.update(range_to_update, data_to_write)
 
