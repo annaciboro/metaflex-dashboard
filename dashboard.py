@@ -434,15 +434,14 @@ if st.session_state.get("authentication_status") is None:
         </div>
     """, unsafe_allow_html=True)
 
-# Render login form
-authenticator.login(location="main", fields={"Form name": "Login"})
+    # Render login form INSIDE the styling block
+    authenticator.login(location="main", fields={"Form name": "Login"})
 
-# Check authentication status
-if st.session_state.get("authentication_status") is False:
-    st.error("❌ Username or password is incorrect")
-    st.stop()
+    # Check authentication status
+    if st.session_state.get("authentication_status") is False:
+        st.error("❌ Username or password is incorrect")
 
-elif st.session_state.get("authentication_status") is None:
+    # Stop execution - don't show the app
     st.stop()
 
 # If authenticated, continue with the app

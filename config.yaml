@@ -26,7 +26,7 @@ credentials:
       view_all_tasks: true
 
 cookie:
-  expiry_days: 30
+  expiry_days: 0
   key: "7eb707cb9ec9120e9f9ef0edb40dbb3b"
   name: "metaflex_auth"
 
