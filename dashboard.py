@@ -808,23 +808,21 @@ with nav_container:
                     if page_name == "Logout":
                         st.markdown("---")  # Separator before logout
                         if st.button("Logout", key="nav_logout", use_container_width=True):
-                            # Use authenticator's built-in logout method
-                            authenticator.logout()
-
-                            # Clear all session state except critical keys
-                            keys_to_clear = [k for k in list(st.session_state.keys()) if k not in ['_is_running_with_streamlit', 'logout', 'name', 'username', 'authentication_status']]
+                            # Clear all custom session state keys first
+                            keys_to_preserve = ['authentication_status', 'name', 'username', '_is_running_with_streamlit']
+                            keys_to_clear = [k for k in list(st.session_state.keys()) if k not in keys_to_preserve]
                             for key in keys_to_clear:
                                 try:
                                     del st.session_state[key]
                                 except:
                                     pass
 
-                            # Set authentication status to None
+                            # Now clear authentication state
                             st.session_state.authentication_status = None
                             st.session_state.name = None
                             st.session_state.username = None
 
-                            # Force immediate rerun to show login page
+                            # Rerun to show login page
                             st.rerun()
                     else:
                         # Navigation button
