@@ -808,21 +808,8 @@ with nav_container:
                     if page_name == "Logout":
                         st.markdown("---")  # Separator before logout
                         if st.button("Logout", key="nav_logout", use_container_width=True):
-                            # Clear all custom session state keys first
-                            keys_to_preserve = ['authentication_status', 'name', 'username', '_is_running_with_streamlit']
-                            keys_to_clear = [k for k in list(st.session_state.keys()) if k not in keys_to_preserve]
-                            for key in keys_to_clear:
-                                try:
-                                    del st.session_state[key]
-                                except:
-                                    pass
-
-                            # Now clear authentication state
-                            st.session_state.authentication_status = None
-                            st.session_state.name = None
-                            st.session_state.username = None
-
-                            # Rerun to show login page
+                            # Set a flag to trigger logout
+                            st.session_state['_logout_requested'] = True
                             st.rerun()
                     else:
                         # Navigation button
@@ -832,6 +819,29 @@ with nav_container:
                         if st.button(button_label, key=f"nav_{page_name}", use_container_width=True, type="primary" if is_current else "secondary"):
                             st.session_state.current_page = page_name
                             st.rerun()
+
+# Handle logout outside popover (after the popover closes)
+if st.session_state.get('_logout_requested', False):
+    # Clear all custom session state keys
+    keys_to_preserve = ['_is_running_with_streamlit', '_logout_requested']
+    keys_to_clear = [k for k in list(st.session_state.keys()) if k not in keys_to_preserve]
+    for key in keys_to_clear:
+        try:
+            del st.session_state[key]
+        except:
+            pass
+
+    # Clear authentication state
+    st.session_state.authentication_status = None
+    st.session_state.name = None
+    st.session_state.username = None
+
+    # Clear the logout flag
+    if '_logout_requested' in st.session_state:
+        del st.session_state['_logout_requested']
+
+    # Rerun to show login page
+    st.rerun()
 
 # Vibrant lime green accent bar under navigation - MetaFlex personality
 st.markdown("""
