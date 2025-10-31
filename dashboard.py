@@ -16,26 +16,33 @@ st.set_page_config(
 )
 
 # ============================================
-# HANDLE LOGOUT QUERY PARAMETER
+# HANDLE LOGOUT - MUST BE BEFORE AUTHENTICATOR.LOGIN()
 # ============================================
-# Check if we're in logout mode - clear everything BEFORE loading authenticator
+# Check if logout was requested - handle it BEFORE authenticator.login() restores session
+if st.session_state.get('_logout_requested', False):
+    # Clear the logout flag first
+    if '_logout_requested' in st.session_state:
+        del st.session_state['_logout_requested']
+
+    # Clear ALL session state (including authentication)
+    for key in list(st.session_state.keys()):
+        if key not in ['_is_running_with_streamlit']:
+            try:
+                del st.session_state[key]
+            except:
+                pass
+
+    # Set query param to signal full logout
+    st.query_params.clear()
+    st.query_params["logout"] = "1"
+    st.rerun()
+
+# Handle query parameter logout (clears cookies)
 query_params = st.query_params
 if "logout" in query_params:
-    # Clear all session state except critical keys
-    keys_to_clear = [k for k in list(st.session_state.keys()) if k not in ['_is_running_with_streamlit']]
-    for key in keys_to_clear:
-        try:
-            del st.session_state[key]
-        except:
-            pass
-
-    # Force authentication status to None
-    st.session_state.authentication_status = None
-    st.session_state.name = None
-    st.session_state.username = None
-
-    # Remove logout query param and redirect to clean page
+    # Clear query param
     st.query_params.clear()
+    # Force a full page reload to clear cookies
     st.rerun()
 
 # ============================================
@@ -819,23 +826,6 @@ with nav_container:
                         if st.button(button_label, key=f"nav_{page_name}", use_container_width=True, type="primary" if is_current else "secondary"):
                             st.session_state.current_page = page_name
                             st.rerun()
-
-# Handle logout outside popover (after the popover closes) - MUST BE BEFORE MAIN APP LOGIC
-if st.session_state.get('_logout_requested', False):
-    # Clear the logout flag first
-    if '_logout_requested' in st.session_state:
-        del st.session_state['_logout_requested']
-
-    # Clear ALL session state
-    for key in list(st.session_state.keys()):
-        if key not in ['_is_running_with_streamlit']:
-            try:
-                del st.session_state[key]
-            except:
-                pass
-
-    # Stop execution and rerun to show login page
-    st.rerun()
 
 # Vibrant lime green accent bar under navigation - MetaFlex personality
 st.markdown("""
