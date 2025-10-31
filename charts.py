@@ -170,6 +170,9 @@ def create_task_age_analysis(df):
     labels = list(age_ranges.keys())
     values = list(age_ranges.values())
 
+    # Calculate max value for y-axis range
+    max_value = max(values) if values else 10
+
     # MetaFlex color palette
     colors = ['#0a4b4b', '#4d7a40', '#7a9900', '#a8d900']
 
@@ -184,16 +187,18 @@ def create_task_age_analysis(df):
         textposition='outside',
         textfont=dict(size=14, color='#0a4b4b', family='-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', weight='bold'),
         hovertemplate='<b>%{x}</b><br>Tasks: %{y}<extra></extra>',
-        name=''  # Remove legend/series name to avoid "undefined"
+        showlegend=False,  # Explicitly hide from legend
+        name=None  # Remove name completely
     )])
 
     fig.update_layout(
-        title=None,
-        height=400,
-        margin=dict(t=40, b=40, l=80, r=60),
+        title='',  # Empty string instead of None
+        height=420,  # Increased height slightly
+        margin=dict(t=50, b=40, l=50, r=40),  # Balanced margins
         paper_bgcolor=MF_LIGHT['bg_white'],
         plot_bgcolor=MF_LIGHT['bg_light'],
         showlegend=False,  # Hide legend to remove "undefined"
+        hovermode='x unified',  # Unified hover mode
         xaxis=dict(
             title='',
             tickfont=dict(size=13, color='#0a4b4b', family='-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif')
@@ -202,7 +207,9 @@ def create_task_age_analysis(df):
             showgrid=True,
             gridcolor='#f3f4f6',
             title='',
-            tickfont=dict(size=12, color='#0a4b4b', family='-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif')
+            tickfont=dict(size=12, color='#0a4b4b', family='-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'),
+            range=[0, max_value * 1.25],  # Add 25% extra space at top for labels
+            fixedrange=False
         )
     )
 
@@ -354,13 +361,13 @@ def create_team_completion_donut(open_tasks, working_tasks, done_tasks):
     fig = go.Figure(data=[go.Pie(
         labels=['Not Started', 'In Progress', 'Completed'],
         values=[open_tasks, working_tasks, done_tasks],
-        hole=0.7,  # Larger hole for modern look
+        hole=0.68,  # Slightly smaller hole for taller chart
         marker=dict(
             colors=colors,
             line=dict(color='#ffffff', width=5)  # Thicker white lines for separation
         ),
         textinfo='percent',  # Show percentages on each slice
-        textfont=dict(size=13, color='#ffffff', family='-apple-system, sans-serif', weight=700),
+        textfont=dict(size=14, color='#ffffff', family='-apple-system, sans-serif', weight=700),
         textposition='inside',
         insidetextorientation='horizontal',
         hovertemplate='<b>%{label}</b><br>Tasks: %{value}<br>Percentage: %{percent}<extra></extra>',
@@ -373,7 +380,7 @@ def create_team_completion_donut(open_tasks, working_tasks, done_tasks):
 
     # Add center text showing overall progress - refined and elegant
     fig.add_annotation(
-        text=f'<b style="font-size: 36px; color: #1f2937; font-weight: 300;">{overall_progress}%</b><br><span style="font-size: 11px; color: #6b7280; font-weight: 500; letter-spacing: 0.1em;">OVERALL PROGRESS</span>',
+        text=f'<b style="font-size: 40px; color: #1f2937; font-weight: 300;">{overall_progress}%</b><br><span style="font-size: 12px; color: #6b7280; font-weight: 500; letter-spacing: 0.1em;">OVERALL PROGRESS</span>',
         x=0.5, y=0.5,
         font=dict(size=16, color='#1f2937', family='-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'),
         showarrow=False,
@@ -386,14 +393,14 @@ def create_team_completion_donut(open_tasks, working_tasks, done_tasks):
         legend=dict(
             orientation="h",
             yanchor="bottom",
-            y=-0.15,
+            y=-0.12,
             xanchor="center",
             x=0.5,
             font=dict(size=12, color='#0a4b4b', family='-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', weight=600),
             itemsizing='constant'
         ),
-        height=400,
-        margin=dict(t=60, b=40, l=40, r=40),
+        height=420,  # Match Task Age Analysis chart height
+        margin=dict(t=40, b=40, l=40, r=40),  # Balanced margins
         paper_bgcolor='#ffffff',  # White background to match Task Age Analysis
         plot_bgcolor='#ffffff',
         font=dict(family='-apple-system, sans-serif')
