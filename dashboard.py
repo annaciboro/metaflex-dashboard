@@ -20,14 +20,17 @@ st.set_page_config(
 # ============================================
 # Check if logout was requested - handle it BEFORE authenticator.login() restores session
 if st.session_state.get('_logout_requested', False):
-    # Clear ALL session state (including authentication)
+    # Clear ALL session state (including authentication) except the logout flag
     for key in list(st.session_state.keys()):
-        if key not in ['_is_running_with_streamlit']:
+        if key not in ['_is_running_with_streamlit', '_logout_requested']:
             try:
                 del st.session_state[key]
             except:
                 pass
-    # Don't rerun - just continue and let the login form render below
+    # Now remove the logout flag
+    del st.session_state['_logout_requested']
+    # Force a rerun to properly reset everything
+    st.rerun()
 
 # ============================================
 # AUTHENTICATION
