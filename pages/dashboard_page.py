@@ -274,20 +274,14 @@ def update_google_sheet(updated_df):
             clean_columns.append(clean_col)
         df_to_write.columns = clean_columns
 
-        # SAFE MODE: Get current sheet data to prevent deletions
-        current_data = ws.get_all_values()
-        current_row_count = len(current_data)
-        new_row_count = len(df_to_write) + 1  # +1 for header
-
-        # Check if rows would be deleted
-        if new_row_count < current_row_count:
-            st.error(f"❌ Cannot save: This would delete {current_row_count - new_row_count} rows from Google Sheets. Streamlit can only UPDATE or ADD data, never delete. Please use Google Sheets directly to delete rows.")
-            return False
-
-        # Safe update: Only update existing rows and add new ones
-        # Update header and all existing rows
+        # Build the data to write (header + rows)
         data_to_write = [df_to_write.columns.values.tolist()] + df_to_write.values.tolist()
-        ws.update(data_to_write, 'A1')
+
+        # Update the range - this will overwrite only the rows we're sending
+        # WARNING: This assumes the dataframe is the FULL dataset, not a filtered view
+        # If filtered, this will overwrite and remove missing rows
+        range_to_update = f'A1:{chr(65 + len(df_to_write.columns) - 1)}{len(data_to_write)}'
+        ws.update(range_to_update, data_to_write)
 
         return True
     except Exception as e:
@@ -1461,14 +1455,18 @@ def render_editable_task_grid(df, current_user, is_tea=False, key_prefix="", sho
                     suffix_cols.append(col)
             edited_df_with_suffix.columns = suffix_cols
 
-            # If not Téa, merge edited rows back into full dataframe
-            if not is_tea and has_column(df, "Person"):
-                # For non-Téa users, we need to merge their edits back into the full dataset
-                # This is complex, so for now let's just save what they can see
-                success = update_google_sheet(edited_df_with_suffix)
-            else:
-                # Téa's edits - save the entire edited dataset
-                success = update_google_sheet(edited_df_with_suffix)
+            # ALWAYS use the FULL dataframe to prevent data loss
+            # Merge edited rows back into the full dataset (df contains ALL rows, edited_df_with_suffix has filtered/edited rows)
+            full_df_to_save = df.copy()
+
+            # Update only the rows that were edited in the filtered view
+            # Match by index to update the correct rows
+            for idx in edited_df_with_suffix.index:
+                if idx in full_df_to_save.index:
+                    full_df_to_save.loc[idx] = edited_df_with_suffix.loc[idx]
+
+            # Save the FULL dataset (including all archived/hidden rows)
+            success = update_google_sheet(full_df_to_save)
 
             if success:
                 if completed_tasks_count > 0:
