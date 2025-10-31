@@ -1104,7 +1104,7 @@ def render_editable_task_grid(df, current_user, is_tea=False, key_prefix="", sho
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # Add CSS to highlight Progress Status column
+    # Add CSS to highlight Progress Status column and Priority column
     st.markdown("""
         <style>
         /* Highlight Progress Status header */
@@ -1120,6 +1120,37 @@ def render_editable_task_grid(df, current_user, is_tea=False, key_prefix="", sho
         }
         .ag-cell[col-id="Progress Status"]:hover {
             background-color: rgba(251, 191, 36, 0.2) !important;
+        }
+
+        /* Priority column styling with green shades */
+        .ag-header-cell.priority-header {
+            background-color: #0a4b4b !important;
+            color: white !important;
+            font-weight: bold !important;
+        }
+
+        /* High Priority - Neon Green */
+        .ag-cell[col-id="Priority"][aria-colindex] {
+            font-weight: 600 !important;
+            cursor: pointer !important;
+        }
+
+        /* Apply colors based on cell content */
+        .ag-cell[col-id="Priority"]:has-text("High") {
+            background-color: #39ff14 !important;
+            color: #064e3b !important;
+        }
+
+        /* Medium Priority - Medium Green */
+        .ag-cell[col-id="Priority"]:has-text("Medium") {
+            background-color: #4ade80 !important;
+            color: #ffffff !important;
+        }
+
+        /* Low Priority - Dark Teal */
+        .ag-cell[col-id="Priority"]:has-text("Low") {
+            background-color: #0a4b4b !important;
+            color: #ffffff !important;
         }
         </style>
     """, unsafe_allow_html=True)
@@ -1256,8 +1287,10 @@ def render_editable_task_grid(df, current_user, is_tea=False, key_prefix="", sho
     gb.configure_column("_row_id", hide=True)
 
     # Configure specific columns using clean names
+    # Status column - now visible for all users
     if "Status" in display_df.columns:
-        gb.configure_column("Status", hide=True)  # Hidden in home view
+        gb.configure_column("Status", hide=False, editable=False)  # Show for all users, read-only
+
     if "Due Date" in display_df.columns:
         gb.configure_column("Due Date", editable=True)
     if "Project" in display_df.columns:
@@ -1273,6 +1306,41 @@ def render_editable_task_grid(df, current_user, is_tea=False, key_prefix="", sho
     # Person column - only editable for Téa
     if "Person" in display_df.columns:
         gb.configure_column("Person", editable=is_tea)
+
+    # Priority column - editable dropdown for Tea only with green color coding
+    if "Priority" in display_df.columns:
+        # Define cell style function for priority colors
+        priority_cell_style = {
+            'styleConditions': [
+                {
+                    'condition': 'params.value === "High"',
+                    'style': {'backgroundColor': '#39ff14', 'color': '#064e3b', 'fontWeight': '600'}
+                },
+                {
+                    'condition': 'params.value === "Medium"',
+                    'style': {'backgroundColor': '#4ade80', 'color': '#ffffff', 'fontWeight': '600'}
+                },
+                {
+                    'condition': 'params.value === "Low"',
+                    'style': {'backgroundColor': '#0a4b4b', 'color': '#ffffff', 'fontWeight': '600'}
+                }
+            ]
+        }
+
+        if is_tea:
+            gb.configure_column(
+                "Priority",
+                editable=True,
+                cellEditor='agSelectCellEditor',
+                cellEditorParams={
+                    'values': ['High', 'Medium', 'Low']
+                },
+                width=120,
+                headerClass='priority-header'
+            )
+        else:
+            # For non-Tea users, make Priority read-only but still visible with colors
+            gb.configure_column("Priority", editable=False, width=120)
 
     # Progress Status - editable dropdown with the three options
     if "Progress Status" in display_df.columns:
