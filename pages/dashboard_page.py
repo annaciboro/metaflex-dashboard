@@ -1323,7 +1323,7 @@ def render_editable_task_grid(df, current_user, is_tea=False, key_prefix="", sho
         hide_person = (key_prefix == "my_tasks_")
         gb.configure_column("Person", editable=is_tea, hide=hide_person)
 
-    # Priority column - editable dropdown for Tea only with green color coding
+    # Priority column - editable dropdown for everyone with green color coding
     if "Priority" in display_df.columns:
         # Define cell style function for priority colors
         priority_cell_style = {
@@ -1343,20 +1343,19 @@ def render_editable_task_grid(df, current_user, is_tea=False, key_prefix="", sho
             ]
         }
 
-        if is_tea:
-            gb.configure_column(
-                "Priority",
-                editable=True,
-                cellEditor='agSelectCellEditor',
-                cellEditorParams={
-                    'values': ['High', 'Medium', 'Low']
-                },
-                width=120,
-                headerClass='priority-header'
-            )
-        else:
-            # For non-Tea users, make Priority read-only but still visible with colors
-            gb.configure_column("Priority", editable=False, width=120)
+        # Everyone can edit Priority on My Tasks, but only Tea on All Tasks
+        is_editable = (key_prefix == "my_tasks_") or is_tea
+
+        gb.configure_column(
+            "Priority",
+            editable=is_editable,
+            cellEditor='agSelectCellEditor',
+            cellEditorParams={
+                'values': ['High', 'Medium', 'Low']
+            },
+            width=120,
+            headerClass='priority-header'
+        )
 
     # Progress Status - editable dropdown with the three options (SQUARES)
     if "Progress Status" in display_df.columns:
