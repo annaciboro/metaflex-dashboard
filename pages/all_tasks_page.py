@@ -28,8 +28,8 @@ def show_analytics():
 
     # Filter data based on user - ONLY Tea sees all tasks
     if is_tea:
-        # Tea sees everyone's tasks - no filtering
-        pass
+        # Tea sees everyone's tasks - no filtering needed
+        filtered_df = df.copy()
     elif is_jess:
         # Jess sees her team's tasks (Jess, Megan, Justin)
         assignee_col = None
@@ -41,7 +41,9 @@ def show_analytics():
             assignee_col = get_column(df, "assignee")
 
         if assignee_col:
-            df = df[df[assignee_col].str.lower().str.contains('jess|megan|justin', na=False, regex=True)].copy()
+            filtered_df = df[df[assignee_col].str.lower().str.contains('jess|megan|justin', na=False, regex=True)].copy()
+        else:
+            filtered_df = df.copy()
     else:
         # Other users (Megan, Justin, etc.) should only see their own tasks
         assignee_col = None
@@ -53,7 +55,12 @@ def show_analytics():
             assignee_col = get_column(df, "assignee")
 
         if assignee_col:
-            df = df[df[assignee_col].str.lower().str.contains(user_name.lower(), na=False, regex=False)].copy()
+            filtered_df = df[df[assignee_col].str.lower().str.contains(user_name.lower(), na=False, regex=False)].copy()
+        else:
+            filtered_df = df.copy()
+
+    # Use filtered_df for the rest of the page
+    df = filtered_df
 
     # Page header matching MY TASKS style
     st.markdown("""
