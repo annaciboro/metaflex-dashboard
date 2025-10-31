@@ -1247,13 +1247,13 @@ def render_editable_task_grid(df, current_user, is_tea=False, key_prefix="", sho
             except:
                 val = 0
 
-            # Determine status based on progress
+            # Determine status based on progress - using SQUARES
             if val == 0:
-                return "🟠 Not Started"
+                return "🟥 Not Started"
             elif val < 100:
-                return "🟡 In Progress"
+                return "🟨 In Progress"
             else:
-                return "🟢 Complete"
+                return "🟩 Complete"
 
         display_df["Progress Status"] = display_df["Progress %"].apply(get_progress_status)
         # Keep Progress % for reference but we'll use Progress Status for editing
@@ -1316,9 +1316,9 @@ def render_editable_task_grid(df, current_user, is_tea=False, key_prefix="", sho
         if transcript_col_name in display_df.columns:
             gb.configure_column(transcript_col_name, hide=not show_transcript_id, editable=False)
 
-    # Person column - only editable for Téa
+    # Person column - only editable for Téa, hidden for everyone else
     if "Person" in display_df.columns:
-        gb.configure_column("Person", editable=is_tea)
+        gb.configure_column("Person", editable=is_tea, hide=not is_tea)
 
     # Priority column - editable dropdown for Tea only with green color coding
     if "Priority" in display_df.columns:
@@ -1355,14 +1355,14 @@ def render_editable_task_grid(df, current_user, is_tea=False, key_prefix="", sho
             # For non-Tea users, make Priority read-only but still visible with colors
             gb.configure_column("Priority", editable=False, width=120)
 
-    # Progress Status - editable dropdown with the three options
+    # Progress Status - editable dropdown with the three options (SQUARES)
     if "Progress Status" in display_df.columns:
         gb.configure_column(
             "Progress Status",
             editable=True,
             cellEditor='agSelectCellEditor',
             cellEditorParams={
-                'values': ['🟠 Not Started', '🟡 In Progress', '🟢 Complete']
+                'values': ['🟥 Not Started', '🟨 In Progress', '🟩 Complete']
             },
             width=180,
             headerClass='progress-status-header'
@@ -1411,18 +1411,18 @@ def render_editable_task_grid(df, current_user, is_tea=False, key_prefix="", sho
         # Check for completed tasks that will be auto-archived
         completed_tasks_count = 0
         if "Progress Status" in edited_df.columns:
-            completed_mask = edited_df["Progress Status"].str.contains("🟢|Complete", case=False, na=False)
+            completed_mask = edited_df["Progress Status"].str.contains("🟩|Complete", case=False, na=False)
             completed_tasks_count = completed_mask.sum()
         with st.spinner("Saving changes to Google Sheets..."):
             # Convert Progress Status back to Progress %
             edited_df_to_save = edited_df.copy()
             if "Progress Status" in edited_df_to_save.columns:
                 def status_to_percentage(status):
-                    if "🟠" in str(status) or "🔴" in str(status) or "Not Started" in str(status):
+                    if "🟥" in str(status) or "Not Started" in str(status):
                         return "0%"
-                    elif "🟡" in str(status) or "In Progress" in str(status):
+                    elif "🟨" in str(status) or "In Progress" in str(status):
                         return "50%"  # Default to 50% for in progress
-                    elif "🟢" in str(status) or "Complete" in str(status):
+                    elif "🟩" in str(status) or "Complete" in str(status):
                         return "100%"
                     return "0%"
 
@@ -1432,7 +1432,7 @@ def render_editable_task_grid(df, current_user, is_tea=False, key_prefix="", sho
 
                 # AUTO-ARCHIVE: Set Status to "Done" for all completed tasks
                 if "Status" in edited_df_to_save.columns:
-                    completed_mask = edited_df_to_save["Progress Status"].str.contains("🟢|Complete", case=False, na=False)
+                    completed_mask = edited_df_to_save["Progress Status"].str.contains("🟩|Complete", case=False, na=False)
                     edited_df_to_save.loc[completed_mask, "Status"] = "Done"
 
                 # Remove Progress Status column (it's not in the original sheet)
