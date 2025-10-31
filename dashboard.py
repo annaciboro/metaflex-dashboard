@@ -20,10 +20,6 @@ st.set_page_config(
 # ============================================
 # Check if logout was requested - handle it BEFORE authenticator.login() restores session
 if st.session_state.get('_logout_requested', False):
-    # Clear the logout flag first
-    if '_logout_requested' in st.session_state:
-        del st.session_state['_logout_requested']
-
     # Clear ALL session state (including authentication)
     for key in list(st.session_state.keys()):
         if key not in ['_is_running_with_streamlit']:
@@ -31,19 +27,7 @@ if st.session_state.get('_logout_requested', False):
                 del st.session_state[key]
             except:
                 pass
-
-    # Set query param to signal full logout
-    st.query_params.clear()
-    st.query_params["logout"] = "1"
-    st.rerun()
-
-# Handle query parameter logout (clears cookies)
-query_params = st.query_params
-if "logout" in query_params:
-    # Clear query param
-    st.query_params.clear()
-    # Force a full page reload to clear cookies
-    st.rerun()
+    # Don't rerun - just continue and let the login form render below
 
 # ============================================
 # AUTHENTICATION
