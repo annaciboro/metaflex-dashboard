@@ -1304,8 +1304,13 @@ def render_editable_task_grid(df, current_user, is_tea=False, key_prefix="", sho
     if "Status" in display_df.columns:
         gb.configure_column("Status", hide=True, editable=False)  # Hidden
 
+    # Date columns - configure for proper sorting
+    if "Date Assigned" in display_df.columns:
+        gb.configure_column("Date Assigned", editable=True, type=["customDateTimeFormat"], custom_format_string='MM/dd/yyyy')
+
     if "Due Date" in display_df.columns:
-        gb.configure_column("Due Date", editable=True)
+        gb.configure_column("Due Date", editable=True, type=["customDateTimeFormat"], custom_format_string='MM/dd/yyyy')
+
     if "Project" in display_df.columns:
         gb.configure_column("Project", hide=True)  # Hide since project name is in heading
     if "Task" in display_df.columns:
@@ -1400,8 +1405,9 @@ def render_editable_task_grid(df, current_user, is_tea=False, key_prefix="", sho
     st.markdown("<br>", unsafe_allow_html=True)
 
     # Check if any changes were made (compare without _row_id column)
+    # Also check if number of rows changed (new tasks added or deleted)
     display_df_compare = display_df.drop(columns=["_row_id"]) if "_row_id" in display_df.columns else display_df
-    has_changes = not edited_df.equals(display_df_compare)
+    has_changes = (len(edited_df) != len(display_df_compare)) or not edited_df.equals(display_df_compare)
 
     if has_changes:
         st.info("You have unsaved changes in the grid above.")
