@@ -207,11 +207,12 @@ def load_google_sheet():
         # Define columns to hide by name
         columns_to_hide = ["Progress Bar", "Confidence", "Emails", "Duplicate Check", "0%"]
 
-        # Filter columns: keep only the first 10 columns and exclude unwanted ones
+        # Filter columns: keep the first 10 columns PLUS column 14 (Priority) and exclude unwanted ones
         filtered_indices = []
         for i, col_name in enumerate(original_cols):
-            # Keep only first 10 columns (0-9), which are the main task fields
-            if i >= 10:
+            # Keep first 10 columns (0-9) which are the main task fields, PLUS column 13 (index 13 = column 14 in sheets)
+            # Column 14 is the Priority column
+            if i >= 10 and i != 13:
                 continue
             # Skip columns in the hide list
             if col_name in columns_to_hide or "confidence" in col_name.lower():
@@ -221,6 +222,13 @@ def load_google_sheet():
         # Keep only the filtered columns
         df = df.iloc[:, filtered_indices]
         original_cols = [original_cols[i] for i in filtered_indices]
+
+        # Ensure Priority column has a name (it's column 14, index 13 in original sheet)
+        # If column 13 was included and has empty name, name it "Priority"
+        if 13 in filtered_indices:
+            priority_position = filtered_indices.index(13)
+            if not original_cols[priority_position] or original_cols[priority_position].strip() == '':
+                original_cols[priority_position] = "Priority"
 
         # Make ALL column names absolutely unique by appending index
         unique_cols = [f"{original_cols[i]}___{i}" for i in range(len(original_cols))]
