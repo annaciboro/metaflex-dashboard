@@ -252,7 +252,7 @@ def load_google_sheet():
 def update_google_sheet(updated_df):
     """
     Push edited data back to Google Sheets (Otter_Tasks worksheet)
-    SAFE MODE: Only allows updates and additions - NEVER deletes rows
+    SMART MODE: Updates existing rows in place, appends new rows to first blank line
     """
     try:
         SCOPES = [
@@ -273,6 +273,10 @@ def update_google_sheet(updated_df):
         except:
             ws = gc.open_by_key(SHEET_ID).sheet1
 
+        # Get current sheet data to compare
+        current_data = ws.get_all_values()
+        current_row_count = len(current_data)  # Includes header
+
         # Strip the suffix from column names before writing back
         df_to_write = updated_df.copy()
         clean_columns = []
@@ -283,19 +287,25 @@ def update_google_sheet(updated_df):
         df_to_write.columns = clean_columns
 
         # Remove completely empty rows (all columns are empty/whitespace)
-        # This ensures we don't write blank rows that would create gaps
         df_to_write = df_to_write.replace('', pd.NA).dropna(how='all').fillna('')
 
-        # Build the data to write (header + rows)
-        data_to_write = [df_to_write.columns.values.tolist()] + df_to_write.values.tolist()
+        # Determine how many rows are in the updated dataframe
+        new_row_count = len(df_to_write) + 1  # +1 for header
 
-        # Clear the entire sheet first, then write the clean data
-        # This ensures no orphaned rows remain after the data
-        ws.clear()
+        if new_row_count > current_row_count:
+            # NEW ROWS ADDED - only append the new rows to the end
+            num_new_rows = new_row_count - current_row_count
+            new_rows = df_to_write.iloc[-num_new_rows:].values.tolist()
 
-        # Write all data starting from A1 (header + all task rows)
-        range_to_update = f'A1:{chr(65 + len(df_to_write.columns) - 1)}{len(data_to_write)}'
-        ws.update(range_to_update, data_to_write)
+            # Append new rows starting at the first blank row
+            for row_data in new_rows:
+                ws.append_row(row_data)
+        else:
+            # EXISTING ROWS UPDATED - update only the changed rows
+            # Update header + all data rows (overwrite existing range only)
+            data_to_write = [df_to_write.columns.values.tolist()] + df_to_write.values.tolist()
+            range_to_update = f'A1:{chr(65 + len(df_to_write.columns) - 1)}{len(data_to_write)}'
+            ws.update(range_to_update, data_to_write)
 
         return True
     except Exception as e:
